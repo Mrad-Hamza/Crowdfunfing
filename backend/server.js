@@ -20,6 +20,8 @@ connection.once('open', () => {
 
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
+const forumsRouter = require('./routes/forum');
+app.use('/forum', forumsRouter);
 
 const userRoleRouter = require('./routes/role-user');
 app.use('/userRole', userRoleRouter);
