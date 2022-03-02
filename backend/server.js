@@ -20,6 +20,8 @@ connection.once('open', () => {
 
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
+const forumsRouter = require('./routes/forum');
+app.use('/forum', forumsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
