@@ -28,4 +28,11 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//find by id method
+router.route("/:id").get((req, res) => {
+  Project.findById(req.params.id)
+    .then((project) => res.json(project))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router;
