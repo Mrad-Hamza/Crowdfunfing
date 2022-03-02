@@ -51,4 +51,11 @@ router.route("/update/:id").put((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//delete method
+router.route("/:id").delete((req, res) => {
+  Project.findByIdAndDelete(req.params.id)
+    .then(() => res.json("Project deleted."))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router;
