@@ -8,6 +8,13 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//find by id method
+router.route("/:id").get((req, res) => {
+  Project.findById(req.params.id)
+    .then((project) => res.json(project))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add method
 router.route("/add").post((req, res) => {
   const projectName = req.body.projectName;
@@ -28,10 +35,19 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//find by id method
-router.route("/:id").get((req, res) => {
+//update method
+router.route("/update/:id").put((req, res) => {
   Project.findById(req.params.id)
-    .then((project) => res.json(project))
+    .then((project) => {
+      project.projectName = req.body.projectName;
+      project.projectDescription = req.body.projectDescription;
+      project.projectType = req.body.projectType;
+      project.projectCollectedAmount = req.body.projectCollectedAmount;
+      project
+        .save()
+        .then(() => res.json("project updated!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
