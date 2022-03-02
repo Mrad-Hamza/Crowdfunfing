@@ -12,12 +12,12 @@ const projectSchema = new Schema(
     projectDescription: {
       type: String,
       required: true,
-      minlength: [500, "project Description Minimum 500 charachters."],
+      minlength: [10, "project Description Minimum 10 charachters."],
     },
     projectType: {
       type: String,
       required: true,
-      minlength: [20, "Last Name Minimum 20 charachters."],
+      minlength: [2, "projectType Minimum 2 charachters."],
     },
     projectCollectedAmount: {
       type: Number,
