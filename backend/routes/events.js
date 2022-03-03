@@ -15,12 +15,12 @@ router.route('/add').post((req, res) => {
   const descriptionEvent = req.body.descriptionEvent;
   const nbrplace = req.body.nbrplace;
   const urlEvent = req.body.urlEvent;
-  const startDate= req.body.lien;
+  const startDate= req.body.startDate;
   const endDate= req.body.endDate;
-  const localisation=req.body.localisation;
+  const location=req.body.location;
   const eventType = req.body.eventType;
 
-  const newEvent = new Event({nameEvent,dateEvent,descriptionEvent,nbrplace,urlEvent,startDate,endDate,localisation,eventType});
+  const newEvent = new Event({nameEvent,dateEvent,descriptionEvent,nbrplace,urlEvent,startDate,endDate,location,eventType});
   newEvent.save()
     .then(() => res.json('Event added!'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -51,7 +51,7 @@ router.route('/update/:id').put((req, res) => {
       event.urlEvent =req.body.urlEvent ;
       event.startDate= req.body.startDate;
       event.endDate=req.body.endDate;
-      event.localisation=req.body.localisation;
+      event.location=req.body.location;
       event.eventType = req.body.eventType;
       event.save()
         .then(() => res.json('Event updated!'))

@@ -35,7 +35,7 @@ const eventSchema = new Schema({
     urlEvent:{
       type:String,
     }, 
-    localisation :{
+    location :{
       type:String
     } ,
     eventType:{
