@@ -13,10 +13,14 @@ router.route('/add').post((req, res) => {
   const nameEvent = req.body.nameEvent;
   const dateEvent = req.body.dateEvent;
   const descriptionEvent = req.body.descriptionEvent;
-  const place = req.body.place;
+  const nbrplace = req.body.nbrplace;
+  const urlEvent = req.body.urlEvent;
+  const startDate= req.body.lien;
+  const endDate= req.body.endDate;
+  const localisation=req.body.localisation;
   const eventType = req.body.eventType;
 
-  const newEvent = new Event({nameEvent,dateEvent,descriptionEvent,place,eventType});
+  const newEvent = new Event({nameEvent,dateEvent,descriptionEvent,nbrplace,urlEvent,startDate,endDate,localisation,eventType});
   newEvent.save()
     .then(() => res.json('Event added!'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -30,7 +34,7 @@ router.route('/:id').get((req, res) => {
 });
 
 //delete an event
-router.route('/:id').delete((req, res) => {
+router.route('/delete/:id').delete((req, res) => {
   Event.findByIdAndDelete(req.params.id)
     .then(() => res.json('Event deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -43,7 +47,11 @@ router.route('/update/:id').put((req, res) => {
       event.nameEvent = req.body.nameEvent;
       event.dateEvent = req.body.dateEvent;
       event.descriptionEvent = req.body.descriptionEvent;
-      event.place = req.body.place;
+      event.nbrplace = req.body.nbrplace;
+      event.urlEvent =req.body.urlEvent ;
+      event.startDate= req.body.startDate;
+      event.endDate=req.body.endDate;
+      event.localisation=req.body.localisation;
       event.eventType = req.body.eventType;
       event.save()
         .then(() => res.json('Event updated!'))

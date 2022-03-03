@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const EventType = Object.freeze({
+  Virtual: 'virtual',
+  Real :'real'
+  
+});
+
 const eventSchema = new Schema({
     nameEvent: {
      type: String,
@@ -16,18 +22,31 @@ const eventSchema = new Schema({
      required: true,
      minlength: [6, 'Description must have minimum 6 charachters.'],
    },
-   place:{
+   nbrplace:{
        type:Number,
        required: true,
    },
-   eventType:{
+    startDate:{
+      type:Date, 
+    },
+    endDate:{
+      type:Date
+    }, 
+    urlEvent:{
+      type:String,
+    }, 
+    localisation :{
+      type:String
+    } ,
+    eventType:{
        type:String,
-       required: true,
+       required:true,
+       enum: Object.values(EventType)
    }
  }, {
    timestamps: true,
  });
 
  const Event = mongoose.model('Event', eventSchema);
-
+ 
 module.exports = Event;
