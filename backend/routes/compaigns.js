@@ -10,9 +10,10 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const nameCompaign = req.body.nameCompaign;
   const typeCompaign = req.body.typeCompaign;
+  const user = req.body.user;
   
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign});
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,user});
 
   newCompaign.save()
     .then(() => res.json('Compaign added!'))

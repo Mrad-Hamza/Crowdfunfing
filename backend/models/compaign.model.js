@@ -14,6 +14,13 @@ const compaignSchema = new Schema({
     required: true,
     minlength: [3, 'Type Compaign Minimum 3 charachters.'],
   },
+
+  user: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  
   
   
 }, {
