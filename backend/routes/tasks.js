@@ -1,5 +1,6 @@
 const router = require("express").Router();
 let Task = require("../models/task.model");
+let Project = require("../models/project.model");
 
 //getAll method
 router.route("/").get((req, res) => {
@@ -28,10 +29,18 @@ router.route("/add").post((req, res) => {
     taskType,
     project,
   });
-
   newTask
     .save()
     .then(() => res.json("Task added!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+  Project.findById(project)
+    .then((projectt) => {
+      projectt.tasks = newTask;
+      projectt
+        .save()
+        .then(() => res.json("task added to project"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    })
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
