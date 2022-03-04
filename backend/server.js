@@ -26,6 +26,9 @@ app.use("/projects", projectsRouter);
 const tasksRouter = require("./routes/tasks");
 app.use("/tasks", tasksRouter);
 
+const invoicesProjectRouter = require("./routes/invoiceProjects");
+app.use("/invoicesProject", invoicesProjectRouter);
+
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
