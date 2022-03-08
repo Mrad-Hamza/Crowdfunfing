@@ -22,6 +22,6 @@ const invoiceProjectSchema = new Schema(
   }
 );
 
-const InvoiveProject = mongoose.model("InvoiveProject", invoiceProjectSchema);
+const InvoiceProjects = mongoose.model("InvoiceProjects", invoiceProjectSchema);
 
-module.exports = InvoiveProject;
+module.exports = InvoiceProjects;

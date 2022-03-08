@@ -35,7 +35,7 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
   Project.findById(project)
     .then((projectt) => {
-      projectt.tasks = newTask;
+      projectt.tasks.push(newTask);
       projectt
         .save()
         .then(() => res.json("task added to project"))
