@@ -15,7 +15,10 @@ const forumSchema = new Schema({
   },
 
 
-}, {
+
+},
+
+{
   timestamps: true ,
 });
 
