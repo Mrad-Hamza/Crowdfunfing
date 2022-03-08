@@ -61,4 +61,17 @@ router.route('/update/:id').put((req, res) => {
 });
 
 
+router.get("/search/:key",async (req,resp)=>{
+  let data = await Event.find(
+    {
+      "$or":[
+        {nameEvent:{$regex:req.params.key}},
+        {location:{$regex:req.params.key}},
+        {eventType:{$regex:req.params.key}}
+      ]
+    }
+  ) 
+  resp.send(data);
+})
+
 module.exports = router;

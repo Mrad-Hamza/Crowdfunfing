@@ -23,6 +23,7 @@ app.use('/users', usersRouter);
 const eventsRouter = require('./routes/events');
 app.use('/events', eventsRouter);
 
+
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
