@@ -22,6 +22,7 @@ const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 const forumsRouter = require('./routes/forum');
 app.use('/forum', forumsRouter);
+<<<<<<< HEAD
 
 const userRoleRouter = require('./routes/role-user');
 app.use('/userRole', userRoleRouter);
@@ -29,6 +30,10 @@ app.use('/userRole', userRoleRouter);
 const imageRouter = require('./routes/image');
 app.use('/image', imageRouter);
 
+=======
+const commentsRouter = require('./routes/comment');
+app.use('/comment', commentsRouter);
+>>>>>>>  cmnt
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
