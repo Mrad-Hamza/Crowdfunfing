@@ -29,6 +29,13 @@ app.use("/tasks", tasksRouter);
 const invoicesProjectRouter = require("./routes/invoiceProjects");
 app.use("/invoicesProject", invoicesProjectRouter);
 
+const userRoleRouter = require("./routes/role-user");
+app.use("/userRole", userRoleRouter);
+
+const imageRouter = require("./routes/image");
+app.use("/image", imageRouter);
+
 app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
   console.log(`Server is running on port: ${port}`);
 });
