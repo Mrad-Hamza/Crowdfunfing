@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Category = require('./category.model');
 
 const Schema = mongoose.Schema;
 
@@ -19,11 +20,17 @@ const compaignSchema = new Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
-    }
-  
-  
-  
-}, {
+    },
+    
+  category: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category"
+    },
+ 
+}, 
+
+{
   timestamps: true,
 });
 

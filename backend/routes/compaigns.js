@@ -11,9 +11,10 @@ router.route('/add').post((req, res) => {
   const nameCompaign = req.body.nameCompaign;
   const typeCompaign = req.body.typeCompaign;
   const user = req.body.user;
+  const category = req.body.category;
   
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign,user});
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,user,category});
 
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
@@ -22,7 +23,7 @@ router.route('/add').post((req, res) => {
 
 router.route('/:id').get((req, res) => {
     Compaign.findById(req.params.id)
-    .then(compaign => res.json(compaign))
+    .then(Compaign => res.json(Compaign))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
