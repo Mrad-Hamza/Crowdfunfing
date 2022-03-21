@@ -3,7 +3,8 @@ const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
 let User = require('../models/user.model');
-
+const crypto = require('crypto');
+const access_token = crypto.randomBytes(48).toString('hex');
 
 const storage = multer.diskStorage({
   destination: (req,file,cb) => {
@@ -88,7 +89,10 @@ router.route('/login').post( (req, res) => {
     // login was successful if we have a user
     if (user) {
         // handle login success
-        jwt.sign(user, process.env.ACCES_TOKEN_SECRET)
+        const accessToken = jwt.sign(user.toJSON(), access_token,{
+          expiresIn: '1d',
+        })
+        res.json({accessToken : accessToken})
         return;
     }
     // otherwise we can determine why we failed
@@ -132,5 +136,16 @@ router.route('/login').post( (req, res) => {
   })*/
 })
 
+function authenticateToken(req,res,nex){
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  if (token == null) return res.sendStatus(401)
+
+  jwt.verify(token,access_token,(err,user) => {
+    if (err) return res.sendStatus(403)
+  req.user = user
+  .next()
+  })
+}
 
 module.exports = router;

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 //mdp criptage lib
 const bcrypt = require('bcrypt'),
 SALT_WORK_FACTOR = 10,
-MAX_LOGIN_ATTEMPTS = 3,
+MAX_LOGIN_ATTEMPTS = 4,
 LOCK_TIME = 2 * 60 * 60 * 1000;
 
 const userSchema = new Schema({
@@ -35,7 +35,7 @@ const userSchema = new Schema({
     minlength: [6, 'Password Minimum 6 charachters.'],
   },
   loginAttempts: { type: Number, required: true, default: 0 },
-  lockUntil: { type: Number,default:30000000000000},
+  lockUntil: { type: Number},
   roles: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserRole"
@@ -58,7 +58,7 @@ var reasons = userSchema.statics.failedLogin = {
 
 userSchema.virtual('isLocked').get(function() {
 // check for a future lockUntil timestamp
-return !!(this.lockUntil && this.lockUntil > Date.now()); });
+return (this.lockUntil && this.lockUntil > Date.now()); });
 
 
 
@@ -108,9 +108,9 @@ this.findOne({$or:[
 
 userSchema.methods.incLoginAttempts = function(cb) {
     // if we have a previous lock that has expired, restart at 1
-
+    console.log(Date.now())
     if (this.lockUntil && this.lockUntil < Date.now()) {
-      console.log("lock expired")
+      console.log(this.lockUntil)
       return this.updateOne({ $set: { loginAttempts: 1 }, $unset: { lockUntil: 1 } }, cb); }
       // otherwise we're incrementing
     var updates = { $inc: { loginAttempts: 1 } };
