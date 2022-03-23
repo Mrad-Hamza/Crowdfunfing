@@ -12,6 +12,7 @@ import { AppConfig } from './AppConfig';
 import Dashboard from './components/Dashboard';
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
+import Events from './Events/Events'
 
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
@@ -137,55 +138,66 @@ const App = () => {
     }
 
      const menu = [
-        {
-            label: 'Home',
-            items: [{label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'}]
-        },
-        {
-            label: 'Modules', icon: 'pi pi-fw pi-search',
-            items: [
-                {   label: 'Users', icon: 'pi pi-fw pi-users',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboad', icon: 'pi pi-fw pi-chart-line',},
-                    ]
-                },
-                {
-                    label: 'Campaigns', icon: 'pi pi-fw pi-tablet',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboard', icon: 'pi pi-fw pi-chart-line',}]
-                },
-                {
-                    label: 'Events', icon: 'pi pi-fw pi-calendar',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboard', icon: 'pi pi-fw pi-chart-line',}]
-                },
-                {
-                    label: 'Projects', icon: 'pi pi-fw pi-flag',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Tasks', icon: 'pi pi-fw pi-clone',},
-                        {label :'Dashboard', icon: 'pi pi-fw pi-chart-line',}]
-                },
-                {
-                    label: 'Forums', icon: 'pi pi-fw pi-tag',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboards', icon: 'pi pi-fw pi-chart-line',}
-                    ]
-                },
-                {
-                    label: 'Transactions', icon: 'pi pi-fw pi-dollar',
-                    items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboards', icon: 'pi pi-fw pi-chart-line',}
-                    ]
-                }
-            ]
-        },
-    ];
+         {
+             label: "Home",
+             items: [{ label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" }],
+         },
+         {
+             label: "Modules",
+             icon: "pi pi-fw pi-search",
+             items: [
+                 {
+                     label: "Users",
+                     icon: "pi pi-fw pi-users",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list" },
+                         { label: "Dashboad", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+                 {
+                     label: "Campaigns",
+                     icon: "pi pi-fw pi-tablet",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list" },
+                         { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+                 {
+                     label: "Events",
+                     icon: "pi pi-fw pi-calendar",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list", to: "/events" },
+                         { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+                 {
+                     label: "Projects",
+                     icon: "pi pi-fw pi-flag",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list" },
+                         { label: "Tasks", icon: "pi pi-fw pi-clone" },
+                         { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+                 {
+                     label: "Forums",
+                     icon: "pi pi-fw pi-tag",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list" },
+                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+                 {
+                     label: "Transactions",
+                     icon: "pi pi-fw pi-dollar",
+                     items: [
+                         { label: "List", icon: "pi pi-fw pi-list" },
+                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
+                     ],
+                 },
+             ],
+         },
+     ];
 
     const addClass = (element, className) => {
         if (element.classList)
@@ -229,6 +241,7 @@ const App = () => {
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
+                    <Route path="/events" component={Events}/>
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
