@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 //mdp criptage lib
+<<<<<<< HEAD
 const bcrypt = require("bcrypt"),
   SALT_WORK_FACTOR = 10,
   MAX_LOGIN_ATTEMPTS = 5,
@@ -47,6 +48,50 @@ const userSchema = new Schema(
     img: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Image"
+=======
+const bcrypt = require('bcrypt'),
+SALT_WORK_FACTOR = 10,
+MAX_LOGIN_ATTEMPTS = 4,
+LOCK_TIME = 2 * 60 * 60 * 1000;
+
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+   firstname: {
+    type: String,
+    required: true,
+    minlength: [3, 'First Name Minimum 3 charachters.'],
+  },
+  lastname: {
+    type: String,
+    required: true,
+    minlength: [3, 'Last Name Minimum 3 charachters.'],
+  },
+  mailAddress: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
+  },
+  password:{
+      type: String,
+    required: true,
+    minlength: [6, 'Password Minimum 6 charachters.'],
+  },
+  loginAttempts: { type: Number, required: true, default: 0 },
+  lockUntil: { type: Number},
+  roles: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserRole"
+  },
+  img:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Image"
+>>>>>>> 1f41f05fa5541884877fdcdf63637ca606969ac0
     }
   },
   {
@@ -58,6 +103,21 @@ var reasons = (userSchema.statics.failedLogin = {
   PASSWORD_INCORRECT: 1,
   MAX_ATTEMPTS: 2
 });
+<<<<<<< HEAD
+=======
+var reasons = userSchema.statics.failedLogin = {
+    NOT_FOUND: 0,
+    PASSWORD_INCORRECT: 1,
+    MAX_ATTEMPTS: 2
+};
+
+
+
+userSchema.virtual('isLocked').get(function() {
+// check for a future lockUntil timestamp
+return (this.lockUntil && this.lockUntil > Date.now()); });
+
+>>>>>>> 1f41f05fa5541884877fdcdf63637ca606969ac0
 
 userSchema.virtual("isLocked").get(function() {
   // check for a future lockUntil timestamp
@@ -114,6 +174,7 @@ userSchema.statics.getAuthenticated = function(
 };
 
 userSchema.methods.incLoginAttempts = function(cb) {
+<<<<<<< HEAD
   // if we have a previous lock that has expired, restart at 1
 
   if (this.lockUntil && this.lockUntil < Date.now()) {
@@ -131,6 +192,21 @@ userSchema.methods.incLoginAttempts = function(cb) {
   }
   return this.update(updates, cb);
 };
+=======
+    // if we have a previous lock that has expired, restart at 1
+    console.log(Date.now())
+    if (this.lockUntil && this.lockUntil < Date.now()) {
+      console.log(this.lockUntil)
+      return this.updateOne({ $set: { loginAttempts: 1 }, $unset: { lockUntil: 1 } }, cb); }
+      // otherwise we're incrementing
+    var updates = { $inc: { loginAttempts: 1 } };
+    // lock the account if we've reached max attempts and it's not locked already
+    if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked) {
+      updates.$set = { lockUntil: Date.now() + LOCK_TIME };
+    }
+    return this.update(updates, cb);
+}
+>>>>>>> 1f41f05fa5541884877fdcdf63637ca606969ac0
 
 userSchema.pre("save", function(next) {
   var user = this;
