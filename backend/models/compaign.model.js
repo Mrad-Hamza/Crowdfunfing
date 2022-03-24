@@ -15,6 +15,29 @@ const compaignSchema = new Schema({
     required: true,
     minlength: [3, 'Type Compaign Minimum 3 charachters.'],
   },
+  objective: {
+    type: Number,
+    required: true,
+    minlength: [3, 'Objective Compaign Minimum 3 charachters.'],
+},
+
+  description: {
+  type: String,
+  required: true,
+  minlength: [3, 'Description Compaign Minimum 3 charachters.'],
+},
+  deadline: {
+  type: Date,
+  required: true,
+},
+Verified : {
+  type: Number,
+  required: true,
+},
+Status: {
+  type: String,
+  required: true,
+},
 
   user: 
     {

@@ -10,11 +10,17 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const nameCompaign = req.body.nameCompaign;
   const typeCompaign = req.body.typeCompaign;
+  const objective = req.body.objective;
+  const description = req.body.description;
+  const deadline = req.body.deadline;
+  const Verified = 1;
+  const Status = "EN COUR";
   const user = req.body.user;
   const category = req.body.category;
   
+  
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign,user,category});
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,user,category});
 
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
@@ -38,6 +44,11 @@ router.route('/update/:id').put((req, res) => {
     .then(compaign => {
         compaign.nameCompaign= req.body.nameCompaign;
         compaign.typeCompaign = req.body.typeCompaign;
+        compaign.objective = req.body.objective;
+        compaign.description = req.body.description;
+        compaign.deadline = req.body.deadline;
+        compaign.Verified = req.body.Verified;
+        compaign.Status = req.body.Status;
       
       compaign.save()
         .then(() => res.json('Compaign updated!'))
