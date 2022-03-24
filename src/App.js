@@ -8,6 +8,7 @@ import { AppFooter } from "./components/layout/AppFooter";
 import { AppMenu } from "./components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
 import Projects from "./pages/Projects";
+import Compaigns from "./pages/Compaigns";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
@@ -154,7 +155,7 @@ const App = () => {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
+                        { label: "List", icon: "pi pi-fw pi-list" , to: "/compaigns"},
                         { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -233,6 +234,7 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/projects" component={Projects} />
+                    <Route path="/compaigns" component={Compaigns} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
