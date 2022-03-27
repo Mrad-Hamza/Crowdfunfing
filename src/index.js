@@ -8,11 +8,12 @@ import ScrollToTop from "./helper/ScrollToTop";
 import store from "./features/store";
 import {Provider } from 'react-redux';
 
+
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
             <Provider store={store}>
-                <App></App>
+                <App />
             </Provider>
         </ScrollToTop>
     </HashRouter>,
