@@ -5,11 +5,15 @@ import App from "./App";
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from "react-router-dom";
 import ScrollToTop from "./helper/ScrollToTop";
+import { Provider } from "react-redux";
+import store from "./features/store";
 
 ReactDOM.render(
     <HashRouter>
         <ScrollToTop>
-            <App></App>
+            <Provider store={store}>
+                <App />
+            </Provider>
         </ScrollToTop>
     </HashRouter>,
     document.getElementById("root")
