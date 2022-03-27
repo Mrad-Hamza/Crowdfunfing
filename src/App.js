@@ -3,11 +3,16 @@ import classNames from "classnames";
 import { Route, useLocation } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
+
+//import Modal from "react-modal";
+
+
 import { AppTopbar } from "./components/layout/AppTopbar";
 import { AppFooter } from "./components/layout/AppFooter";
 import { AppMenu } from "./components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
 import Projects from "./pages/Projects";
+import Events from "./pages/events/events";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
@@ -19,6 +24,11 @@ import "./assets/demo/flags/flags.css";
 import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
+import createEventForm from "./pages/events/createEventForm";
+import statisticsEvent from "./pages/events/statisticsEvent";
+import eventListing from "./pages/events/eventListing"
+import showEvents from "./pages/events/showEvents";
+import EventDetail from "./pages/events/eventDetail";
 
 const Crud = React.lazy(() => import("./pages/Crud"));
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -42,6 +52,7 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
+    //Modal.setAppElement("#root");
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -162,8 +173,10 @@ const App = () => {
                     label: "Events",
                     icon: "pi pi-fw pi-calendar",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                        { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
+                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
+                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },
                 {
@@ -233,6 +246,11 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/projects" component={Projects} />
+                    <Route path="/events" exact component={Events} />
+                    <Route path="/create-event" component={createEventForm} />
+                    <Route path="/statistcs"  component={statisticsEvent} />
+                    <Route path="/showEvents" component={eventListing} />
+                    <Route path="/events/:_id" component={EventDetail}/>
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
