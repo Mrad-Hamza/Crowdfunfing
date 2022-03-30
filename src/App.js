@@ -7,11 +7,13 @@ import { AppTopbar } from "./components/layout/AppTopbar";
 import { AppFooter } from "./components/layout/AppFooter";
 import { AppMenu } from "./components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
-import Projects from "./pages/Projects";
-import Compaigns from "./pages/Compaigns";
+import ProjectListing from "./pages/Projects/projectListing";
+import ProjectDetails from "./pages/Projects/projectDetails";
+//import routes from "./routes";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
+import Compaigns from "./pages/Compaigns";
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -37,6 +39,7 @@ const App = () => {
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+    console.log("🚀 ~ file: App.js ~ line 41 ~ App ~ location", location);
 
     PrimeReact.ripple = true;
 
@@ -233,8 +236,9 @@ const App = () => {
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
-                    <Route path="/projects" component={Projects} />
                     <Route path="/compaigns" component={Compaigns} />
+                    <Route path="/projects" exact component={ProjectListing} />
+                    <Route path="/projects/:_id" component={ProjectDetails} />
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />
