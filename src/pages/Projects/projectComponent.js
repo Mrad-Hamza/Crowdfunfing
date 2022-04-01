@@ -1,12 +1,7 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Button } from "primereact/button";
 import "./projects.css";
 import logo from "../../assets/layout/images/project-logo.png";
 
@@ -15,30 +10,24 @@ const ProjectComponent = () => {
     const renderList = projects.map((project) => {
         const { _id, projectName, projectDescription, projectCollectedAmount } = project;
         return (
-            <div key={_id}>
-                <Link to={`/projects/${_id}`}>
-                    {/* <div class="mx-3"> */}
-                    <Card sx={{ maxWidth: 345 }} className="project-card">
-                        <CardContent>
-                            <CardMedia component="img" height="80" image={logo} alt="logo" />
+            <div className="col-12 md:col-2 lg:col-3" key={_id}>
+                <div className="card m-3 border-1 surface-border">
+                    <div className="flex align-items-center justify-content-between">
+                       </div>
+                    <div className="text-center">
+                        <img className="w-9 shadow-2 my-3 mx-0" src={logo} />
+                         <div className="text-xl font-bold mb-3"> {projectName}</div>
+                        <Link to={`/projects/${_id}`}>
+                            <div className="text font-semibold">{projectDescription} : {projectCollectedAmount}DT</div>
+                        </Link>
+                    </div>
+                    {/* <div className="flex align-items-center justify-content-between">
+                        <Button icon="pi pi-star-fill" label="I'm Interested" />
+                        <Button icon="pi pi-share-alt" />
 
-                            <Typography gutterBottom variant="h5" component="div">
-                                {projectName}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {projectDescription}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {projectCollectedAmount}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
-                    </Card>
+                        {/* <Button icon="pi pi-shopping-cart" /> */}
                     {/* </div> */}
-                </Link>
+                </div>
             </div>
         );
     });
