@@ -272,7 +272,6 @@ const App = () => {
             <AppContainer>
                  <AccountBox/>
             </AppContainer>
-
         );
     }
 
