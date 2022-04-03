@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import { userService } from "../../pages/User/_services";
+
 
 export const AppTopbar = (props) => {
+    const logout = (e) => {
+        userService.logout()
+        console.log("bon")
+    }
     return (
         <div className="layout-topbar">
             <Link to="/" className="layout-topbar-logo">
@@ -32,9 +38,9 @@ export const AppTopbar = (props) => {
                     </button>
                 </li>
                 <li>
-                    <button className="p-link layout-topbar-button" onClick={props.onMobileSubTopbarMenuClick}>
-                        <i className="pi pi-user" />
-                        <span>Profile</span>
+                    <button className="p-link layout-topbar-button" onClick={logout}>
+                            <i className="pi pi-user"/>
+                            <span>Logout</span>
                     </button>
                 </li>
             </ul>
