@@ -8,9 +8,13 @@ import { AppFooter } from './AppFooter';
 import { AppMenu } from './AppMenu';
 import { AppConfig } from './AppConfig';
 
+import styled from "styled-components";
 
+import { AccountBox } from './pages/User/Login/UserLogin/accountBox'
 import Dashboard from './components/Dashboard';
 import PrimeReact from 'primereact/api';
+import UsersList from './pages/User/Login/Users/UsersList';
+
 import { Tooltip } from 'primereact/tooltip';
 
 import 'primereact/resources/primereact.css';
@@ -21,8 +25,9 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
+import { getIsRtlScrollbarOnLeft } from '@fullcalendar/core';
 
-const Crud = React.lazy(() => import('./pages/Crud'));
+//const LoginPage = React.lazy(() => import('./pages/Login/LoginPage/index'))
 const EmptyPage = React.lazy(() => import('./pages/EmptyPage'));
 const TimelineDemo = React.lazy(() => import('./pages/TimelineDemo'));
 
@@ -43,6 +48,9 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
+    const token = localStorage.getItem('token')
+    console.log(token+" testtest")
+
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -50,6 +58,7 @@ const App = () => {
             removeClass(document.body, "body-overflow-hidden");
         }
     }, [mobileMenuActive]);
+
 
     useEffect(() => {
         copyTooltipRef && copyTooltipRef.current && copyTooltipRef.current.updateTargetEvents();
@@ -135,6 +144,15 @@ const App = () => {
     const isDesktop = () => {
         return window.innerWidth >= 992;
     }
+    const AppContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    `;
+
 
      const menu = [
         {
@@ -146,8 +164,8 @@ const App = () => {
             items: [
                 {   label: 'Users', icon: 'pi pi-fw pi-users',
                     items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list',},
-                        {label: 'Dashboad', icon: 'pi pi-fw pi-chart-line',},
+                        {label: 'List', icon: 'pi pi-fw pi-list', to:'/UsersList'},
+                        {label: 'Dashboad', icon: 'pi pi-fw pi-chart-line',to:'/'},
                     ]
                 },
                 {
@@ -201,6 +219,9 @@ const App = () => {
             element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
     }
 
+
+
+
     const wrapperClass = classNames('layout-wrapper', {
         'layout-overlay': layoutMode === 'overlay',
         'layout-static': layoutMode === 'static',
@@ -212,8 +233,11 @@ const App = () => {
         'layout-theme-light': layoutColorMode === 'light'
     });
 
-    return (
-        <div className={wrapperClass} onClick={onWrapperClick}>
+
+
+    if (token) {
+         return (
+         <div className={wrapperClass} onClick={onWrapperClick}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
             <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode}
@@ -227,10 +251,9 @@ const App = () => {
                 <div className="layout-main">
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/timeline" component={TimelineDemo} />
-                    <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
+                    <Route path="/UsersList" component={UsersList} />
                 </div>
-
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
 
@@ -243,6 +266,16 @@ const App = () => {
 
         </div>
     );
+    }
+    else {
+        return (
+            <AppContainer>
+                 <AccountBox/>
+            </AppContainer>
+
+        );
+    }
+
 
 }
 

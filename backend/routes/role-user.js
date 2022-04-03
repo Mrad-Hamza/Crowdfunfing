@@ -7,8 +7,8 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
-  const type = req.body.type;
+router.route('/add/:type').post((req, res) => {
+  const type = req.params.type;
 
   const newUserRole = new UserRole({type});
 

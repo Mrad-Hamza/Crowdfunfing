@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 var imgModel = require('../models/image.model');
-
+const {protect} = require('../middleware/authMiddleware')
 
 router.get('/', (req, res) => {
     imgModel.find({}, (err, items) => {
@@ -49,6 +49,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
             imgName:req.file.originalname
         }
     }
+    console.log(obj)
     const img = new imgModel(obj)
     img.save()
         .then(() => res.json('image added!'))
