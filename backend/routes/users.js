@@ -53,7 +53,7 @@ router.post('/googlelogin' , (req,res) => {
                 else {
                     if (user) {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-                            expiresIn: '350s',
+                            expiresIn: '20000',
                         })
                         console.log(user)
                         return res.json({accessToken : accessToken})
@@ -66,7 +66,7 @@ router.post('/googlelogin' , (req,res) => {
                         const mailAddress = email;
                         const newUser = new User({username,firstname,lastname,mailAddress,password});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-                            expiresIn: '350s',
+                            expiresIn: '20000',
                         })
                         newUser.save()
                         return res.json({accessToken : accessToken})
@@ -177,7 +177,7 @@ router.route('/login').post( (req, res) => {
     if (user) {
         // handle login success
         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-          expiresIn: '350s',
+          expiresIn: '10000',
         })
         res.json({accessToken : accessToken})
         return;

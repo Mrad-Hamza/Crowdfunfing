@@ -268,7 +268,7 @@ const App = () => {
 
 
 
-    if (token) {
+    if (token && token != '') {
          return (
          <div className={wrapperClass} onClick={onWrapperClick}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
