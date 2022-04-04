@@ -47,6 +47,7 @@ import statisticsEvent from "./pages/events/statisticsEvent";
 import eventListing from "./pages/events/eventListing"
 import showEvents from "./pages/events/showEvents";
 import EventDetail from "./pages/events/eventDetail";
+import { userService } from "./pages/User/_services/user.service"
 
 const Crud = React.lazy(() => import("./pages/Crud"));
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -71,8 +72,12 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
-
     const token = localStorage.getItem('token')
+
+    useEffect(() => {
+        setTimeout(() => {
+        }, 120000);
+    })
 
     useEffect(() => {
         if (mobileMenuActive) {
@@ -103,6 +108,23 @@ const App = () => {
     const onColorModeChange = (mode) => {
         setLayoutColorMode(mode);
     };
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
+    console.log("Current User Id = "+localStorage.getItem('currentUserId'))
+    console.log("Current UserName = "+localStorage.getItem('currentUsername'))
+    console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -268,7 +290,7 @@ const App = () => {
 
 
 
-    if (token && token != '') {
+    if (token) {
          return (
          <div className={wrapperClass} onClick={onWrapperClick}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />

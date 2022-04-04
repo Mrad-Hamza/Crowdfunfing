@@ -53,10 +53,10 @@ router.post('/googlelogin' , (req,res) => {
                 else {
                     if (user) {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-                            expiresIn: '20000',
+                            expiresIn: '180000',
                         })
-                        console.log(user)
-                        return res.json({accessToken : accessToken})
+                        return res.json({accessToken : accessToken , userId : user.id, userName : user.username, mail : user.mailAddress
+                        })
                     }
                     else {
                         let password= email+process.env.ACCES_TOKEN_SECRET
@@ -66,10 +66,10 @@ router.post('/googlelogin' , (req,res) => {
                         const mailAddress = email;
                         const newUser = new User({username,firstname,lastname,mailAddress,password});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-                            expiresIn: '20000',
+                            expiresIn: '180000',
                         })
                         newUser.save()
-                        return res.json({accessToken : accessToken})
+                        return res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
                     }
                 }
             })
@@ -177,9 +177,9 @@ router.route('/login').post( (req, res) => {
     if (user) {
         // handle login success
         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
-          expiresIn: '10000',
+          expiresIn: '180000',
         })
-        res.json({accessToken : accessToken})
+        res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
         return;
     }
     // otherwise we can determine why we failed
