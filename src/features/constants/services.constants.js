@@ -4,6 +4,9 @@ const URL = {
     projects: {
         fetchProjects: `/projects/`,
     },
+    forums: {
+        fetchForums: `/forum/`,
+    },
 };
 
 export default URL;
