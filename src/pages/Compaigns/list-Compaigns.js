@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
+import { saveAs } from 'file-saver';
+
 
 const Compaign = props => (
 
@@ -21,12 +23,28 @@ const Compaign = props => (
 )
 
 export default class CompaignList extends Component {
+
+  state = {
+    nameCompaign: 'aaa',
+    typeCompaign: '000',
+    
+  }
   constructor(props) {
     super(props);
 
     this.deleteCompaign = this.deleteCompaign.bind(this)
 
     this.state = {compaigns: []};
+  }
+
+  createAndDownloadPdf = () => {
+    axios.post('http://localhost:5000/compaigns/addPDF', this.state)
+      // .then(() => axios.get('http://localhost:5000/compaigns/pdf', { responseType: 'blob' }))
+      .then((res) => {
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+
+        saveAs(pdfBlob, 'result.pdf');
+      })
   }
 
   componentDidMount() {
@@ -38,6 +56,8 @@ export default class CompaignList extends Component {
         console.log(error);
       })
   }
+
+  handleChange = ({ target: { value, name }}) => this.setState({ [name]: value })
 
   deleteCompaign(id) {
     axios.delete('http://localhost:5000/compaigns/'+id)
@@ -53,22 +73,37 @@ export default class CompaignList extends Component {
       return <Compaign compaign={currentCompaign} deleteCompaign={this.deleteCompaign} key={currentCompaign._id}/>;
     })
   }
+  searchHandel = (event)=>{
+    let key = event.target.value;
+    axios.get('http://localhost:5000/compaigns/search/'+ key)
+      .then(response => {
+        this.setState({ compaigns: response.data })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+  }
 
   render() {
     return (
+      
         <div className="col-12">
         <div className="card">
+        <div><button onClick={this.createAndDownloadPdf} >Download PDF</button>
+        <input type='text'onChange={this.searchHandel}></input>
+        </div>
         <h3>Logged Campaigns</h3>
         <table className="table" border ="2">
           <thead>
             <tr>
-              <th>Username</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Objective</th>
               <th>Description</th>
-              <th>Duration</th>
-              <th>Date</th>
-              <th>Actions</th>
-              <th>Duration</th>
-              <th>Date</th>
+              <th>Deadline</th>
+              <th>Verified</th>
+              <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -76,8 +111,11 @@ export default class CompaignList extends Component {
             { this.comaignList() }
           </tbody>
         </table>
+       
       </div>
       </div>
+      
+      
     )
   }
 }

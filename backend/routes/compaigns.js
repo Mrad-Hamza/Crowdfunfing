@@ -1,11 +1,39 @@
 const router = require('express').Router();
 let Compaign = require('../models/compaign.model');
+const XLSX = require('xlsx')
 
 router.route('/').get((req, res) => {
   Compaign.find()
     .then(Compaigns => res.json(Compaigns))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+
+router.route('/pdf').get((req, res) => {
+    res.sendFile(`${__dirname}/result.pdf`)
+  });
+
+  router.route('/xslx').get((req, res) => {
+    Compaign.find()
+    Comp = res.json(Compaigns);
+    
+    const workSheet = XLSX.utils.json_to_sheet(comp);
+    const workBook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, "Compaigns")
+    // Generate buffer
+    XLSX.write(workBook, { bookType: 'xlsx', type: "buffer" })
+
+    // Binary string
+    XLSX.write(workBook, { bookType: "xlsx", type: "binary" })
+
+    XLSX.writeFile(workBook, "Data.xlsx")
+
+  });
+  
+
+ 
 
 router.route('/add').post((req, res) => {
   const nameCompaign = req.body.nameCompaign;
@@ -57,6 +85,8 @@ router.route('/update/:id').put((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
+
 router.get("/search/:key",async (req,res)=>{
     let data =await Compaign.find(
         {
@@ -69,7 +99,28 @@ router.get("/search/:key",async (req,res)=>{
     res.send(data);
 
 
-})
+});
+
+const pdf = require('html-pdf');
+const pdfTemplate = require('./documents');
+
+
+
+
+
+
+
+  router.route('/addPDF').post((req, res) => {
+    pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err) => {
+        if(err) {
+            res.send(Promise.reject());
+        }
+
+        res.send(Promise.resolve());
+    });
+    
+  });
+
 
 
 module.exports = router;

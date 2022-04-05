@@ -41,8 +41,6 @@ app.use('/compaigns', compaignRouter);
 const categoryRouter = require('./routes/category');
 app.use('/category', categoryRouter);
 
-
-
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
   console.log(`Server is running on port: ${port}`);
