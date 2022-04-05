@@ -8,11 +8,12 @@ const Forum = props => (
     <td>{props.forum.title}</td>
     <td>{props.forum.description}</td>
     <Button icon="pi pi-comments" onClick={() => { props.showComment(props.forum._id) }} ></Button> 
-    <Link to={"/edit/"+props.forum._id}>edit</Link>
+   
  
     <td>
      <Button  icon="pi pi-trash"  onClick={() => { props.deleteForum(props.forum._id) }}></Button>
     </td>
+    <Link to={"/edit/"+props.forum._id}>edit</Link>
   </tr>
 )
 

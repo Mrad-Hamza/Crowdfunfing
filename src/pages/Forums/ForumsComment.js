@@ -5,8 +5,30 @@ import { Button } from "primereact/button";
 
 
 
+// var nodemailer = require('nodemailer');
 
-
+// var transporter = nodemailer.createTransport({
+//              host: 'smtp.mailtrap.io',
+//              port: 2525,
+//              auth: {
+//                  user: "yasmine.chaieb@esprit.tn",
+//                  pass: "203JFT2233"
+//              }
+//      });
+//      var mailOptions = {
+     
+//       from: "yasmine.chaieb@esprit.tn",
+//       to: "jessymina.jc@gmail.com",
+//       subject: "Subject",
+//       text: "Hello SMTP Email"
+//      };
+//      transporter.sendMail(mailOptions, function(error, info){
+//       if (error) {
+//         console.log(error);
+//       } else {
+//         console.log('Email sent: ' + info.response);
+//       }
+// });
 const Comment = props => (
   <tr>
   <td>{props.comment.email}</td>
@@ -18,7 +40,7 @@ const Comment = props => (
      <Button  icon="pi pi-trash" onClick={() => { props.deleteComment(props.comment._id) }}></Button>
     </td>
      <td>
-     <Button  icon="pi pi-material" onClick={() => { props.deleteComment(props.comment._id) }}></Button>
+     <Button  icon="pi pi-material" onClick={() => { props.sendMail(props.comment._id) }}></Button>
     </td>
   </tr>
 )
@@ -31,6 +53,8 @@ export default class commentList extends Component {
 
     this.state = {comments: []};
   }
+  
+ 
 
   componentDidMount() {
     axios.get('http://localhost:5000/comment/')

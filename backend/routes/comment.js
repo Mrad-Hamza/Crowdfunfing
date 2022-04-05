@@ -6,11 +6,11 @@ router.route('/').get((req, res) => {
     Comment.find()
     .then(comments => res.json(comments))
     .catch(err => res.status(400).json('Error: ' + err));
-var Filter = require('bad-words');
-var filter = new Filter();
-filter.addWords('bad', 'testtest','badwords'); // Add your own words
-console.log(filter.clean(comment.content));
-var new_filter = new Filter({ placeHolder: '$' });
+// var Filter = require('bad-words');
+// var filter = new Filter();
+// filter.addWords('bad', 'testtest','badwords'); // Add your own words
+// console.log(filter.clean(comment.content));
+// var new_filter = new Filter({ placeHolder: '$' });
 });
 
 router.route('/add').post((req, res) => {

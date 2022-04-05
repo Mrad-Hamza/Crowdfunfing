@@ -44,6 +44,19 @@ router.route('/update/:id').put((req, res) => {
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+router.get("/search/:key",async (req,res)=>{
+    let data = await Forum.find(
+        {
+            "$or":[
+                {title:{$regex:req.params.key}}
+               
+            ]
+        }
+    )
+    res.send(data);
+
+
+});
 
 
 
