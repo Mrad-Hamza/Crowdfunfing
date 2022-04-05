@@ -50,8 +50,12 @@ import "./App.scss";
 import createEventForm from "./pages/events/createEventForm";
 import statisticsEvent from "./pages/events/statisticsEvent";
 import eventListing from "./pages/events/eventListing"
-import showEvents from "./pages/events/showEvents";
+// import showEvents from "./pages/events/showEvents";
 import EventDetail from "./pages/events/eventDetail";
+import ForumListing from "./pages/Forums/forumListing";
+import ForumsComment from "./pages/Forums/ForumsComment";
+import updateForum from "./pages/Forums/updateForum";
+import forumCreate from "./pages/Forums/forumCreate";
 
 const Crud = React.lazy(() => import("./pages/Crud"));
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -232,7 +236,9 @@ const App = () => {
                     label: "Forums",
                     icon: "pi pi-fw pi-tag",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
+                        { label: "ListForums", icon: "pi pi-fw pi-list",to: "/forums" },
+                        { label: "ListComments", icon: "pi pi-fw pi-list",to: "/comment" },
+                        { label: "AddForum", icon: "pi pi-fw pi-list",to: "/add" },
                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -305,6 +311,15 @@ const App = () => {
 
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
+                    <Route path="/forums" exact component={ForumListing} />
+                    <Route path="/comment" component={ForumsComment}/>
+                    <Route path="/edit/:_id" component={updateForum}/>
+                    <Route path="/add" component={forumCreate}/>
+  
+
+                    
+                    
+                    
                 </div>
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>

@@ -41,6 +41,10 @@ app.use("/invoicesProject", invoicesProjectRouter);
 
 const userRoleRouter = require("./routes/role-user");
 app.use("/userRole", userRoleRouter);
+const forumsRouter = require('./routes/forum');
+app.use('/forums', forumsRouter);
+const commentsRouter = require('./routes/comment');
+app.use('/comment', commentsRouter);
 
 const imageRouter = require("./routes/image");
 app.use("/image", imageRouter);
