@@ -82,6 +82,7 @@ export default class CompaignList extends Component {
       .catch((error) => {
         console.log(error);
       })
+      
 
   }
 
