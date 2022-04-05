@@ -27,6 +27,9 @@ const projectSchema = new Schema(
             type: Number,
             required: true,
         },
+        image: {
+            type: String,
+        },
         tasks: [
             {
                 type: Schema.Types.ObjectId,
