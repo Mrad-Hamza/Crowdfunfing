@@ -13,7 +13,6 @@ import styled from "styled-components";
 import { AccountBox } from './pages/User/Login/UserLogin/accountBox'
 import UsersList from './pages/User/Login/Users/UsersList';
 
-import { Tooltip } from 'primereact/tooltip';
 
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
@@ -34,6 +33,12 @@ import ProjectDetails from "./pages/Projects/projectDetails";
 //import routes from "./routes";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
+
+import { Tooltip } from "primereact/tooltip";
+import Compaigns from "./pages/Compaigns/Compaigns";
+import CompaignsList from "./pages/Compaigns/list-Compaigns"
+import upadateCompaign from "./pages/Compaigns/Edit-Comapaign"
+import addCompaign from "./pages/Compaigns/Add-Compaigns"
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -45,9 +50,15 @@ import "./App.scss";
 import createEventForm from "./pages/events/createEventForm";
 import statisticsEvent from "./pages/events/statisticsEvent";
 import eventListing from "./pages/events/eventListing"
-import showEvents from "./pages/events/showEvents";
+// import showEvents from "./pages/events/showEvents";
 import EventDetail from "./pages/events/eventDetail";
 import { userService } from "./pages/User/_services/user.service"
+
+import ForumListing from "./pages/Forums/forumListing";
+import ForumsComment from "./pages/Forums/ForumsComment";
+import updateForum from "./pages/Forums/updateForum";
+import forumCreate from "./pages/Forums/forumCreate";
+
 
 import Crud from "./pages/Crud"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -224,8 +235,8 @@ const App = () => {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                        { label: "List", icon: "pi pi-fw pi-list" , to: "/compaignsList"},
+                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line"  , to: "/compaignsList" }
                     ],
                 },
                 {
@@ -251,7 +262,9 @@ const App = () => {
                     label: "Forums",
                     icon: "pi pi-fw pi-tag",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
+                        { label: "ListForums", icon: "pi pi-fw pi-list",to: "/forums" },
+                        { label: "ListComments", icon: "pi pi-fw pi-list",to: "/comment" },
+                        { label: "AddForum", icon: "pi pi-fw pi-list",to: "/add" },
                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -308,7 +321,15 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/empty" component={EmptyPage} />
+
                     <Route path="/crud" component={Crud} />
+
+
+                    <Route path="/compaigns" component={Compaigns} />
+                    <Route path="/compaignsList" component={CompaignsList} />
+                    <Route path="/update/:id" component={upadateCompaign} />
+                    <Route path="/ADD" component={addCompaign} />
+
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
                     <Route path="/events" exact component={Events} />
@@ -318,6 +339,10 @@ const App = () => {
                     <Route path="/events/:_id" component={EventDetail}/>
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
+                    <Route path="/forums" exact component={ForumListing} />
+                    <Route path="/comment" component={ForumsComment}/>
+                    <Route path="/edit/:_id" component={updateForum}/>
+                    <Route path="/add" component={forumCreate}/>
                 </div>
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
@@ -329,7 +354,8 @@ const App = () => {
             </CSSTransition>
         </div>
     );
-    }
+
+}
     else {
         return (
             <AppContainer>
@@ -339,3 +365,4 @@ const App = () => {
     }
 }
 export default App;
+
