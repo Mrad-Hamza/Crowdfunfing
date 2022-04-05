@@ -16,6 +16,7 @@ import { Tooltip } from "primereact/tooltip";
 import Compaigns from "./pages/Compaigns/Compaigns";
 import CompaignsList from "./pages/Compaigns/list-Compaigns"
 import upadateCompaign from "./pages/Compaigns/Edit-Comapaign"
+import addCompaign from "./pages/Compaigns/Add-Compaigns"
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -241,6 +242,7 @@ const App = () => {
                     <Route path="/compaigns" component={Compaigns} />
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
+                    <Route path="/ADD" component={addCompaign} />
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
                 </div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
-export default class CompaignEdit extends Component {
+export default class AddCompaign extends Component {
   constructor(props) {
     super(props);
 
@@ -17,34 +17,17 @@ export default class CompaignEdit extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-        nameCompaign: '',
-        typeCompaign: '',
-        objective: '',
-        description: '',
-        deadline: new Date(),
-        Verified: '',
-        Status: ''
-    }
+      nameCompaign: '',
+      typeCompaign: '',
+      objective: '',
+      description: '',
+      deadline: new Date()
+  }
   }
 
-  componentDidMount() {
-    axios.get('http://localhost:5000/compaigns/'+this.props.match.params.id)
-      .then(response => {
-        this.setState({
-            nameCompaign: response.data.nameCompaign,
-            typeCompaign: response.data.typeCompaign,
-            objective: response.data.objective,
-            description: response.data.description,
-            deadline: new Date(response.data.deadline),
-            Verified: response.data.Verified,
-            Status: response.data.Status
-        })   
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
+  
 
-  }
+  
 
   onChangeNameCompaign(e) {
     this.setState({
@@ -88,32 +71,33 @@ export default class CompaignEdit extends Component {
     })
   }
 
+
   onSubmit(e) {
     e.preventDefault();
 
     const compaign = {
       
-            nameCompaign: this.state.nameCompaign,
-            typeCompaign: this.state.typeCompaign,
-            objective: this.state.objective,
-            description: this.state.description,
-            deadline: this.state.deadline,
-            Verified: this.state.Verified,
-            Status: this.state.Status
-    }
+      nameCompaign: this.state.nameCompaign,
+      typeCompaign: this.state.typeCompaign,
+      objective: this.state.objective,
+      description: this.state.description,
+      deadline: this.state.deadline,
+      Verified: this.state.Verified,
+      Status: this.state.Status
+}
 
-    console.log(compaign);
+console.log(compaign);
 
-    axios.put('http://localhost:5000/compaigns/update/' + this.props.match.params.id, compaign)
-      .then(res => console.log(res.data));
+axios.post('http://localhost:5000/compaigns/add/', compaign)
+.then(res => console.log(res.data));
 
-    window.location = '/compaignsList';
-  }
+window.location = '/compaignsList';
+}
 
   render() {
     return (
-    <div class="form-style-5">
-      <h3>Edit Compaign Log</h3>
+      <div class="form-style-5">
+      <h3>Creat New Compaign Log</h3>
       <form onSubmit={this.onSubmit}>
 
         <div className="form-group"> 
@@ -165,38 +149,9 @@ export default class CompaignEdit extends Component {
           </div>
         </div>
 
-        <div className="form-group">
-          <label>Verified: </label>
-          <input 
-              type="text" 
-              className="form-control"
-              value={this.state.Verified}
-              onChange={this.onChangeVerified}
-              />
-
-        </div>
-
-
-        <div className="form-group"> 
-          <label>Status: </label>
-          <select 
-              required
-              className="form-control"
-              value={this.state.Status}
-              onChange={this.onChangeStatus}>
-               <option >
-                   En COUR
-                    </option>;
-                    <option >
-                   Terminer
-                    </option>;
-               
-          </select>
-        </div>
-       
 
         <div className="form-group">
-          <input type="submit" value="Edit" className="btn btn-primary" />
+          <input type="submit" value="ADD" className="btn btn-primary" />
         </div>
       </form>
     </div>
