@@ -13,7 +13,9 @@ import ProjectDetails from "./pages/Projects/projectDetails";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
 import { Tooltip } from "primereact/tooltip";
-import Compaigns from "./pages/Compaigns";
+import Compaigns from "./pages/Compaigns/Compaigns";
+import CompaignsList from "./pages/Compaigns/list-Compaigns"
+import upadateCompaign from "./pages/Compaigns/Edit-Comapaign"
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -158,8 +160,8 @@ const App = () => {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" , to: "/compaigns"},
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                        { label: "List", icon: "pi pi-fw pi-list" , to: "/compaignsList"},
+                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line"  , to: "/compaignsList" }
                     ],
                 },
                 {
@@ -237,6 +239,8 @@ const App = () => {
                     <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
                     <Route path="/compaigns" component={Compaigns} />
+                    <Route path="/compaignsList" component={CompaignsList} />
+                    <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
                 </div>
