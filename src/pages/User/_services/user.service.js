@@ -5,6 +5,7 @@ export const userService = {
     login,
     logout,
     register,
+    checkToken,
     getAll,
     addUser,
     googlelogin,
@@ -79,26 +80,12 @@ function refreshPage() {
         window.location.reload(false);
     }
 
-function getAll() {
+async function getAll() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
-    const token = localStorage.getItem('token')
-    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
-        console.log(localStorage.getItem('token')+ " aa")
-        logout()
-        refreshPage()
-    }
-    else {
-        return axios.get(`http://localhost:5000/users`, requestOptions)
-        .then(res => {
-        console.log("success")
-        console.log(res.data)
-        res = res.data
-    })
-    }
+    return await axios.get(`http://localhost:5000/users`, requestOptions)
 }
 
 function getProfile() {
@@ -106,18 +93,9 @@ function getProfile() {
         method: 'GET',
         headers: authHeader(),
     };
-    const token = localStorage.getItem('token')
-    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
-        logout()
-        refreshPage()
-    }
-    else {
         const result = axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('username'),requestOptions)
         .then((res) =>  res.data)
         return result
-    }
-
 }
 
 function register(user) {
@@ -152,14 +130,15 @@ function update(user) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
+    checkToken()
+    return fetch(`http://localhost:5000/users/${user.id}`, requestOptions).then(handleResponse);;
+}
+function checkToken(){
     const token = localStorage.getItem('token')
     const decodedJwt = JSON.parse(atob(token.split('.')[1]))
     if (Date.now()>(decodedJwt.exp * 1000)){
         logout()
         refreshPage()
-    }
-    else {
-        return fetch(`http://localhost:5000/users/${user.id}`, requestOptions).then(handleResponse);;
     }
 }
 

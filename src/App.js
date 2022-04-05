@@ -49,7 +49,7 @@ import showEvents from "./pages/events/showEvents";
 import EventDetail from "./pages/events/eventDetail";
 import { userService } from "./pages/User/_services/user.service"
 
-const Crud = React.lazy(() => import("./pages/Crud"));
+import Crud from "./pages/Crud"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
@@ -76,7 +76,9 @@ const App = () => {
 
     useEffect(() => {
         setTimeout(() => {
-        }, 120000);
+            userService.checkToken()
+            console.log("token test")
+        }, 180000);
     })
 
     useEffect(() => {
@@ -306,6 +308,7 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/empty" component={EmptyPage} />
+                    <Route path="/crud" component={Crud} />
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
                     <Route path="/events" exact component={Events} />
