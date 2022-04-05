@@ -1,17 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
-import { Route, useLocation } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
+import React, { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import { Route, useLocation } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 
-import { AppTopbar } from "./components/layout/AppTopbar";
-import { AppFooter } from "./components/layout/AppFooter";
-import { AppMenu } from "./components/layout/AppMenu";
-import { AppConfig } from "./AppConfig";
+import { AppTopbar } from './components/layout/AppTopbar';
+import { AppFooter} from './components/layout/AppFooter'
+import {AppMenu} from './components/layout/AppMenu'
+import { AppConfig } from './AppConfig';
+
+import styled from "styled-components";
+
+import { AccountBox } from './pages/User/Login/UserLogin/accountBox'
+import UsersList from './pages/User/Login/Users/UsersList';
+
+
+import 'primereact/resources/primereact.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import 'prismjs/themes/prism-coy.css';
+import './assets/demo/flags/flags.css';
+import './assets/demo/Demos.scss';
+import './assets/layout/layout.scss';
+import './App.scss';
+import { getIsRtlScrollbarOnLeft } from '@fullcalendar/core';
+
+
+//import Modal from "react-modal";
+import Events from "./pages/events/events";
+
 import ProjectListing from "./pages/Projects/projectListing";
 import ProjectDetails from "./pages/Projects/projectDetails";
 //import routes from "./routes";
 import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
+
 import { Tooltip } from "primereact/tooltip";
 import Compaigns from "./pages/Compaigns/Compaigns";
 import CompaignsList from "./pages/Compaigns/list-Compaigns"
@@ -25,6 +47,11 @@ import "./assets/demo/flags/flags.css";
 import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
+import createEventForm from "./pages/events/createEventForm";
+import statisticsEvent from "./pages/events/statisticsEvent";
+import eventListing from "./pages/events/eventListing"
+import showEvents from "./pages/events/showEvents";
+import EventDetail from "./pages/events/eventDetail";
 
 const Crud = React.lazy(() => import("./pages/Crud"));
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -49,6 +76,9 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
+
+    const token = localStorage.getItem('token')
+
     useEffect(() => {
         if (mobileMenuActive) {
             addClass(document.body, "body-overflow-hidden");
@@ -56,6 +86,7 @@ const App = () => {
             removeClass(document.body, "body-overflow-hidden");
         }
     }, [mobileMenuActive]);
+
 
     useEffect(() => {
         copyTooltipRef && copyTooltipRef.current && copyTooltipRef.current.updateTargetEvents();
@@ -138,7 +169,19 @@ const App = () => {
     };
     const isDesktop = () => {
         return window.innerWidth >= 992;
-    };
+    }
+
+    const AppContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    `;
+
+
+
 
     const menu = [
         {
@@ -153,9 +196,10 @@ const App = () => {
                     label: "Users",
                     icon: "pi pi-fw pi-users",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboad", icon: "pi pi-fw pi-chart-line" },
-                    ],
+                        {label: 'List', icon: 'pi pi-fw pi-list', to:'/UsersList'},
+                        {label: 'Dashboad', icon: 'pi pi-fw pi-chart-line',to:'/'},
+                    ]
+
                 },
                 {
                     label: "Campaigns",
@@ -169,8 +213,10 @@ const App = () => {
                     label: "Events",
                     icon: "pi pi-fw pi-calendar",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
+                        { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
+                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
+                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },
                 {
@@ -208,23 +254,28 @@ const App = () => {
     };
 
     const removeClass = (element, className) => {
-        if (element.classList) element.classList.remove(className);
-        else element.className = element.className.replace(new RegExp("(^|\\b)" + className.split(" ").join("|") + "(\\b|$)", "gi"), " ");
-    };
+        if (element.classList)
+            element.classList.remove(className);
+        else
+            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    }
+    const wrapperClass = classNames('layout-wrapper', {
+        'layout-overlay': layoutMode === 'overlay',
+        'layout-static': layoutMode === 'static',
+        'layout-static-sidebar-inactive': staticMenuInactive && layoutMode === 'static',
+        'layout-overlay-sidebar-active': overlayMenuActive && layoutMode === 'overlay',
+        'layout-mobile-sidebar-active': mobileMenuActive,
+        'p-input-filled': inputStyle === 'filled',
+        'p-ripple-disabled': ripple === false,
+        'layout-theme-light': layoutColorMode === 'light'
 
-    const wrapperClass = classNames("layout-wrapper", {
-        "layout-overlay": layoutMode === "overlay",
-        "layout-static": layoutMode === "static",
-        "layout-static-sidebar-inactive": staticMenuInactive && layoutMode === "static",
-        "layout-overlay-sidebar-active": overlayMenuActive && layoutMode === "overlay",
-        "layout-mobile-sidebar-active": mobileMenuActive,
-        "p-input-filled": inputStyle === "filled",
-        "p-ripple-disabled": ripple === false,
-        "layout-theme-light": layoutColorMode === "light",
     });
 
-    return (
-        <div className={wrapperClass} onClick={onWrapperClick}>
+
+
+    if (token) {
+         return (
+         <div className={wrapperClass} onClick={onWrapperClick}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
             <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
@@ -237,16 +288,24 @@ const App = () => {
                 <div className="layout-main">
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/timeline" component={TimelineDemo} />
-                    <Route path="/crud" component={Crud} />
                     <Route path="/empty" component={EmptyPage} />
+
                     <Route path="/compaigns" component={Compaigns} />
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/ADD" component={addCompaign} />
+
+                    <Route path="/UsersList" component={UsersList} />
+                    {/* <Route path="/projects" component={Projects} /> */}
+                    <Route path="/events" exact component={Events} />
+                    <Route path="/create-event" component={createEventForm} />
+                    <Route path="/statistcs"  component={statisticsEvent} />
+                    <Route path="/showEvents" component={eventListing} />
+                    <Route path="/events/:_id" component={EventDetail}/>
+
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
                 </div>
-
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
 
@@ -257,6 +316,19 @@ const App = () => {
             </CSSTransition>
         </div>
     );
-};
 
+}
+
+
+
+    
+    else {
+        return (
+            <AppContainer>
+                 <AccountBox/>
+            </AppContainer>
+        );
+    }
+}
 export default App;
+

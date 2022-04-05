@@ -2,24 +2,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const invoiceProjectSchema = new Schema(
-  {
-    invoiceFile: {
-      type: String,
-      required: true,
-      minlength: [5, "Project invoice Minimum 10 charachters."],
+    {
+        invoiceFile: {
+            type: String,
+        },
+        invoiceDate: {
+            type: Date,
+            required: true,
+        },
+        project: {
+            type: Schema.Types.ObjectId,
+            ref: "Project",
+        },
     },
-    invoiceDate: {
-      type: Date,
-      required: true,
-    },
-    project: {
-      type: Schema.Types.ObjectId,
-      ref: "Project",
-    },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 );
 
 const InvoiceProjects = mongoose.model("InvoiceProjects", invoiceProjectSchema);

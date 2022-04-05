@@ -3,8 +3,10 @@ const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
 let User = require('../models/user.model');
-const crypto = require('crypto');
-const access_token = crypto.randomBytes(48).toString('hex');
+const nodemailer = require('nodemailer');
+const {protect} = require('../middleware/authMiddleware')
+const {OAuth2Client} = require('google-auth-library')
+const client = new OAuth2Client("98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com")
 
 const storage = multer.diskStorage({
   destination: (req,file,cb) => {
@@ -36,6 +38,53 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.post('/googlelogin' , (req,res) => {
+    const idToken = req.body.tokenId
+    client.verifyIdToken({idToken, audience:"98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com"})
+    .then(response => {
+        const {email_verified,name,email,given_name,family_name} = response.getPayload()
+        if (email_verified) {
+            User.findOne({'mailAddress':email}).exec((err,user) => {
+                if(err) {
+                    return response.status(400).json({
+                        error :"User does not exist"
+                    })
+                }
+                else {
+                    if (user) {
+                        const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '350s',
+                        })
+                        console.log(user)
+                        return res.json({accessToken : accessToken})
+                    }
+                    else {
+                        let password= email+process.env.ACCES_TOKEN_SECRET
+                        const username = name
+                        const firstname = given_name;
+                        const lastname = family_name;
+                        const mailAddress = email;
+                        const newUser = new User({username,firstname,lastname,mailAddress,password});
+                        const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '350s',
+                        })
+                        newUser.save()
+                        return res.json({accessToken : accessToken})
+                    }
+                }
+            })
+        }
+    })
+})
+
+router.get('/profile/:search', protect, (req,res) => {
+    User.findOne({$or:[
+     {'username': req.params.search},
+     {'mailAddress': req.params.search}
+   ]})
+    .then(user => res.json(user))
+})
+
 router.route('/:id').get((req, res) => {
   User.findById(req.params.id)
     .then(user => res.json(user))
@@ -62,6 +111,8 @@ router.route('/affectRole/:idU/:idR').put( (req,res) => {
     })
 })
 
+
+
 router.route('/:id').delete((req, res) => {
   User.findByIdAndDelete(req.params.id)
     .then(() => res.json('User deleted.'))
@@ -83,14 +134,50 @@ router.route('/update/:id').put((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/PasswordUpdate/:mail/:password').put((req,res)=>{
+    User.findOne({'mailAddress':req.params.mail})
+    .then(user => {
+        console.log(user)
+        user.password = req.params.password
+        user.save()
+        .then(() => res.json('User updated!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+})
+
+
+router.route('/ForgotPassword/:mail').post( (req,res) => {
+    let mailTransporter = nodemailer.createTransport({
+    service :'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth : {
+        user : "fundise.noreply@gmail.com",
+        pass: "fundise@123"
+        }
+    })
+    let randomCode = (Math.random() + 1).toString(36).substring(7);
+    let details = {
+        from : "fundise.noreply@gmail.com",
+        to : req.params.mail,
+        subject : "Password restoration.",
+        text : "To change your password use this code : "+randomCode
+    }
+    mailTransporter.sendMail(details)
+    res.json({code:randomCode})
+})
+
 router.route('/login').post( (req, res) => {
   User.getAuthenticated(req.body.username,req.body.mailAddress,req.body.password, function(err, user, reason) {
     if (err) throw err;
     // login was successful if we have a user
     if (user) {
         // handle login success
-        const accessToken = jwt.sign(user.toJSON(), access_token,{
-          expiresIn: '1d',
+        const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+          expiresIn: '350s',
         })
         res.json({accessToken : accessToken})
         return;
@@ -141,11 +228,13 @@ function authenticateToken(req,res,nex){
   const token = authHeader && authHeader.split(' ')[1]
   if (token == null) return res.sendStatus(401)
 
-  jwt.verify(token,access_token,(err,user) => {
+  jwt.verify(token,process.env.ACCES_TOKEN_SECRET,(err,user) => {
     if (err) return res.sendStatus(403)
   req.user = user
   .next()
   })
 }
+
+
 
 module.exports = router;
