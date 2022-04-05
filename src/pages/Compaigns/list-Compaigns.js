@@ -75,6 +75,8 @@ export default class CompaignList extends Component {
   }
   searchHandel = (event)=>{
     let key = event.target.value;
+    // if key =''{}
+    // }
     axios.get('http://localhost:5000/compaigns/search/'+ key)
       .then(response => {
         this.setState({ compaigns: response.data })
