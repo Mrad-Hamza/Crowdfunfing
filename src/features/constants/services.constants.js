@@ -7,6 +7,9 @@ const URL = {
     forums: {
         fetchForums: `/forum/`,
     },
+    tasks: {
+        fetchTasks: `/tasks/`,
+    },
 };
 
 export default URL;

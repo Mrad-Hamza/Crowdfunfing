@@ -1,18 +1,9 @@
 import React, { useEffect } from "react";
-import Card from "@mui/material/Card";
+// import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import ListSubheader from "@mui/material/ListSubheader";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
-import { CardActionArea } from "@mui/material";
+//import TaskListing from "../tasks/taskListing";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
@@ -21,21 +12,28 @@ import URL from "../../features/constants/services.constants";
 import axios from "axios";
 import logo from "../../assets/layout/images/project-logo.png";
 import pdf from "../../assets/layout/images/pdf.png";
-import "./project.css";
+import "./projects.css";
 
 const ProjectDetails = () => {
-    const [open, setOpen] = React.useState(true);
-
-    const handleClick = () => {
-        setOpen(!open);
-    };
-    // const theme = useTheme();
-    const project = useSelector((state) => state.project);
-    const { projectName, projectDescription, projectCollectedAmount, tasks } = project;
-    const { _id } = useParams();
     const dispatch = useDispatch();
+    // const theme = useTheme();
+    // const tasks = useSelector((state) => state);
+    // const dispatch = useDispatch();
+
+    // const fetchTasks = async () => {
+    //     const result = await axios.get(URL.baseApiUrl + URL.tasks.fetchTasks).catch((err) => {
+    //         console.log("Err", err);
+    //     });
+    //     console.log("🚀 ~ file: projectListing.js ~ line 17 ~ fetchProjects ~ result", result);
+    //     dispatch(setTasks(result.data));
+    // };
+
+    const project = useSelector((state) => state.project);
+    const { projectName, projectDescription, projectCollectedAmount } = project;
+    const { _id } = useParams();
     //console.log(_id);
     console.log(project);
+    // console.log("Tasks:", tasks);
 
     const fetchProjectDetails = async () => {
         const result = await axios.get(URL.baseApiUrl + URL.projects.fetchProjects + `/${_id}`).catch((err) => {
@@ -56,9 +54,9 @@ const ProjectDetails = () => {
                 <div>
                     <div class="projectdisplay">
                         <div class="container col-9">
-                            <div style={{ height: "225px" }} className="surface-card p-4 shadow-2 border-round ">
+                            <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
                                 <div className="font-medium text-500 mb-3">
-                                    <CardMedia component="img" height="100" image={logo} alt="logo" />
+                                    <CardMedia component="img" height="60" image={logo} alt="logo" />
                                 </div>
                                 <div class="ff">
                                     <CardContent>
@@ -71,7 +69,8 @@ const ProjectDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            <List
+                            {/* <TaskListing /> */}
+                            {/* <List
                                 sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
                                 component="nav"
                                 aria-labelledby="nested-list-subheader"
@@ -96,13 +95,13 @@ const ProjectDetails = () => {
                                         </ListItemButton>
                                     </List>
                                 </Collapse>
-                            </List>
+                            </List> */}
                         </div>
                         <div class="container col-3">
-                            <div style={{ height: "225px" }} className="surface-card p-4 shadow-2 border-round ">
-                                <div style={{ height: "180px" }} className="border-2 border-dashed surface-border">
-                                    <div className="font-medium text-500 mb-3">
-                                        <CardMedia component="img" height="100" image={pdf} alt="logo" />
+                            <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
+                                <div style={{ height: "140px" }} className="border-2 border-dashed surface-border">
+                                    <div className="font-medium text-500 my-2">
+                                        <CardMedia component="img" height="70" image={pdf} alt="logo" />
                                     </div>
                                     <div class="ff">
                                         <Button icon="pi pi-download" label="Download" className="cc" />
