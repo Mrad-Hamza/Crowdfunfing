@@ -9,7 +9,7 @@ router.route("/").get((req, res) => {
 });
 
 //add events
-router.route(" ").post((req, res) => {
+router.route("/add").post((req, res) => {
     const nameEvent = req.body.nameEvent;
     const startDateEvent = req.body.startDateEvent;
     const endDateEvent = req.body.endDateEvent;

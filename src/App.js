@@ -329,7 +329,7 @@ const App = () => {
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/ADD" component={addCompaign} />
-
+                    {/* <Route path="/add" component={forumCreate}/> */}
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
                     <Route path="/events" exact component={Events} />
@@ -342,7 +342,7 @@ const App = () => {
                     <Route path="/forums" exact component={ForumListing} />
                     <Route path="/comment" component={ForumsComment}/>
                     <Route path="/edit/:_id" component={updateForum}/>
-                    <Route path="/add" component={forumCreate}/>
+
                 </div>
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>

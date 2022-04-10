@@ -30,7 +30,9 @@ router.route('/add').post((req, res) => {
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
   const roles = req.body.roles
-
+  if (!roles){
+      roles = "62417c2021431e2b5efbfaea"
+  }
   const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
 
   newUser.save()
@@ -64,12 +66,13 @@ router.post('/googlelogin' , (req,res) => {
                         const firstname = given_name;
                         const lastname = family_name;
                         const mailAddress = email;
-                        const newUser = new User({username,firstname,lastname,mailAddress,password});
+                        const roles = "62417c2021431e2b5efbfaea"
+                        const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
                         newUser.save()
-                        return res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
+                        return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
                     }
                 }
             })
@@ -79,6 +82,14 @@ router.post('/googlelogin' , (req,res) => {
 
 router.get('/profile/:search', protect, (req,res) => {
     User.findOne({$or:[
+     {'username': req.params.search},
+     {'mailAddress': req.params.search}
+   ]})
+    .then(user => res.json(user))
+})
+
+router.get('/:search', (req,res) => {
+  User.findOne({$or:[
      {'username': req.params.search},
      {'mailAddress': req.params.search}
    ]})
@@ -156,7 +167,7 @@ router.route('/ForgotPassword/:mail').post( (req,res) => {
     requireTLS: true,
     auth : {
         user : "fundise.noreply@gmail.com",
-        pass: "fundise@123"
+        pass: "HzJxDKrxS2LNwa9"
         }
     })
     let randomCode = (Math.random() + 1).toString(36).substring(7);

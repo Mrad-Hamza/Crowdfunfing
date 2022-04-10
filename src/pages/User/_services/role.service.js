@@ -19,12 +19,12 @@ function addRole(type) {
     })
 }
 
-function getRole(id) {
+async function getRole(id) {
     const requestOptions = {
         method: 'GET',
     };
-    const result = axios.get(`http://localhost:5000/userRole/:id`,requestOptions)
-    .then((res) =>  res.data)
+    console.log(`http://localhost:5000/userRole/`+id)
+    const result = await axios.get(`http://localhost:5000/userRole/`+id,requestOptions)
     return result
 }
 

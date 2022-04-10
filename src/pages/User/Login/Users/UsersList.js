@@ -27,38 +27,56 @@ const UsersList = () => {
         roles: 0,
     };
 
-    const [products, setProducts] = useState(null);
     const [userDialog, setUserDialog] = useState(false);
     const [deleteUserDialog, setDeleteUserDialog] = useState(false);
     const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
     const [product, setProduct] = useState(emptyUser);
     const [user,setUser] = useState(emptyUser)
+    const [addUser,setAddUser] = useState(emptyUser)
     const [users, setUsers] = useState(null);
+    const [users2, setUsers2] = useState(null);
     const [selectedUsers, setSelectedUsers] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [isVisible, setIsVisible] = useState(true);
     const toast = useRef(null);
     const dt = useRef(null);
 
     useEffect(() => {
-
-    }, []);
+        setTimeout(()=>{
+            getListFunction()
+        },50)
+    },[])
+    useEffect(()=>{
+        console.log("test")
+        setTimeout(() => {
+            users.map((user)=>{
+            if (user.roles) {
+                const roleres = roleService.getRole(user.roles)
+                roleres.then((value)=>{
+                    user.roles = value.data.type
+                    })
+                }
+            })
+        setUsers2(users)
+        }, 100);
+    },[users])
 
     const getListFunction = () =>{
         const res = userService.getAll()
-        const result = Promise.resolve(res);
-        result.then((value)=>{
+        Promise.resolve(res)
+        .then((value)=>{
             setUsers(value.data)
-            console.log(value.data)
         })
     }
+
 
     const formatCurrency = (value) => {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
 
     const openNew = () => {
-        setProduct(emptyUser);
+        setAddUser(emptyUser);
         setSubmitted(false);
         setUserDialog(true);
     }
@@ -74,30 +92,24 @@ const UsersList = () => {
 
     const saveUser = () => {
         setSubmitted(true);
-
-        if (user.name.trim()) {
             let _users = [...users];
-            let _user = { ...user };
-            if (user.id) {
-                const index = findIndexById(user.id);
+            let _user = { ...addUser };
+            _user.roles="62417c2021431e2b5efbfaea"
+            userService.addUser(_user)
+            userService.getUserByMailOrUsername(user.mailAddress)
+            console.log(userService.getUserByMailOrUsername(user.mailAddress))
+            _users.push(_user);
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
 
-                _users[index] = _user;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-            }
-            else {
-                _user.id = createId();
-                _users.push(_user);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
-            }
 
             setUsers(_users);
             setUserDialog(false);
             setUser(emptyUser);
-        }
+
     }
 
     const editUser = (user) => {
-        setUser({ ...user });
+        setAddUser({ ...user });
         setUserDialog(true);
     }
 
@@ -107,8 +119,9 @@ const UsersList = () => {
     }
 
     const deleteUser = () => {
-        let _users = users.filter(val => val.id !== user.id);
-        setUsers(_users);
+        console.log(user)
+        userService.delete(user._id)
+        getListFunction()
         setDeleteUserDialog(false);
         setUser(emptyUser);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
@@ -144,8 +157,10 @@ const UsersList = () => {
     }
 
     const deleteSelectedUsers = () => {
-        let _users = users.filter(val => !selectedUsers.includes(val));
-        setUsers(_users);
+        selectedUsers.map((user)=>{
+            userService.delete(user._id)
+            })
+        getListFunction()
         setDeleteUsersDialog(false);
         setSelectedUsers(null);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
@@ -157,12 +172,14 @@ const UsersList = () => {
         setUser(_user);
     }
 
+
     const onInputChange = (e, username) => {
         const val = (e.target && e.target.value) || '';
-        let _user = { ...user };
+        let _user = { ...addUser };
         _user[`${username}`] = val;
 
-        setUser(_user);
+        setAddUser(_user);
+        console.log(addUser)
     }
 
     const onInputNumberChange = (e, name) => {
@@ -177,7 +194,6 @@ const UsersList = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <Button label="List" icon="pi pi-plus" className="p-button-success mr-2" onClick={getListFunction} />
                     <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
                     <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedUsers || !selectedUsers.length} />
                 </div>
@@ -188,19 +204,13 @@ const UsersList = () => {
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
+                {/* <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" /> */}
                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
             </React.Fragment>
         )
     }
 
-    const getList = () => {
-        return (
-            <React.Fragment>
-                <Button label="Users List" icon="pi pi-upload" className="p-button-help" onClick={getListFunction} />
-            </React.Fragment>
-        )
-    }
+
 
     const codeBodyTemplate = (rowData) => {
         return (
@@ -219,6 +229,7 @@ const UsersList = () => {
             </>
         );
     }
+
 
     const imageBodyTemplate = (rowData) => {
         return (
@@ -317,68 +328,51 @@ const UsersList = () => {
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem'}}></Column>
                         <Column field="username" header="User Name" sortable body={user.username} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column field="mailAddress" header="Mail Address" sortable body={user.mailAddress} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="roles" header="Role" body={user.roles} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="roles" header="Role" body={user.roles} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
 
-
-                    <Dialog visible={userDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        {product.image && <img src={`assets/demo/images/product/${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
+                    <Dialog visible={userDialog} style={{ width: '450px' }} header="Add/Update User" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         <div className="field">
-                            <label htmlFor="name">Name</label>
-                            <InputText id="name" value={user.username} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !product.name })} />
-                            {submitted && !user.username && <small className="p-invalid">Name is required.</small>}
+                            <label htmlFor="username">Username</label>
+                            <InputText id="username" value={addUser.username} onChange={(e) => onInputChange(e, 'username')} required autoFocus className={classNames({ 'p-invalid': submitted && !addUser.name })} />
+                            {submitted && !addUser.username && <small className="p-invalid">Username is required.</small>}
                         </div>
                         <div className="field">
-                            <label htmlFor="description">Description</label>
-                            <InputTextarea id="description" value={product.description} onChange={(e) => onInputChange(e, 'description')} required rows={3} cols={20} />
+                            <label htmlFor="mailAddress">Mail Address</label>
+                            <InputText id="mailAddress" value={addUser.mailAddress} onChange={(e) => onInputChange(e, 'mailAddress')} required rows={3} cols={20} />
+                            {submitted && !addUser.mailAddress && <small className="p-invalid">mailAddress is required.</small>}
                         </div>
-
                         <div className="field">
-                            <label className="mb-3">Category</label>
-                            <div className="formgrid grid">
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category1" name="category" value="Accessories" onChange={onCategoryChange} checked={product.category === 'Accessories'} />
-                                    <label htmlFor="category1">Accessories</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category2" name="category" value="Clothing" onChange={onCategoryChange} checked={product.category === 'Clothing'} />
-                                    <label htmlFor="category2">Clothing</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category3" name="category" value="Electronics" onChange={onCategoryChange} checked={product.category === 'Electronics'} />
-                                    <label htmlFor="category3">Electronics</label>
-                                </div>
-                                <div className="field-radiobutton col-6">
-                                    <RadioButton inputId="category4" name="category" value="Fitness" onChange={onCategoryChange} checked={product.category === 'Fitness'} />
-                                    <label htmlFor="category4">Fitness</label>
-                                </div>
-                            </div>
+                            <label htmlFor="firstname">Name</label>
+                            <InputText id="firstname" value={addUser.firstname} onChange={(e) => onInputChange(e, 'firstname')} required rows={3} cols={20} />
+                            {submitted && !addUser.firstname && <small className="p-invalid">Name is required.</small>}
+                        </div>
+                        <div className="field">
+                            <label htmlFor="lastname">Lastname</label>
+                            <InputText id="lastname" value={addUser.lastname} onChange={(e) => onInputChange(e, 'lastname')} required rows={3} cols={20} />
+                            {submitted && !addUser.lastname && <small className="p-invalid">Lastname is required.</small>}
+                        </div>
+                        <div className="field">
+                            <label htmlFor="password">Password</label>
+                            <InputText id="password" onChange={(e) => onInputChange(e, 'password')} required rows={3} cols={20} />
+                            {submitted && !addUser.password && <small className="p-invalid">Password is required.</small>}
                         </div>
 
-                        <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="price">Price</label>
-                                <InputNumber id="price" value={product.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
-                            </div>
-                            <div className="field col">
-                                <label htmlFor="quantity">Quantity</label>
-                                <InputNumber id="quantity" value={product.quantity} onValueChange={(e) => onInputNumberChange(e, 'quantity')} integeronly />
-                            </div>
-                        </div>
+
                     </Dialog>
 
                     <Dialog visible={deleteUserDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteUserDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {product && <span>Are you sure you want to delete <b>{product.name}</b>?</span>}
+                            {user && <span>Are you sure you want to delete <b>{user.username}</b>?</span>}
                         </div>
                     </Dialog>
 
                     <Dialog visible={deleteUsersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteUserDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {product && <span>Are you sure you want to delete the selected products?</span>}
+                            {users && <span>Are you sure you want to delete the selected users?</span>}
                         </div>
                     </Dialog>
                 </div>

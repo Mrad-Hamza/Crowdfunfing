@@ -9,6 +9,7 @@ export const userService = {
     getAll,
     addUser,
     googlelogin,
+    getUserByMailOrUsername,
     getProfile,
     update,
     changePassword,
@@ -17,24 +18,22 @@ export const userService = {
 };
 
 
-function addUser(user) {
-    const token = localStorage.getItem('token')
-    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
-        console.log(localStorage.getItem('token')+ " aa")
-        logout()
-        refreshPage()
-    }
-    else {
-        axios.post('http://localhost:5000/users/add',user)
+async function addUser(user) {
+        return await axios.post('http://localhost:5000/users/add',user)
             .then(res =>{
             console.log("User added!")
         })
         .catch(err=>{
             console.log(err)
         })
-    }
+}
 
+async function getUserByMailOrUsername(search) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/users/'+search,requestOptions)
 }
 function googlelogin(tokenId){
     axios({
@@ -44,6 +43,7 @@ function googlelogin(tokenId){
             tokenId : tokenId
         }
     }).then(res => {
+        console.log(res.data)
         localStorage.setItem('token',res.data.accessToken)
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)
