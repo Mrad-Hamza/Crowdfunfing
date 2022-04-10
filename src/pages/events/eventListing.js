@@ -1,6 +1,8 @@
 import React , {useEffect} from "react";
 import axios from "axios";
 import { Paginator } from "primereact/paginator";
+import { Link } from "react-router-dom";
+
 import { useSelector, useDispatch } from "react-redux";
 import EventComponent from "./eventComponent";
 import URL from "../../features/constants/service.constants";
@@ -24,8 +26,14 @@ const EventListing = () => {
 
     
     return (
-        <div className="card grid">
-            <EventComponent  />
+        <div>
+            <Link to="/create-event">
+                <button>zigei</button>
+            </Link>
+
+            <div className="card grid">
+                <EventComponent />
+            </div>
         </div>
     );
 };

@@ -9,7 +9,7 @@ router.route("/").get((req, res) => {
 });
 
 //add events
-router.route(" ").post((req, res) => {
+router.route("/createEvent").post((req, res) => {
     const nameEvent = req.body.nameEvent;
     const startDateEvent = req.body.startDateEvent;
     const endDateEvent = req.body.endDateEvent;
@@ -18,7 +18,7 @@ router.route(" ").post((req, res) => {
     const urlEvent = req.body.urlEvent;
 
     const location = req.body.location;
-    const eventType = req.body.eventType;
+    //const eventType = req.body.eventType;
 
     const newEvent = new Event({
         nameEvent,
@@ -26,9 +26,8 @@ router.route(" ").post((req, res) => {
         endDateEvent,
         descriptionEvent,
         //nbrplace,
-        urlEvent,
         location,
-        eventType,
+        urlEvent,
     });
     newEvent
         .save()

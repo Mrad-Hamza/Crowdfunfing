@@ -9,22 +9,33 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
+import { Link } from "react-router-dom";
+import { deleteEventAction} from "../../features/actions/eventActions";
+
+
 
 import { RemoveSelectedEvent, selectedEvent } from "../../features/actions/eventActions";
 
 const EventDetail = () => {
     const event = useSelector((state) => state.event);
-    const { nameEvent, descriptionEvent, urlEvent, startDateEvent, endDateEvent, location, eventType } = event;
-
+    const {id,  nameEvent, descriptionEvent, urlEvent, startDateEvent, endDateEvent, location, eventType } = event;
+ const eventDelete = useSelector((state) => state.noteDelete);
+ //const { , error: errorDelete, success: successDelete } = eventDelete;
     const { _id } = useParams();
     const dispatch = useDispatch();
     console.log(_id);
+    
     const fetchProductDetail = async () => {
         const response = await axios.get(`http://localhost:5000/events/${_id}`).catch((err) => {
             console.log("Err", err);
         });
         dispatch(selectedEvent(response.data));
     };
+     const deleteHandler = (id) => {
+         if (window.confirm("Are you sure?")) {
+             dispatch(deleteEventAction(id));
+         }
+     };
 
     const header = <img alt="Card" src="images/usercard.png" onError={(e) => (e.target.src = "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")} />;
     const footer = (
@@ -43,21 +54,9 @@ const EventDetail = () => {
         <div className="ui grid container">
             <TabView>
                 <TabPanel header="About">
-                    {/* <p>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                      </p> */}
                     <Card title={nameEvent} subTitle={eventType} style={{ width: "70em" }}>
-                        {/* <div>
-                              <a>
-                                  <i className="pi pi-calendar-plus text-2xl text-blue-500"></i>
-                              </a>
-                              {startDateEvent}
-                          </div> */}
-                        <br />
                         <div>
                             <span>Description:</span>
-
                             {descriptionEvent}
                         </div>
                         <br />
@@ -83,6 +82,10 @@ const EventDetail = () => {
                                 </div>
                             </div>
                         </div>
+                        <span className="p-buttonset ">
+                            <Button href={`/event/${_id}`} className="p-button-rounded p-button-warning " label="Edit" icon="pi pi-check" />
+                            <Button onClick={() => deleteHandler(_id)} className="p-button-rounded p-button-danger" label="Delete" icon="pi pi-trash" />
+                        </span>
                     </Card>
                 </TabPanel>
                 {/* <TabPanel header="Comments">

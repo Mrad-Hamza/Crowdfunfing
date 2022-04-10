@@ -19,6 +19,7 @@ const eventSchema = new Schema(
         },
         endDateEvent: {
             type: Date,
+            required:true
         },
         descriptionEvent: {
             type: String,
@@ -38,7 +39,7 @@ const eventSchema = new Schema(
         },
         eventType: {
             type: String,
-            required: true,
+            //required: true,
             enum: Object.values(EventType),
         },
         commentEvents: [

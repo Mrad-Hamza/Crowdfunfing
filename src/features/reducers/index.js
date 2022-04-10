@@ -7,6 +7,9 @@ const reducers = combineReducers({
     project: selectedProjectReducer,
     allEvents: eventReducer,
     event: selectedEventReducer,
+    eventCreate: eventReducer,
+    eventUpdate:eventReducer,
+    eventDelete:eventReducer,
 });
 
 export default reducers;
