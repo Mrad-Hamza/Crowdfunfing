@@ -23,6 +23,7 @@ const UsersList = () => {
         lastname: null,
         mailAddress: null,
         lockUntil: 0,
+        img:null,
         loginAttempts: 0,
         roles: 0,
     };
@@ -45,10 +46,9 @@ const UsersList = () => {
     useEffect(() => {
         setTimeout(()=>{
             getListFunction()
-        },50)
+        },100)
     },[])
     useEffect(()=>{
-        console.log("test")
         setTimeout(() => {
             users.map((user)=>{
             if (user.roles) {
@@ -58,8 +58,9 @@ const UsersList = () => {
                     })
                 }
             })
-        setUsers2(users)
+            setUsers(users)
         }, 100);
+
     },[users])
 
     const getListFunction = () =>{
@@ -108,6 +109,15 @@ const UsersList = () => {
 
     }
 
+    const getUserImage = (user) => {
+        const res = userService.getUserImage(user.img)
+                res.then((value)=>{
+                    user.img = value.data.img.imgName
+                    console.log(value.data.img.imgName)
+                    })
+    }
+
+
     const editUser = (user) => {
         setAddUser({ ...user });
         setUserDialog(true);
@@ -119,7 +129,6 @@ const UsersList = () => {
     }
 
     const deleteUser = () => {
-        console.log(user)
         userService.delete(user._id)
         getListFunction()
         setDeleteUserDialog(false);
@@ -235,7 +244,7 @@ const UsersList = () => {
         return (
             <>
                 <span className="p-column-title">Image</span>
-                <img src={`assets/demo/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2" width="100" />
+                <img src={require("../../../../assets/layout/images/"+rowData.img.imgName)} alt={"a"} className="shadow-2" width="100" />
             </>
         )
     }
@@ -328,6 +337,7 @@ const UsersList = () => {
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem'}}></Column>
                         <Column field="username" header="User Name" sortable body={user.username} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column field="mailAddress" header="Mail Address" sortable body={user.mailAddress} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column header="Image" body={imageBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column field="roles" header="Role" body={user.roles} sortable headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>

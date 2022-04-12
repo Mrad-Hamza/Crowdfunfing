@@ -2,20 +2,30 @@ const router = require('express').Router();
 const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
+var fs = require('fs');
 let User = require('../models/user.model');
+let Role = require('../models/role-user.model')
+let Image = require('../models/image.model')
 const nodemailer = require('nodemailer');
 const {protect} = require('../middleware/authMiddleware')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com")
 
-const storage = multer.diskStorage({
-  destination: (req,file,cb) => {
-    cb(null,'uploads')
-  },
-  filename:(req,file,cb)=>{
-    cb(null,file.originalname)
-  }
-})
+var fs = require('fs');
+var path = require('path');
+require('dotenv/config');
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '../src/assets/layout/images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage });
+
 
 router.route('/').get((req, res) => {
   User.find()
@@ -23,17 +33,39 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/addUserImage').put(upload.single('image'),(req, res) => {
+    const image = {
+            contentType: 'image/png',
+            imgName:req.file.originalname
+        }
+      User.findByIdAndUpdate(req.body.id)
+      .then(user=>{
+          console.log(user)
+          user.img=image
+          user.save()
+          .then(()=>res.json('Image added to user haha'))
+            .catch(err => res.status(400).json('Error: ' + err));
+      })
+
+
+});
+
+router.route('/add').post(upload.single('image'),(req, res) => {
   const username = req.body.username;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
-  const roles = req.body.roles
+  const img = {
+            data: fs.readFileSync(path.join(process.cwd() + '/../src/assets/layout/images/'+ req.file.originalname)),
+            contentType: 'image/png',
+            imgName:req.file.originalname
+        }
+  var roles = req.body.roles
   if (!roles){
       roles = "62417c2021431e2b5efbfaea"
   }
-  const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+  const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
 
   newUser.save()
     .then(() => res.json('User added!'))
@@ -115,8 +147,9 @@ router.route('/affectImage/:idU/:idM').put( (req,res) => {
 router.route('/affectRole/:idU/:idR').put( (req,res) => {
   User.findByIdAndUpdate(req.params.idU)
     .then(user=>{
-      user.roles = req.params.idR
-      user.save()
+
+        user.roles = req.params.idR
+        user.save()
         .then(()=>res.json('Role added to user haha'))
         .catch(err => res.status(400).json('Error: ' + err));
     })

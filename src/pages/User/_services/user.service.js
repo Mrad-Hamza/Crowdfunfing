@@ -6,6 +6,7 @@ export const userService = {
     logout,
     register,
     checkToken,
+    getUserImage,
     getAll,
     addUser,
     googlelogin,
@@ -80,6 +81,14 @@ function refreshPage() {
         window.location.reload(false);
     }
 
+async function getUserImage(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/image/'+id,requestOptions)
+}
+
 async function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -141,6 +150,8 @@ function checkToken(){
         refreshPage()
     }
 }
+
+
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
