@@ -6,6 +6,7 @@ var fs = require('fs');
 let User = require('../models/user.model');
 let Role = require('../models/role-user.model')
 let Image = require('../models/image.model')
+const fetch = require('node-fetch')
 const nodemailer = require('nodemailer');
 const {protect} = require('../middleware/authMiddleware')
 const {OAuth2Client} = require('google-auth-library')
@@ -72,6 +73,50 @@ router.route('/add').post(upload.single('image'),(req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.post('/facebooklogin',(req,res) => {
+    const {userID,accessToken} = req.body
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`
+    fetch(urlGraphFacebook,{
+        method:`GET`
+    })
+    .then(res=> res.json())
+    .then(response=>{
+        const {email,name} =response;
+        User.findOne({'mailAddress':email}).exec((err,user) => {
+            if(err) {
+                    return response.status(400).json({
+                        error :"User does not exist"
+                    })
+            }else {
+                if (user) {
+                        const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                        })
+                        return res.json({accessToken : accessToken,
+                            userId : user.id,
+                            userName : user.username,
+                            mail : user.mailAddres
+                        })
+                    }
+                else {
+                    console.log(email,name)
+                    let password= email+process.env.ACCES_TOKEN_SECRET
+                    const username = name
+                    const firstname = name
+                    const lastname = name
+                    const mailAddress = email;
+                    const roles = "62417c2021431e2b5efbfaea"
+                    const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+                    const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                    })
+                    newUser.save()
+                    return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
+                }
+            }
+        })
+    })
+})
 router.post('/googlelogin' , (req,res) => {
     const idToken = req.body.tokenId
     client.verifyIdToken({idToken, audience:"98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com"})

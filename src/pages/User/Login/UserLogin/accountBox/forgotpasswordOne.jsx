@@ -1,4 +1,4 @@
-import React, { useContext,useEffect,useState } from "react";
+import React, { useContext,useEffect,useState,useRef } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -12,11 +12,13 @@ import { Route, useLocation } from 'react-router-dom';
 import { Marginer } from "../marginer";
 import { InputText } from 'primereact/inputtext';
 import { AccountContext } from "./accountContext";
+import { Toast } from 'primereact/toast';
 import { userService } from "../../../_services";
 import Dashboard from "../../../../../components/Dashboard";
 
 export function ForgotPasswordOneForm(props) {
     const { switchToSignup } = useContext(AccountContext);
+        const { switchToSignin } = useContext(AccountContext);
     const [mailAddress,setmailAddress] = useState('')
     const [password,setPassword] = useState('')
     const [passwordConfirm,setPasswordConfirm] = useState('')
@@ -25,6 +27,8 @@ export function ForgotPasswordOneForm(props) {
     const [code,setCode] = useState('')
     const [userCode,setUserCode] = useState('')
     const location = useLocation();
+    const toast = useRef(null);
+
 
     useEffect(()=>{
         userService.logout()
@@ -82,6 +86,10 @@ export function ForgotPasswordOneForm(props) {
             result.then((value)=>{
                 setCode(value)
             })
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Password changed Succesfully', life: 3000 });
+        }
+        else{
+            toast.current.show({ severity: 'error', summary: 'Errir', detail: 'There was an error!  ', life: 3000 });
         }
     }
     if (!code) {
@@ -95,11 +103,11 @@ export function ForgotPasswordOneForm(props) {
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
       <Marginer direction="vertical" margin="1.6em" />
-      <SubmitButton type="submit" onClick={handleSubmit}>Signin</SubmitButton>
+      <SubmitButton type="submit" onClick={handleSubmit}>Send Code</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">
         Don't have an accoun?{" "}
-        <BoldLink href="#" onClick={switchToSignup}>
+        <BoldLink href="#" onClick={switchToSignin}>
           Signup
         </BoldLink>
       </MutedLink>
@@ -107,7 +115,10 @@ export function ForgotPasswordOneForm(props) {
   );
     }
     else {
-        return (<BoxContainer>
+        return (
+
+        <BoxContainer>
+        <Toast ref={toast} />
       <FormContainer>
             <Input id="code" name="code" type="text" placeholder="Code" onChange={handleChangePassword} />
             <Input id="password" name="password" type="password" placeholder="password" onChange={handleChangePassword} />
@@ -121,11 +132,11 @@ export function ForgotPasswordOneForm(props) {
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
       <Marginer direction="vertical" margin="1.6em" />
-      <SubmitButton type="submit" onClick={handleSubmitPassword}>Signin</SubmitButton>
+      <SubmitButton type="submit" onClick={handleSubmitPassword}>Change Password</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">
         Don't have an accoun?{" "}
-        <BoldLink href="#" onClick={switchToSignup}>
+        <BoldLink href="#" onClick={switchToSignin }>
           Signup
         </BoldLink>
       </MutedLink>

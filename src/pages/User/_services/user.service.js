@@ -6,6 +6,7 @@ export const userService = {
     logout,
     register,
     checkToken,
+    facebooklogin,
     getUserImage,
     getAll,
     addUser,
@@ -45,6 +46,22 @@ function googlelogin(tokenId){
         }
     }).then(res => {
         console.log(res.data)
+        localStorage.setItem('token',res.data.accessToken)
+        localStorage.setItem('currentUserId',res.data.userId)
+        localStorage.setItem('currentUsername',res.data.userName)
+        localStorage.setItem('currentMailAddress',res.data.mail)
+        authHeader();
+    })
+}
+function facebooklogin(accessToken,userID){
+    axios({
+        method:"POST",
+        url:"http://localhost:5000/users/facebooklogin",
+        data: {
+            accessToken : accessToken, userID : userID
+        }
+    }).then(res => {
+        console.log(res)
         localStorage.setItem('token',res.data.accessToken)
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)

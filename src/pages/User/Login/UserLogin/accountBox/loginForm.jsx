@@ -15,6 +15,7 @@ import { AccountContext } from "./accountContext";
 import { userService } from "../../../_services";
 import Dashboard from "../../../../../components/Dashboard";
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 
 export function LoginForm(props) {
@@ -60,7 +61,18 @@ export function LoginForm(props) {
         }.bind(this), 1000)
     }
     const responseSuccessGoogle = (res) => {
+        console.log(res)
         userService.googlelogin(res.tokenId)
+        setTimeout(function() { //Start the timer
+            refreshPage() //After 1 second, set render to true
+        }.bind(this), 1000)
+    }
+    const componentClicked = (res) => {
+
+    }
+
+    const responseFacebook = (res) => {
+        userService.facebooklogin(res.accessToken,res.userID)
         setTimeout(function() { //Start the timer
             refreshPage() //After 1 second, set render to true
         }.bind(this), 1000)
@@ -91,6 +103,11 @@ export function LoginForm(props) {
             onFailure={responseFailureGoogle}
             cookiePolicy={'single_host_origin'}
         />
+        <FacebookLogin
+            appId="531998668448477"
+            autoLoad={false}
+            onClick={componentClicked}
+            callback={responseFacebook} />
       <Marginer direction="vertical" margin="1em" />
       <MutedLink href="#">
         Don't have an accoun?{" "}
