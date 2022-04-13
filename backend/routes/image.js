@@ -8,7 +8,7 @@ var multer = require('multer');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads')
+        cb(null, '../src/assets/demo/images')
     },
     filename: (req, file, cb) => {
         cb(null, file.originalname)
@@ -44,7 +44,7 @@ router.post('/', upload.single('image'), (req, res, next) => {
         name: req.body.name,
         desc: req.body.desc,
         img: {
-            data: fs.readFileSync(path.join(process.cwd() + '/uploads/' + req.file.originalname)),
+            data: fs.readFileSync(path.join(process.cwd() + '/../src/assets/layout/images/'+ req.file.originalname)),
             contentType: 'image/png',
             imgName:req.file.originalname
         }

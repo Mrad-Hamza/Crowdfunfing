@@ -41,6 +41,10 @@ app.use("/invoicesProject", invoicesProjectRouter);
 
 const userRoleRouter = require("./routes/role-user");
 app.use("/userRole", userRoleRouter);
+const forumsRouter = require('./routes/forum');
+app.use('/forums', forumsRouter);
+const commentsRouter = require('./routes/comment');
+app.use('/comment', commentsRouter);
 
 const imageRouter = require("./routes/image");
 app.use("/image", imageRouter);
@@ -51,6 +55,8 @@ app.use('/compaigns', compaignRouter);
 
 const categoryRouter = require('./routes/category');
 app.use('/category', categoryRouter);
+const statisticsEventRouter = require("./routes/statisticsEvent");
+app.use("/statis", statisticsEventRouter);
 
 
 app.listen(port, () => {

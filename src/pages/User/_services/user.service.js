@@ -5,9 +5,13 @@ export const userService = {
     login,
     logout,
     register,
+    checkToken,
+    facebooklogin,
+    getUserImage,
     getAll,
     addUser,
     googlelogin,
+    getUserByMailOrUsername,
     getProfile,
     update,
     changePassword,
@@ -16,14 +20,22 @@ export const userService = {
 };
 
 
-function addUser(user) {
-    axios.post('http://localhost:5000/users/add',user)
-    .then(res =>{
-        console.log("User added!")
-    })
-    .catch(err=>{
-        console.log(err)
-    })
+async function addUser(user) {
+        return await axios.post('http://localhost:5000/users/add',user)
+            .then(res =>{
+            console.log("User added!")
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+}
+
+async function getUserByMailOrUsername(search) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/users/'+search,requestOptions)
 }
 function googlelogin(tokenId){
     axios({
@@ -33,9 +45,28 @@ function googlelogin(tokenId){
             tokenId : tokenId
         }
     }).then(res => {
+        console.log(res.data)
         localStorage.setItem('token',res.data.accessToken)
+        localStorage.setItem('currentUserId',res.data.userId)
+        localStorage.setItem('currentUsername',res.data.userName)
+        localStorage.setItem('currentMailAddress',res.data.mail)
         authHeader();
-        console.log(localStorage.getItem('token'))
+    })
+}
+function facebooklogin(accessToken,userID){
+    axios({
+        method:"POST",
+        url:"http://localhost:5000/users/facebooklogin",
+        data: {
+            accessToken : accessToken, userID : userID
+        }
+    }).then(res => {
+        console.log(res)
+        localStorage.setItem('token',res.data.accessToken)
+        localStorage.setItem('currentUserId',res.data.userId)
+        localStorage.setItem('currentUsername',res.data.userName)
+        localStorage.setItem('currentMailAddress',res.data.mail)
+        authHeader();
     })
 }
 function login(username, password) {
@@ -47,11 +78,11 @@ function login(username, password) {
     axios.post(`http://localhost:5000/users/login`,data)
     .then(res=> {
         localStorage.setItem('token',res.data.accessToken)
-        localStorage.setItem('username',username)
-        localStorage.setItem('mailAddress',username)
-        localStorage.setItem('password',password)
+        localStorage.setItem('currentUserId',res.data.userId)
+        localStorage.setItem('currentUsername',res.data.userName)
+        localStorage.setItem('currentMailAddress',res.data.mail)
         authHeader();
-        console.log(localStorage.getItem('token'))
+
     })
     .catch(err=>{
         console.log(err+"err")
@@ -62,19 +93,25 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('token');
 }
+function refreshPage() {
 
-function getAll() {
+        window.location.reload(false);
+    }
+
+async function getUserImage(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
+    return await axios.get('http://localhost:5000/image/'+id,requestOptions)
+}
 
-    return axios.get(`http://localhost:5000/users`, requestOptions)
-    .then(res => {
-        console.log("success")
-        console.log(res.data)
-        res = res.data
-    })
+async function getAll() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get(`http://localhost:5000/users`, requestOptions)
 }
 
 function getProfile() {
@@ -82,9 +119,9 @@ function getProfile() {
         method: 'GET',
         headers: authHeader(),
     };
-    const result = axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('username'),requestOptions)
-    .then((res) =>  res.data)
-    return result
+        const result = axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('username'),requestOptions)
+        .then((res) =>  res.data)
+        return result
 }
 
 function register(user) {
@@ -119,9 +156,19 @@ function update(user) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
-
+    checkToken()
     return fetch(`http://localhost:5000/users/${user.id}`, requestOptions).then(handleResponse);;
 }
+function checkToken(){
+    const token = localStorage.getItem('token')
+    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
+    if (Date.now()>(decodedJwt.exp * 1000)){
+        logout()
+        refreshPage()
+    }
+}
+
+
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
@@ -129,8 +176,14 @@ function _delete(id) {
         method: 'DELETE',
         headers: authHeader()
     };
-
-    return fetch(`http://localhost:5000/users/${id}`, requestOptions).then(handleResponse);
+    const token = localStorage.getItem('token')
+    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
+    if (Date.now()>(decodedJwt.exp * 1000)){
+        logout()
+        refreshPage()
+    } else {
+        return fetch(`http://localhost:5000/users/${id}`, requestOptions).then(handleResponse);
+    }
 }
 
 function handleResponse(response) {

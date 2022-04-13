@@ -40,7 +40,10 @@ const Crud = () => {
 
     useEffect(() => {
         const productService = new ProductService();
-        productService.getProducts().then(data => setProducts(data));
+        productService.getProducts().then(data => {setProducts(data);
+        console.log(data)});
+        
+
     }, []);
 
     const formatCurrency = (value) => {

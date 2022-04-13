@@ -42,8 +42,9 @@ const userSchema = new Schema(
             ref: "UserRole",
         },
         img: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Image",
+            data: Buffer,
+            contentType: String,
+            imgName:String
         },
     },
     {
