@@ -20,14 +20,13 @@ const Compaign = props => (
     <td>{props.compaign.Status}</td>
     <td>
     <div className="actions">
-              <Link to={"/update/"+props.compaign._id}><Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" /></Link>
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => { props.deleteCompaign(props.compaign._id)}}/>
+    <Button label="Project"  icon="pi pi-plus" className="p-button-success mr-2" />
             </div>
     </td>
   </tr>
 )
 
-export default class CompaignList extends Component {
+export default class ListDeadline extends Component {
 
   
   
@@ -50,7 +49,7 @@ export default class CompaignList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/compaigns/')
+    axios.get('http://localhost:5000/compaigns/dedlaine')
       .then(response => {
         this.setState({ compaigns: response.data })
       })
@@ -102,14 +101,14 @@ export default class CompaignList extends Component {
   <Link to="/ADDCompaign"><Button label="New"  icon="pi pi-plus" className="p-button-success mr-2" /></Link>
   <Button label="Download" icon="pi pi-file-pdf" className="p-button-help" onClick={this.createAndDownloadPdf} />
   </div></div><div class="p-toolbar-group-right">
-  <Link to="/ListDeadline"><Button label="Dedlaine" icon="pi pi-angle-double-up" styleClass="ui-button-info"/> </Link>
+  <Link to="/compaignsList"><Button label="Campaigns" icon="pi pi-angle-double-up" styleClass="ui-button-info"/> </Link>
            </div></div>
         <div class="wrapper">
     <img class="search-icon"  src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2Ljk2NiA1Ni45NjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2Ljk2NiA1Ni45NjY7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4Ij4KPHBhdGggZD0iTTU1LjE0Niw1MS44ODdMNDEuNTg4LDM3Ljc4NmMzLjQ4Ni00LjE0NCw1LjM5Ni05LjM1OCw1LjM5Ni0xNC43ODZjMC0xMi42ODItMTAuMzE4LTIzLTIzLTIzcy0yMywxMC4zMTgtMjMsMjMgIHMxMC4zMTgsMjMsMjMsMjNjNC43NjEsMCw5LjI5OC0xLjQzNiwxMy4xNzctNC4xNjJsMTMuNjYxLDE0LjIwOGMwLjU3MSwwLjU5MywxLjMzOSwwLjkyLDIuMTYyLDAuOTIgIGMwLjc3OSwwLDEuNTE4LTAuMjk3LDIuMDc5LTAuODM3QzU2LjI1NSw1NC45ODIsNTYuMjkzLDUzLjA4LDU1LjE0Niw1MS44ODd6IE0yMy45ODQsNmM5LjM3NCwwLDE3LDcuNjI2LDE3LDE3cy03LjYyNiwxNy0xNywxNyAgcy0xNy03LjYyNi0xNy0xN1MxNC42MSw2LDIzLjk4NCw2eiIgZmlsbD0iIzAwMDAwMCIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
     <input class="search" onChange={this.searchHandel} placeholder="Search" type="text" />
     
   </div>  
-        <h3>Logged Campaigns</h3>
+        <h3>Logged Campaigns finished</h3>
         <table className="table" border ="2">
           <thead>
             <tr>

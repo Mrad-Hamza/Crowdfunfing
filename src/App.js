@@ -35,6 +35,8 @@ import Dashboard from "./components/Dashboard";
 import PrimeReact from "primereact/api";
 
 import { Tooltip } from "primereact/tooltip";
+
+import ListDeadline from "./pages/Compaigns/list-deadline";
 import Compaigns from "./pages/Compaigns/Compaigns";
 import CompaignsList from "./pages/Compaigns/list-Compaigns"
 import upadateCompaign from "./pages/Compaigns/Edit-Comapaign"
@@ -323,12 +325,13 @@ const App = () => {
                     <Route path="/empty" component={EmptyPage} />
 
                     <Route path="/crud" component={Crud} />
-
-
+                    
+                    {/* Route compaigns */}
                     <Route path="/compaigns" component={Compaigns} />
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
-                    <Route path="/ADD" component={addCompaign} />
+                    <Route path="/ADDCompaign" component={addCompaign} />
+                    <Route path="/ListDeadline" component={ListDeadline} />
                     {/* <Route path="/add" component={forumCreate}/> */}
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}

@@ -6547,7 +6547,7 @@
   dependencies:
     "minimist" "^1.2.6"
 
-"moment@^2.24.0", "moment@^2.29.0", "moment@^2.29.1":
+"moment@^2.24.0", "moment@^2.29.0", "moment@^2.29.1", "moment@^2.29.2":
   "integrity" "sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.2.tgz"
   "version" "2.29.2"
@@ -8085,6 +8085,22 @@
     "loose-envify" "^1.1.0"
     "object-assign" "^4.1.1"
 
+"react@^16.8.6":
+  "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
+  "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
+  "version" "16.14.0"
+  dependencies:
+    "loose-envify" "^1.1.0"
+    "object-assign" "^4.1.1"
+    "prop-types" "^15.6.2"
+
+"reactn@^1.0.0":
+  "integrity" "sha512-6i0KHxHZsIz3XNOHZe9LErrYMXMrADfAGzgNS3+Hd+BFTocJJb4f8myIZOvXCkrDGW0ALpqPnLjrFFwBUdmimA=="
+  "resolved" "https://registry.npmjs.org/reactn/-/reactn-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "use-force-update" "^1.0.0"
+
 "readable-stream@^2.0.1":
   "integrity" "sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw=="
   "resolved" "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.7.tgz"
@@ -9353,6 +9369,19 @@
   "version" "4.4.1"
   dependencies:
     "punycode" "^2.1.0"
+
+"use-force-update@^1.0.0":
+  "integrity" "sha512-k5dppYhO+I5X/cd7ildbrzeMZJkWwdAh5adaIk0qKN2euh7J0h2GBGBcB4QZ385eyHHnp7LIygvebdRx3XKdwA=="
+  "resolved" "https://registry.npmjs.org/use-force-update/-/use-force-update-1.0.7.tgz"
+  "version" "1.0.7"
+
+"use-history@^1.4.1":
+  "integrity" "sha512-uY12M/GI4c2AW/YR/1SLrveP407kLJnsvH42787QeT5PvVB5/TI1SJrPmTreC2dPMjeEywSAeqsXTqRMHl7F9Q=="
+  "resolved" "https://registry.npmjs.org/use-history/-/use-history-1.4.1.tgz"
+  "version" "1.4.1"
+  dependencies:
+    "react" "^16.8.6"
+    "reactn" "^1.0.0"
 
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
