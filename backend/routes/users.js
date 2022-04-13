@@ -103,10 +103,14 @@ router.post('/facebooklogin',(req,res) => {
                     let password= email+process.env.ACCES_TOKEN_SECRET
                     const username = name
                     const firstname = name
+                    const img = {
+                        contentType: 'image/png',
+                        imgName:"NoPic.png"
+                    }
                     const lastname = name
                     const mailAddress = email;
                     const roles = "62417c2021431e2b5efbfaea"
-                    const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+                    const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                     const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                     })
@@ -143,8 +147,12 @@ router.post('/googlelogin' , (req,res) => {
                         const firstname = given_name;
                         const lastname = family_name;
                         const mailAddress = email;
+                        const img = {
+                            contentType: 'image/png',
+                            imgName:"NoPic.png"
+                        }
                         const roles = "62417c2021431e2b5efbfaea"
-                        const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+                        const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
