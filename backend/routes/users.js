@@ -58,9 +58,8 @@ router.route('/add').post(upload.single('image'),(req, res) => {
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
   const img = {
-            data: fs.readFileSync(path.join(process.cwd() + '/../src/assets/layout/images/'+ req.file.originalname)),
             contentType: 'image/png',
-            imgName:req.file.originalname
+            imgName:"NoPic.png"
         }
   var roles = req.body.roles
   if (!roles){

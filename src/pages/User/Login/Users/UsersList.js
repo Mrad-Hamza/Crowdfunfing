@@ -98,7 +98,6 @@ const UsersList = () => {
             _user.roles="62417c2021431e2b5efbfaea"
             userService.addUser(_user)
             userService.getUserByMailOrUsername(user.mailAddress)
-            console.log(userService.getUserByMailOrUsername(user.mailAddress))
             _users.push(_user);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
 

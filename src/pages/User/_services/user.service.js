@@ -69,19 +69,32 @@ function facebooklogin(accessToken,userID){
         authHeader();
     })
 }
-function login(username, password) {
+async function login(username, password) {
     const data = {
         username : username,
         mailAddress : username,
         password : password
     }
-    axios.post(`http://localhost:5000/users/login`,data)
+    return await axios.post(`http://localhost:5000/users/login`,data)
     .then(res=> {
-        localStorage.setItem('token',res.data.accessToken)
-        localStorage.setItem('currentUserId',res.data.userId)
-        localStorage.setItem('currentUsername',res.data.userName)
-        localStorage.setItem('currentMailAddress',res.data.mail)
-        authHeader();
+        if(res.data==="Invalid details"){
+            return res.data
+        }
+        else if (res.data==="You failed too many times.") {
+            return res.data
+        }
+        else if (res.data ==="No User Found!") {
+            return res.data
+        }
+        else {
+            console.log(res)
+            localStorage.setItem('token',res.data.accessToken)
+            localStorage.setItem('currentUserId',res.data.userId)
+            localStorage.setItem('currentUsername',res.data.userName)
+            localStorage.setItem('currentMailAddress',res.data.mail)
+            authHeader();
+            return res.data
+        }
 
     })
     .catch(err=>{
