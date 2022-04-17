@@ -163,14 +163,14 @@ async function changePassword(mailAddress,password){
     return await axios.put('http://localhost:5000/users/PasswordUpdate/'+mailAddress+"/"+password,requestOptions)
 }
 
-function update(user) {
+async function update(user) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: user
     };
-    checkToken()
-    return fetch(`http://localhost:5000/users/${user.id}`, requestOptions).then(handleResponse);;
+    console.log(user)
+    return axios.put(`http://localhost:5000/users/update/${user._id}`, requestOptions)
 }
 function checkToken(){
     const token = localStorage.getItem('token')

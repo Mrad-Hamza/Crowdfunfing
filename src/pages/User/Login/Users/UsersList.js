@@ -4,16 +4,12 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
-import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton } from 'primereact/radiobutton';
-import { InputNumber } from 'primereact/inputnumber';
+
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { userService } from '../../_services';
-import { roleService } from '../../_services';
 
 const UsersList = () => {
     let emptyUser = {
@@ -25,17 +21,15 @@ const UsersList = () => {
         lockUntil: 0,
         img:null,
         loginAttempts: 0,
-        roles: 0,
+        roles: null,
     };
 
     const [userDialog, setUserDialog] = useState(false);
     const [deleteUserDialog, setDeleteUserDialog] = useState(false);
     const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
-    const [product, setProduct] = useState(emptyUser);
     const [user,setUser] = useState(emptyUser)
     const [addUser,setAddUser] = useState(emptyUser)
     const [users, setUsers] = useState(null);
-    const [users2, setUsers2] = useState(null);
     const [selectedUsers, setSelectedUsers] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -48,7 +42,7 @@ const UsersList = () => {
             getListFunction()
         },100)
     },[])
-    useEffect(()=>{
+    /*useEffect(()=>{
         setTimeout(() => {
             users.map((user)=>{
             if (user.roles) {
@@ -61,7 +55,7 @@ const UsersList = () => {
             setUsers(users)
         }, 100);
 
-    },[users])
+    },[users])*/
 
     const getListFunction = () =>{
         const res = userService.getAll()
@@ -93,18 +87,22 @@ const UsersList = () => {
 
     const saveUser = () => {
         setSubmitted(true);
-            let _users = [...users];
-            let _user = { ...addUser };
-            _user.roles="62417c2021431e2b5efbfaea"
+        let _users = [...users];
+        let _user = { ...addUser };
+        _user.roles="Simple User"
+        if (_user._id) {
+            userService.update(_user)
+            const index = findIndexById(_user._id);
+            _users[index] = _user;
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+        } else {
             userService.addUser(_user)
-            userService.getUserByMailOrUsername(user.mailAddress)
             _users.push(_user);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
-
-
-            setUsers(_users);
-            setUserDialog(false);
-            setUser(emptyUser);
+        }
+        setUsers(_users);
+        setUserDialog(false);
+        setUser(emptyUser);
 
     }
 
@@ -112,7 +110,6 @@ const UsersList = () => {
         const res = userService.getUserImage(user.img)
                 res.then((value)=>{
                     user.img = value.data.img.imgName
-                    console.log(value.data.img.imgName)
                     })
     }
 
@@ -138,7 +135,7 @@ const UsersList = () => {
     const findIndexById = (id) => {
         let index = -1;
         for (let i = 0; i < users.length; i++) {
-            if (users[i].id === id) {
+            if (users[i]._id === id) {
                 index = i;
                 break;
             }
@@ -185,16 +182,13 @@ const UsersList = () => {
         const val = (e.target && e.target.value) || '';
         let _user = { ...addUser };
         _user[`${username}`] = val;
-
         setAddUser(_user);
-        console.log(addUser)
     }
 
     const onInputNumberChange = (e, name) => {
         const val = e.value || 0;
         let _user = { ...user };
         _user[`${name}`] = val;
-
         setUser(_user);
     }
 
@@ -217,9 +211,6 @@ const UsersList = () => {
             </React.Fragment>
         )
     }
-
-
-
     const codeBodyTemplate = (rowData) => {
         return (
             <>
@@ -342,6 +333,7 @@ const UsersList = () => {
                     </DataTable>
 
                     <Dialog visible={userDialog} style={{ width: '450px' }} header="Add/Update User" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+
                         <div className="field">
                             <label htmlFor="username">Username</label>
                             <InputText id="username" value={addUser.username} onChange={(e) => onInputChange(e, 'username')} required autoFocus className={classNames({ 'p-invalid': submitted && !addUser.name })} />
@@ -367,8 +359,6 @@ const UsersList = () => {
                             <InputText id="password" onChange={(e) => onInputChange(e, 'password')} required rows={3} cols={20} />
                             {submitted && !addUser.password && <small className="p-invalid">Password is required.</small>}
                         </div>
-
-
                     </Dialog>
 
                     <Dialog visible={deleteUserDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteUserDialog}>

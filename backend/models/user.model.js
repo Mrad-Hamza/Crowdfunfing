@@ -38,8 +38,9 @@ const userSchema = new Schema(
         loginAttempts: { type: Number, required: true, default: 0 },
         lockUntil: { type: Number },
         roles: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserRole",
+            type : String,
+            enum : ['Simple User','Admin','Financial','Super Admin'],
+            default : 'Simple User'
         },
         img: {
             data: Buffer,
