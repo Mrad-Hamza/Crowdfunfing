@@ -16,9 +16,26 @@ export const userService = {
     update,
     changePassword,
     forgotpassword,
+    addUserImage,
     delete: _delete
 };
 
+async function addUserImage(image){
+    let formData = new FormData()
+        let idUser = localStorage.getItem("currentUserId")
+    formData.append('image',image)
+    formData.append('data',idUser)
+    console.log(formData)
+    console.log(idUser)
+    const headers = {
+        method : 'PUT',
+        'Content-Type': 'multipart/form-data',
+        data : {
+            id: idUser
+        }
+    }
+    return await axios.put('http://localhost:5000/users/addUserImage',formData)
+}
 
 async function addUser(user) {
         return await axios.post('http://localhost:5000/users/add',user)
@@ -127,12 +144,12 @@ async function getAll() {
     return await axios.get(`http://localhost:5000/users`, requestOptions)
 }
 
-function getProfile() {
+async function getProfile() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(),
     };
-        const result = axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('username'),requestOptions)
+        const result =  await axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('currentMailAddress'),requestOptions)
         .then((res) =>  res.data)
         return result
 }
@@ -169,7 +186,6 @@ async function update(user) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: user
     };
-    console.log(user)
     return axios.put(`http://localhost:5000/users/update/${user._id}`, requestOptions)
 }
 function checkToken(){

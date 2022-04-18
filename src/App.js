@@ -89,7 +89,7 @@ const App = () => {
         setTimeout(() => {
             userService.checkToken()
             console.log("token test")
-        }, 180000);
+        }, 160000);
     })
 
     useEffect(() => {

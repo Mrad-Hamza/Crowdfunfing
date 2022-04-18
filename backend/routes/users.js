@@ -36,17 +36,17 @@ router.route('/').get((req, res) => {
 
 router.route('/addUserImage').put(upload.single('image'),(req, res) => {
     const image = {
-            contentType: 'image/png',
-            imgName:req.file.originalname
+            contentType: 'image/*',
+            imgName:req.file.filename
         }
-      User.findByIdAndUpdate(req.body.id)
-      .then(user=>{
-          console.log(user)
-          user.img=image
-          user.save()
-          .then(()=>res.json('Image added to user haha'))
-            .catch(err => res.status(400).json('Error: ' + err));
-      })
+    console.log(req.body.data)
+    User.findByIdAndUpdate(req.body.data)
+    .then(user=>{
+        user.img=image
+        user.save()
+        .then(()=>res.json('Image added to user haha'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
 });
 
 router.route('/add').post(upload.single('image'),(req, res) => {
