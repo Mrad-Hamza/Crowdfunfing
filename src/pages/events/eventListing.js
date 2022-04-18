@@ -1,5 +1,7 @@
-import React , {useEffect} from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { Button } from "primereact/button";
+
 import { Paginator } from "primereact/paginator";
 import { Link } from "react-router-dom";
 
@@ -17,21 +19,24 @@ const EventListing = () => {
             console.log("Err", err);
         });
         console.log("ekhdem");
-       dispatch(setEvents(response.data));
+        dispatch(setEvents(response.data));
     };
     useEffect(() => {
         fetchEvents();
     }, []);
     console.log(events);
 
-    
     return (
-        <div>
-            <Link to="/create-event">
-                <button>zigei</button>
-            </Link>
+        <div className="card">
+            <React.Fragment>
+                <div className="my-2">
+                    <Link to="/create-event">
+                        <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" />
+                    </Link>
+                </div>
+            </React.Fragment>
 
-            <div className="card grid">
+            <div className=" grid">
                 <EventComponent />
             </div>
         </div>

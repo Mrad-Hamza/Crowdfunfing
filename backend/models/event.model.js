@@ -37,10 +37,15 @@ const eventSchema = new Schema(
         location: {
             type: String,
         },
+        eventImage: {
+            // type: String
+            contentType:String,
+            imgName:String
+        },
         eventType: {
             type: String,
             //required: true,
-            enum: Object.values(EventType),
+            // enum: Object.values(EventType),
         },
         commentEvents: [
             {

@@ -48,6 +48,7 @@ import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
 import createEventForm from "./pages/events/createEventForm";
+import SingleEvent from "./pages/events/SingleEvent";
 import statisticsEvent from "./pages/events/statisticsEvent";
 import eventListing from "./pages/events/eventListing"
 // import showEvents from "./pages/events/showEvents";
@@ -307,53 +308,53 @@ const App = () => {
 
     if (token) {
          return (
-         <div className={wrapperClass} onClick={onWrapperClick}>
-            <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
+             <div className={wrapperClass} onClick={onWrapperClick}>
+                 <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                 <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
 
-            <div className="layout-sidebar" onClick={onSidebarClick}>
-                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
-            </div>
+                 <div className="layout-sidebar" onClick={onSidebarClick}>
+                     <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+                 </div>
 
-            <div className="layout-main-container">
-                <div className="layout-main">
-                    <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-                    <Route path="/timeline" component={TimelineDemo} />
-                    <Route path="/empty" component={EmptyPage} />
+                 <div className="layout-main-container">
+                     <div className="layout-main">
+                         <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                         <Route path="/timeline" component={TimelineDemo} />
+                         <Route path="/empty" component={EmptyPage} />
 
-                    <Route path="/crud" component={Crud} />
+                         <Route path="/crud" component={Crud} />
 
+                         <Route path="/compaigns" component={Compaigns} />
+                         <Route path="/compaignsList" component={CompaignsList} />
+                         <Route path="/update/:id" component={upadateCompaign} />
+                         <Route path="/ADD" component={addCompaign} />
 
-                    <Route path="/compaigns" component={Compaigns} />
-                    <Route path="/compaignsList" component={CompaignsList} />
-                    <Route path="/update/:id" component={upadateCompaign} />
-                    <Route path="/ADD" component={addCompaign} />
+                         <Route path="/UsersList" component={UsersList} />
+                         {/* <Route path="/projects" component={Projects} /> */}
+                         <Route path="/events" exact component={Events} />
+                         <Route path="/create-event" component={createEventForm} />
+                         <Route path="/statistcs" component={statisticsEvent} />
+                         <Route path="/showEvents" component={eventListing} />
+                         <Route path="/updateEvent/:idEvent" component={SingleEvent} />
+                         <Route path="/events/:_id" component={EventDetail} />
+                         <Route path="/projects" exact component={ProjectListing} />
+                         <Route path="/projects/:_id" component={ProjectDetails} />
+                         <Route path="/forums" exact component={ForumListing} />
+                         <Route path="/comment" component={ForumsComment} />
+                         <Route path="/edit/:_id" component={updateForum} />
+                         <Route path="/add" component={forumCreate} />
+                     </div>
+                     <AppFooter layoutColorMode={layoutColorMode} />
+                 </div>
 
-                    <Route path="/UsersList" component={UsersList} />
-                    {/* <Route path="/projects" component={Projects} /> */}
-                    <Route path="/events" exact component={Events} />
-                    <Route path="/create-event" component={createEventForm} />
-                    <Route path="/statistcs"  component={statisticsEvent} />
-                    <Route path="/showEvents" component={eventListing} />
-                    <Route path="/events/:_id" component={EventDetail}/>
-                    <Route path="/projects" exact component={ProjectListing} />
-                    <Route path="/projects/:_id" component={ProjectDetails} />
-                    <Route path="/forums" exact component={ForumListing} />
-                    <Route path="/comment" component={ForumsComment}/>
-                    <Route path="/edit/:_id" component={updateForum}/>
-                    <Route path="/add" component={forumCreate}/>
-                </div>
-                <AppFooter layoutColorMode={layoutColorMode} />
-            </div>
+                 <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
-            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
-
-            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
-                <div className="layout-mask p-component-overlay"></div>
-            </CSSTransition>
-        </div>
-    );
+                 <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                     <div className="layout-mask p-component-overlay"></div>
+                 </CSSTransition>
+             </div>
+         );
 
 }
     else {

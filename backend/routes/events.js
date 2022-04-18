@@ -1,6 +1,18 @@
 const router = require("express").Router();
 let Event = require("../models/event.model");
 const moment = require("moment");
+const multer = require ("multer")
+
+const storage = multer.diskStorage({
+    destination:(req,file,callback)=>{
+        callback(null,"../public/uploads");
+    },
+    filename:(req,file,callback)=>{
+        callback(null,file.originalname);
+    }
+})
+const upload = multer({storage:storage})
+
 //View all events
 router.route("/").get((req, res) => {
     Event.find()
@@ -9,16 +21,24 @@ router.route("/").get((req, res) => {
 });
 
 //add events
-router.route("/createEvent").post((req, res) => {
+router.route("/createEvent").post(upload.single("eventImage"),(req, res) => {
     const nameEvent = req.body.nameEvent;
     const startDateEvent = req.body.startDateEvent;
     const endDateEvent = req.body.endDateEvent;
     const descriptionEvent = req.body.descriptionEvent;
     //const nbrplace = req.body.nbrplace;
     const urlEvent = req.body.urlEvent;
-
     const location = req.body.location;
-    //const eventType = req.body.eventType;
+    //const eventImage = req.body.eventImage
+    const eventImage = {
+        contentType: "image/png",
+        imgName: req.file.originalname,
+            // imgName:"logo.png"
+        
+    };
+
+    // const eventImage = req.file.eventImage
+    const eventType = req.body.eventType;
 
     const newEvent = new Event({
         nameEvent,
@@ -28,6 +48,8 @@ router.route("/createEvent").post((req, res) => {
         //nbrplace,
         location,
         urlEvent,
+        eventImage,
+        eventType
     });
     newEvent
         .save()
@@ -50,7 +72,7 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 //update event
-router.route("/update/:id").put((req, res) => {
+router.route("/update/:id").put(upload.single("eventImage"),(req, res) => {
     Event.findById(req.params.id)
         .then((event) => {
             event.nameEvent = req.body.nameEvent;
@@ -60,6 +82,11 @@ router.route("/update/:id").put((req, res) => {
             //event.nbrplace = req.body.nbrplace;
             event.urlEvent = req.body.urlEvent;
             event.location = req.body.location;
+            event.eventImage = {
+                contentType: "image/png",
+                imgName: req.file.originalname,
+                // imgName:"logo.png"
+            };
             event.eventType = req.body.eventType;
             event
                 .save()

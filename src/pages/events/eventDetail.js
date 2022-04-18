@@ -16,26 +16,27 @@ import { deleteEventAction} from "../../features/actions/eventActions";
 
 import { RemoveSelectedEvent, selectedEvent } from "../../features/actions/eventActions";
 
-const EventDetail = () => {
+const EventDetail = ({ history }) => {
     const event = useSelector((state) => state.event);
-    const {id,  nameEvent, descriptionEvent, urlEvent, startDateEvent, endDateEvent, location, eventType } = event;
- const eventDelete = useSelector((state) => state.noteDelete);
- //const { , error: errorDelete, success: successDelete } = eventDelete;
+    const { id, nameEvent, descriptionEvent, urlEvent, startDateEvent, endDateEvent, location, eventType } = event;
+    const eventDelete = useSelector((state) => state.noteDelete);
+    //const { , error: errorDelete, success: successDelete } = eventDelete;
     const { _id } = useParams();
     const dispatch = useDispatch();
     console.log(_id);
-    
+
     const fetchProductDetail = async () => {
         const response = await axios.get(`http://localhost:5000/events/${_id}`).catch((err) => {
             console.log("Err", err);
         });
         dispatch(selectedEvent(response.data));
     };
-     const deleteHandler = (id) => {
-         if (window.confirm("Are you sure?")) {
-             dispatch(deleteEventAction(id));
-         }
-     };
+    const deleteHandler = (id) => {
+        if (window.confirm("Are you sure?")) {
+            dispatch(deleteEventAction(id));
+        }
+        history.push("/showEvents");
+    };
 
     const header = <img alt="Card" src="images/usercard.png" onError={(e) => (e.target.src = "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")} />;
     const footer = (
@@ -83,7 +84,9 @@ const EventDetail = () => {
                             </div>
                         </div>
                         <span className="p-buttonset ">
-                            <Button href={`/event/${_id}`} className="p-button-rounded p-button-warning " label="Edit" icon="pi pi-check" />
+                            <Link to={`/updateEvent/${_id}`}>
+                                <Button className="p-button-rounded p-button-warning " label="Edit" icon="pi pi-check" />
+                            </Link>
                             <Button onClick={() => deleteHandler(_id)} className="p-button-rounded p-button-danger" label="Delete" icon="pi pi-trash" />
                         </span>
                     </Card>
