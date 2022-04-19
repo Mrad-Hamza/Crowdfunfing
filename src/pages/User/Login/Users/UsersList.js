@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
-
+import { Dropdown } from 'primereact/dropdown';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { userService } from '../../_services';
@@ -34,14 +34,21 @@ const UsersList = () => {
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [isVisible, setIsVisible] = useState(true);
+    const [dropdownValue, setDropdownValue] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const dropdownValues = [
+        { name: 'Simple User', code: 'Simple User' },
+        { name: 'Admin', code: 'Admin' },
+        { name: 'Financial', code: 'Financial' }
+    ];
 
     useEffect(() => {
         setTimeout(()=>{
             getListFunction()
         },100)
     },[])
+
     /*useEffect(()=>{
         setTimeout(() => {
             users.map((user)=>{
@@ -89,7 +96,6 @@ const UsersList = () => {
         setSubmitted(true);
         let _users = [...users];
         let _user = { ...addUser };
-        _user.roles="Simple User"
         if (_user._id) {
             userService.update(_user)
             const index = findIndexById(_user._id);
@@ -112,7 +118,6 @@ const UsersList = () => {
                     user.img = value.data.img.imgName
                     })
     }
-
 
     const editUser = (user) => {
         setAddUser({ ...user });
@@ -176,12 +181,19 @@ const UsersList = () => {
         setUser(_user);
     }
 
-
     const onInputChange = (e, username) => {
         const val = (e.target && e.target.value) || '';
         let _user = { ...addUser };
-        _user[`${username}`] = val;
+        if (username==='roles') {
+            setDropdownValue(e.value)
+            _user[`${username}`] = val.name;
+            console.log(dropdownValue)
+        }
+        else {
+            _user[`${username}`] = val;
+        }
         setAddUser(_user);
+        console.log(_user)
     }
 
     const onInputNumberChange = (e, name) => {
@@ -352,6 +364,11 @@ const UsersList = () => {
                             <label htmlFor="lastname">Lastname</label>
                             <InputText id="lastname" value={addUser.lastname} onChange={(e) => onInputChange(e, 'lastname')} required rows={3} cols={20} />
                             {submitted && !addUser.lastname && <small className="p-invalid">Lastname is required.</small>}
+                        </div>
+                        <div className="field">
+                            <label htmlFor="lastname">Role</label>
+                            <Dropdown value={dropdownValue} onChange={(e) => onInputChange(e,'roles')} options={dropdownValues} optionLabel="name" placeholder="Select" />
+                            {submitted && !addUser.roles && <small className="p-invalid">Role is required.</small>}
                         </div>
                         <div className="field">
                             <label htmlFor="password">Password</label>

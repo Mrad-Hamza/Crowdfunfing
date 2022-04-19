@@ -89,10 +89,11 @@ router.post('/facebooklogin',(req,res) => {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
+                        console.log(user)
                         return res.json({accessToken : accessToken,
                             userId : user.id,
                             userName : user.username,
-                            mail : user.mailAddres
+                            mail : user.mailAddress
                         })
                     }
                 else {
