@@ -13,3 +13,16 @@
     display: flex;
     justify-items: flex-end;
 }
+
+.projectdisplay{
+    display: flex;
+    justify-content: space-between;
+}
+.ff{
+    display: flex;
+    justify-content: center;
+}
+.cc{
+    background:seagreen !important;
+    border-top: burlywood !important;
+}

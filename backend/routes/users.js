@@ -36,19 +36,17 @@ router.route('/').get((req, res) => {
 
 router.route('/addUserImage').put(upload.single('image'),(req, res) => {
     const image = {
-            contentType: 'image/png',
-            imgName:req.file.originalname
+            contentType: 'image/*',
+            imgName:req.file.filename
         }
-      User.findByIdAndUpdate(req.body.id)
-      .then(user=>{
-          console.log(user)
-          user.img=image
-          user.save()
-          .then(()=>res.json('Image added to user haha'))
-            .catch(err => res.status(400).json('Error: ' + err));
-      })
-
-
+    console.log(req.body.data)
+    User.findByIdAndUpdate(req.body.data)
+    .then(user=>{
+        user.img=image
+        user.save()
+        .then(()=>res.json('Image added to user haha'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
 });
 
 router.route('/add').post(upload.single('image'),(req, res) => {
@@ -58,13 +56,12 @@ router.route('/add').post(upload.single('image'),(req, res) => {
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
   const img = {
-            data: fs.readFileSync(path.join(process.cwd() + '/../src/assets/layout/images/'+ req.file.originalname)),
             contentType: 'image/png',
-            imgName:req.file.originalname
+            imgName:"NoPic.png"
         }
   var roles = req.body.roles
   if (!roles){
-      roles = "62417c2021431e2b5efbfaea"
+      roles = 'Simple User'
   }
   const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
 
@@ -92,10 +89,11 @@ router.post('/facebooklogin',(req,res) => {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
+                        console.log(user)
                         return res.json({accessToken : accessToken,
                             userId : user.id,
                             userName : user.username,
-                            mail : user.mailAddres
+                            mail : user.mailAddress
                         })
                     }
                 else {
@@ -109,7 +107,7 @@ router.post('/facebooklogin',(req,res) => {
                     }
                     const lastname = name
                     const mailAddress = email;
-                    const roles = "62417c2021431e2b5efbfaea"
+                    const roles = 'Simple User'
                     const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                     const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
@@ -151,7 +149,7 @@ router.post('/googlelogin' , (req,res) => {
                             contentType: 'image/png',
                             imgName:"NoPic.png"
                         }
-                        const roles = "62417c2021431e2b5efbfaea"
+                        const roles = 'Simple User'
                         const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
@@ -173,7 +171,7 @@ router.get('/profile/:search', protect, (req,res) => {
     .then(user => res.json(user))
 })
 
-router.get('/:search', (req,res) => {
+router.get('/search/:search', (req,res) => {
   User.findOne({$or:[
      {'username': req.params.search},
      {'mailAddress': req.params.search}
@@ -182,6 +180,8 @@ router.get('/:search', (req,res) => {
 })
 
 router.route('/:id').get((req, res) => {
+    console.log(req.params.id)
+    console.log("rzst")
   User.findById(req.params.id)
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -217,13 +217,15 @@ router.route('/:id').delete((req, res) => {
 });
 
 router.route('/update/:id').put((req, res) => {
-  User.findById(req.params.id)
+  User.findByIdAndUpdate(req.params.id)
     .then(user => {
-      user.username = req.body.username;
-      user.firstname = req.body.firstname;
-      user.lastname = req.body.lastname;
-      user.mailAddress = req.body.mailAddress;
-      user.password = req.body.password;
+      user.username = req.body.body.username;
+      user.firstname = req.body.body.firstname;
+      user.lastname = req.body.body.lastname;
+      user.mailAddress = req.body.body.mailAddress;
+      user.password = req.body.body.password;
+      user.roles = req.body.body.roles;
+      user.img = req.body.body.img;
       user.save()
         .then(() => res.json('User updated!'))
         .catch(err => res.status(400).json('Error: ' + err));

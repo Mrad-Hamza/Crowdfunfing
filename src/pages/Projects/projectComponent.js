@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "primereact/button";
 import "./projects.css";
 import logo from "../../assets/layout/images/project-logo.png";
 
@@ -22,12 +21,6 @@ const ProjectComponent = () => {
                             </div>
                         </Link>
                     </div>
-                    {/* <div className="flex align-items-center justify-content-between">
-                        <Button icon="pi pi-star-fill" label="I'm Interested" />
-                        <Button icon="pi pi-share-alt" />
-
-                        {/* <Button icon="pi pi-shopping-cart" /> */}
-                    {/* </div> */}
                 </div>
             </div>
         );
