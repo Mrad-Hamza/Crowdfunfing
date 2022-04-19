@@ -86,7 +86,7 @@ export default class AddCompaign extends Component {
       deadline: this.state.deadline,
       Verified: this.state.Verified,
       Status: this.state.Status,
-      //user:localStorage.getItem('currentUserId')
+      user:localStorage.getItem('currentUserId')
 }
 
 console.log(compaign);
