@@ -10,6 +10,15 @@ router.route('/').get((req, res) => {
 
 
 
+router.route('/dedlaine').get((req, res) => {
+  Compaign.find({ deadline: { $lte: '2022-04-13'} })
+  .then(Compaigns => res.json(Compaigns))
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+  
+
+
+
 router.route('/pdf').get((req, res) => {
     res.sendFile(`${__dirname}/result.pdf`)
   });
@@ -103,6 +112,7 @@ router.get("/search/:key",async (req,res)=>{
 
 const pdf = require('html-pdf');
 const pdfTemplate = require('./documents');
+const { dateFnsLocalizer } = require('react-big-calendar');
 
 
 
