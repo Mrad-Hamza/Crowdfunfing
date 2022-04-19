@@ -18,7 +18,7 @@ import Dashboard from "../../../../../components/Dashboard";
 
 export function ForgotPasswordOneForm(props) {
     const { switchToSignup } = useContext(AccountContext);
-        const { switchToSignin } = useContext(AccountContext);
+    const { switchToSignin } = useContext(AccountContext);
     const [mailAddress,setmailAddress] = useState('')
     const [password,setPassword] = useState('')
     const [passwordConfirm,setPasswordConfirm] = useState('')

@@ -41,14 +41,18 @@ const BackDrop = styled(motion.div)`
     transform: rotate(60deg);
     top: -290px;
     left: -70px;
-    background: rgb(241, 196, 15);
-    background: linear-gradient(58deg, rgba(241, 196, 15, 1) 20%, rgba(243, 172, 18, 1) 100%);
+    background: rgb(168, 168, 168);
+    background: linear-gradient(58deg, rgba(168, 168, 168, 1) 20%, rgba(168, 168, 168, 1) 100%);
 `;
 
 const HeaderContainer = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
 `;
 
 const HeaderText = styled.h2`
@@ -138,8 +142,7 @@ export function AccountBox(props) {
                     <BackDrop initial={false} animate={isExpanded ? "expanded" : "collapsed"} variants={backdropVariants} transition={expandingTransition} />
                     {active === "signin" && (
                         <HeaderContainer>
-                            <HeaderText>Login</HeaderText>
-                            <HeaderText>Now</HeaderText>
+                            <HeaderText>Login now</HeaderText>
                             <SmallText>Please sign-in to continue!</SmallText>
                         </HeaderContainer>
                     )}
