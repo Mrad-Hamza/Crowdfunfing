@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
 import axios from "axios";
 
+import { createEventAction } from "../../features/actions/eventActions";
 
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,13 +67,14 @@ function FormLayoutDemo({ history }) {
         setlocation("");
         seturlEvent("");
     };
-    // const submitHandler = (e) => {
-    //     e.preventDefault();
-    //     dispatch(createEventAction(nameEvent, startDateEvent, endDateEvent, descriptionEvent, location, urlEvent));
-    //     if (!nameEvent || !startDateEvent || !endDateEvent || !descriptionEvent || !location || !urlEvent) return;
-    //     resetHandler();
-    //     history.push("/showEvents");
-    // };
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(createEventAction(nameEvent, startDateEvent, endDateEvent, descriptionEvent, location, urlEvent));
+        if (!nameEvent || !startDateEvent || !endDateEvent || !descriptionEvent || !location || !urlEvent) return;
+        resetHandler();
+        history.push("/showEvents");
+    };
 
     useEffect(() => {}, []);
 

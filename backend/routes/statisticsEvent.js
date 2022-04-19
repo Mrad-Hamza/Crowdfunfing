@@ -22,6 +22,11 @@ router.route("/onlineEvent").get((req, res, next) => {
         .catch((err) => next(err));
 });
 
+router.route("/Type").get((req, res, next) => {
+    Event.aggregate([{ $group: { _id: "$eventType", events: { $sum: 1 } } }])
+        .then((events) => res.json(events))
+        .catch((err) => next(err));
+});
 
 router.route("/Date").get((req, res, next) => {
     Event.aggregate([{ $group: { _id: "$startDateEvent", events: { $sum: 1 } } }])
