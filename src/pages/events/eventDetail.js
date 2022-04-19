@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { TabView, TabPanel } from "primereact/tabview";
-import { GMap } from "primereact/gmap";
 import { InputTextarea } from "primereact/inputtextarea";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";

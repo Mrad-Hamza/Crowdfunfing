@@ -245,8 +245,8 @@ const App = () => {
                     icon: "pi pi-fw pi-calendar",
                     items: [
                         { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
-                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
-                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Create an Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
+                        { label: "Events", icon: "pi pi-fw pi-book", to: "/showEvents" },
                         { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },

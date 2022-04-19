@@ -64,3 +64,4 @@ export const eventDeleteReducer = (state = {}, action) => {
             return state;
     }
 };
+

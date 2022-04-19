@@ -58,6 +58,7 @@ const eventSchema = new Schema(
         timestamps: true,
     }
 );
+eventSchema.index({ nameEvent: "text" });
 
 const Event = mongoose.model("Event", eventSchema);
 

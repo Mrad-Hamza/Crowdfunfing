@@ -104,5 +104,32 @@ router.get("/search/:key", async (req, resp) => {
 });
 
 
+router.post("/search/", async (req, res)  => {
+    const { type, query } = req.body;
+    try {
+        let events; 
+        switch (type) {
+            case "text":
+                events = await Event.find({ $text: { $search: query } });
+                break;
+            case "eventType":
+                events = await Event.find({ $eventType: query });
+                break;
+            default: console.log("zefbeh");
+        }
+        if (!events.length > 0) {
+            events = await Event.find({});
+        }
+
+        res.json({ events });
+    } catch (err) {
+        console.log(err, "filter Controller.searchByQueryType error");
+        res.status(500).json({
+            errorMessage: "Please try again later",
+        });
+    }
+});
+
+
 
 module.exports = router;

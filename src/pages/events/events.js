@@ -1,9 +1,6 @@
 import React, { useEffect , Component} from "react";
 import axios from "axios";
-import format from "date-fns/format";
-import getDay from "date-fns/getDay";
-import parse from "date-fns/parse";
-import startOfWeek from "date-fns/startOfWeek";
+
 import { useSelector, useDispatch } from "react-redux";
 import { setEvents } from "../../features/actions/eventActions";
 import { Calendar, momentLocalizer } from "react-big-calendar";
@@ -13,46 +10,31 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 //import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import "./App.scss";
 
-// const events = () => {
-//     return <div>events</div>;
-// };
 
-// const locales = {
-//     "ar-TN": require("date-fns/locale/ar-TN"),
-// };
 
-// const localizer = dateFnsLocalizer({
-//     format,
-//     parse,
-//     startOfWeek,
-//     getDay,
-//     locales,
-// });
 
-// const eventsexamples = [
-//     {
-//         title: "Big Meeting",
-//         allDay: true,
-//         start: new Date(2022, 6, 0),
-//         end: new Date(2022, 6, 0),
-//     },
-//     {
-//         title: "Vacation",
-//         start: new Date(2022, 6, 0),
-//         end: new Date(2022, 6, 0),
-//     },
-//     {
-//         title: "Conference",
-//         start: new Date(2022, 6, 0),
-//         end: new Date(2022, 6, 0),
-//     },
-// ];
+const eventsexamples = [
+    {
+        title: "Big Meeting",
+        allDay: true,
+        start: new Date(2022, 6, 0),
+        end: new Date(2022, 6, 0),
+    },
+    {
+        title: "Vacation",
+        start: new Date(2022, 6, 0),
+        end: new Date(2022, 6, 0),
+    },
+    {
+        title: "Conference",
+        start: new Date(2022, 6, 0),
+        end: new Date(2022, 6, 0),
+    },
+];
 
 //function Events() {
     
-//     const events = useSelector((state) => state);
 
 //     const dispatch = useDispatch();
 //     const fetchEvents = async () => {
@@ -91,29 +73,32 @@ const myEventsList = {}; //empty object for now
 
 class Events extends Component {
     constructor(props) {
- super(props);
- this.state = {
-     cal_events: [],
- };    }
+        super(props);
+        this.state = {
+            cal_events: [],
+        };
+    }
+
     componentDidMount() {
-  let self = this;
+        let self = this;
+        axios
+            .get("http://localhost:5000/events/")
+            .then((response) => {
+                let events = response.data;
+                console.log(response.data.nameEvent);
 
-         axios
-             .get("http://localhost:5000/events/")
-             .then((response) => {
-                 let appointments = response.data;
-
-                 for (let i = 0; i < appointments.length; i++) {
-                     appointments[i].start = moment.utc(appointments[i].start).toDate();
-                     appointments[i].end = moment.utc(appointments[i].end).toDate();
-                 }
-                 self.setState({
-                     cal_events: appointments,
-                 });
-             })
-             .catch(function (error) {
-                 console.log(error);
-             });
+                for (let i = 0; i < events.length; i++) {
+                   events[i].start = moment.utc(events[i].start).toDate();
+                    events[i].end = moment.utc(events[i].end).toDate();
+                }
+                console.log(events.nameEvent);
+                self.setState({
+                    cal_events: events,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
     render() {
         const { cal_events } = this.state;

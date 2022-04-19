@@ -2,12 +2,10 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
-import { FileUpload } from "primereact/fileupload";
 import axios from "axios";
 
 
 import { Form } from "react-bootstrap";
-import { createEventAction } from "../../features/actions/eventActions";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "primereact/radiobutton";
 
@@ -27,10 +25,7 @@ function FormLayoutDemo({ history }) {
     const [descriptionEvent, setdescriptionEvent] = useState("");
     const [urlEvent, seturlEvent] = useState("");
     const [location, setlocation] = useState("");
-    const [eventImage, seteventImage] = useState("");
     const [eventType, seteventType] = useState("");
-
-    const [radioValue, setRadioValue] = useState(null);
 
 
     const dispatch = useDispatch();
@@ -81,12 +76,7 @@ function FormLayoutDemo({ history }) {
 
     useEffect(() => {}, []);
 
-    // const showSuccess = () => {
-    //     toast.current.show({ severity: "success", summary: "Success Message", detail: "Message Detail", life: 3000 });
-    // };
-    // const onUpload = () => {
-    //     toast.current.show({ severity: "info", summary: "Success", detail: "File Uploaded", life: 3000 });
-    // };
+    
 
     return (
         <div className="grid">
@@ -100,7 +90,6 @@ function FormLayoutDemo({ history }) {
                             <br />
                             <div>
                                 <InputText id="name1" type="text" required value={nameEvent} placeholder="Enter the name" onChange={(e) => setnameEvent(e.target.value)} />
-                                {/* <Message severity="error" text="Username is required" /> */}
                             </div>
                         </div>
                         <div className="grid">
@@ -108,7 +97,6 @@ function FormLayoutDemo({ history }) {
                                 <label htmlFor="startDate">Start Date</label>
                                 <br />
                                 <br />
-                                {/* <DateTimePicker showIcon showButtonBar></DateTimePicker> */}
                                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                                     <DateTimePicker
                                         renderInput={(params) => <TextField {...params} />}
@@ -118,7 +106,6 @@ function FormLayoutDemo({ history }) {
                                         }}
                                     />
                                 </LocalizationProvider>
-                                {/* <Calendar showIcon showButtonBar></Calendar> */}
                             </div>
                             <br />
                             <div className="col-12 md:col-6">
@@ -134,7 +121,6 @@ function FormLayoutDemo({ history }) {
                                         }}
                                     />
                                 </LocalizationProvider>
-                                {/* <Calendar showIcon showButtonBar></Calendar> */}
                             </div>
                         </div>
                         <br />
@@ -152,10 +138,7 @@ function FormLayoutDemo({ history }) {
                             <br />
                             <InputText id="url" type="text" required value={urlEvent} onChange={(e) => seturlEvent(e.target.value)} />
                         </div>
-                        {/* <label htmlFor="description">Type</label> */}
 
-                        {/* <h5>Upload Image</h5>
-                        <FileUpload name="demo[]" onUpload={onUpload} value={eventImage} multiple accept="image/*" maxFileSize={1000000} /> */}
                         <div>
                             <label htmlFor="file">choose image</label>
                             <br />

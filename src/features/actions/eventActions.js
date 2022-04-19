@@ -1,6 +1,5 @@
 import { eventActionsTypes } from "../constants/eventActionsTypes";
 import axios from "axios";
-import URL from "../../features/constants/service.constants";
 
 export const setEvents = (events) => {
     return {
@@ -113,6 +112,25 @@ export const updateEventAction = (id,nameEvent, startDateEvent, endDateEvent, de
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         dispatch({
             type: eventActionsTypes.EVENTS_UPDATE_FAIL,
+            payload: message,
+        });
+    }
+};
+
+export const getEventsByFilter = (arg) => async (dispatch) => {
+    try {
+        const response = await axios.post("http://localhost:5000/events/search", arg);
+
+        dispatch({
+            type: eventActionsTypes.FETCH_EVENTS,
+            payload: response.data.events,
+        });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+
+        console.log("getEventsByFilter api error: ", error);
+        dispatch({
+            type: eventActionsTypes.ERROR,
             payload: message,
         });
     }
