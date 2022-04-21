@@ -8,7 +8,7 @@ const ComplaintType = Object.freeze({
 
 const complaintTaskSchema = new Schema(
     {
-        complaintProjectTitle: {
+        complaintTaskTitle: {
             type: String,
             required: true,
             minlength: [10, "complaint title Minimum 10 charachters."],

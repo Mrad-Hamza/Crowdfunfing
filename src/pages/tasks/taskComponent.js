@@ -15,6 +15,7 @@ const TaskComponent = () => {
     const handleClick = () => {
         setOpen(!open);
     };
+
     const tasks = useSelector((state) => state.tasks.tasks);
     const renderList = tasks.map((task) => {
         const { _id, taskName, taskDescription, taskType, project } = task;

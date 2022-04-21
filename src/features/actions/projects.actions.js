@@ -14,5 +14,18 @@ export const selectedProject = (project) => {
         payload: project,
     };
 };
+export const setTasks = (tasks) => {
+    return {
+        type: ActionsTypes.SET_TASKS,
+        payload: tasks,
+    };
+};
+
+export const selectedTask = (task) => {
+    return {
+        type: ActionsTypes.SELECTED_TASK,
+        payload: task,
+    };
+};
 
 //export const fetchProjects = () => action(ActionTypes.FETCH_PROJECTS.request);
