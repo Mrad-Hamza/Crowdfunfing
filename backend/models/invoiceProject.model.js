@@ -3,12 +3,11 @@ const Schema = mongoose.Schema;
 
 const invoiceProjectSchema = new Schema(
     {
-        invoiceFile: {
+        invoiceName: {
             type: String,
         },
-        invoiceDate: {
-            type: Date,
-            required: true,
+        invoiceFile: {
+            type: String,
         },
         project: {
             type: Schema.Types.ObjectId,

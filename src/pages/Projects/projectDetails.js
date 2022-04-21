@@ -11,8 +11,6 @@ import StarBorder from "@mui/icons-material/StarBorder";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-// import TaskListing from "../tasks/taskListing";
-import TaskComponent from "../tasks/taskComponent";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
@@ -42,14 +40,14 @@ const ProjectDetails = () => {
         dispatch(selectedProject(result.data));
     };
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
         setOpen(!open);
     };
 
     const fetchTasks = async () => {
-        const result = await axios.get(URL.baseApiUrl + URL.tasks.gettaskbyidproject + `/${_id}`).catch((err) => {
+        const result = await axios.get(URL.baseApiUrl + URL.tasks.getTaskByProjectId + `/${_id}`).catch((err) => {
             console.log("Err", err);
         });
 
@@ -83,7 +81,7 @@ const ProjectDetails = () => {
                                 <div className="ff">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {projectName} : {projectCollectedAmount}
+                                            {projectName} : {projectCollectedAmount} DT
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {projectDescription}
@@ -91,7 +89,6 @@ const ProjectDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            {/* <div className="surface-card p-4 shadow-2 border-round mt-1"> */}
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 {tasksList.map((task) => {
                                     return (
@@ -114,22 +111,19 @@ const ProjectDetails = () => {
                                     );
                                 })}
                             </List>
-                            {/* </div> */}
                         </div>
                         <div className="container col-3">
                             <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
-                                <div style={{ height: "140px" }} className="border-2 border-dashed surface-border">
-                                    <div className="font-medium text-500 my-2">
-                                        <CardMedia component="img" height="70" image={pdf} alt="logo" />
-                                    </div>
-                                    <div className="ff">
-                                        <Button icon="pi pi-download" label="Download" className="cc" />
-                                    </div>
+                                {/* <div style={{ height: "140px" }} className="border-2 border-dashed surface-border"> */}
+                                <div className="font-medium text-500 my-2">
+                                    <CardMedia component="img" height="70" image={pdf} alt="logo" />
                                 </div>
+                                <div className="ff">
+                                    <Button icon="pi pi-download" label="Download" className="cc" />
+                                </div>
+                                {/* </div> */}
                             </div>
-                            <div className="surface-card p-4 shadow-2 border-round my-2">
-                                <div style={{ height: "250px" }} className="border-2 border-dashed surface-border"></div>
-                            </div>
+                            <div className="surface-card p-4 shadow-2 border-round my-2">{/* <div style={{ height: "250px" }} className="border-2 border-dashed surface-border"></div> */}</div>
                         </div>
                     </div>
                 </div>
