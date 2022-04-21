@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
 import "./projects.css";
-import {projectService} from "./projectService";
+import { projectService } from "./projectService";
 import logo from "../../assets/layout/images/project-logo.png";
 
 const ProjectComponent = () => {
@@ -12,6 +12,7 @@ const ProjectComponent = () => {
     const renderList = projects.map((project) => {
         const deleteUser = () => {
             projectService.delete(project._id);
+            window.location.reload(false);
         };
         const { _id, projectName, image } = project;
         return (

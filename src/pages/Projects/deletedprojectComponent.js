@@ -12,6 +12,7 @@ const DeletedProjectComponent = () => {
     const renderList = projects.map((project) => {
         const activateUser = () => {
             projectService.activate(project._id);
+            window.location.reload(false);
         };
         const { _id, projectName, image } = project;
         return (
@@ -23,7 +24,7 @@ const DeletedProjectComponent = () => {
                         <div className="flex align-items-center justify-content-between">
                             <div className="d-flex col-12 button-container">
                                 <div className="row col-12">
-                                    <Button icon="pi pi-undo" className="button" label="Activate" onClick={activateUser}/>
+                                    <Button icon="pi pi-undo" className="button" label="Activate" onClick={activateUser} />
                                 </div>
                             </div>
                             {/* <Button icon="pi pi-shopping-cart" /> */}
