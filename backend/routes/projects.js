@@ -40,15 +40,15 @@ router.route("/active/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//add method
+//add
 router.route("/add").post(upload.single("image"), (req, res) => {
     const projectName = req.body.projectName;
     const projectDescription = req.body.projectDescription;
     const projectType = "in progress";
     const projectCollectedAmount = req.body.projectCollectedAmount;
     const status = "ON";
-    const image = req.file.filename;
-    // const compaign = req.params.id;
+    const image = "bg.png";
+    const compaign = req.body.compaign;
 
     const newProject = new Project({
         projectName,
@@ -57,13 +57,13 @@ router.route("/add").post(upload.single("image"), (req, res) => {
         projectCollectedAmount,
         image,
         status,
-        // compaign,
+        compaign,
     });
-    if (req.file) {
-        newProject.image = req.file.filename;
-    }
+    // if (req.file) {
+    //     newProject.image = req.file.filename;
+    // }
     console.log(newProject);
-    console.log(req.file);
+    console.log(req);
     newProject
         .save()
         .then(() => res.json("Project added!"))

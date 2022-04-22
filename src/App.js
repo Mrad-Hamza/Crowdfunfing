@@ -323,7 +323,6 @@ const App = () => {
                         <Route path="/ListDeadline" component={ListDeadline} />
                         {/* <Route path="/add" component={forumCreate}/> */}
                         <Route path="/UsersList" component={UsersList} />
-                        {/* <Route path="/projects" component={Projects} /> */}
                         <Route path="/events" exact component={Events} />
                         <Route path="/create-event" component={createEventForm} />
                         <Route path="/statistcs" component={statisticsEvent} />
@@ -331,7 +330,7 @@ const App = () => {
                         <Route path="/events/:_id" component={EventDetail} />
                         <Route path="/projects" exact component={ProjectListing} />
                         <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
-                        <Route path="/projects/:_id" component={ProjectDetails} />
+                        <Route path="/projects/:_id" exact component={ProjectDetails} />
                         <Route path="/projects/add/:_id" component={ProjectAdd} />
                         <Route path="/forums" exact component={ForumListing} />
                         <Route path="/comment" component={ForumsComment} />

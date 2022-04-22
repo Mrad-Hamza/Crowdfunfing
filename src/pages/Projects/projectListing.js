@@ -41,7 +41,7 @@ const ProjectListing = () => {
             <Grid container className="projects-list-container" columns={{ xs: 8, md: 8, lg: 12 }}>
                 <ProjectComponent />
             </Grid>
-            <Pagination count={10} variant="outlined" color="primary" />
+            {/* <Pagination count={10} variant="outlined" color="primary" /> */}
         </div>
     );
 };

@@ -1,84 +1,173 @@
-import React, { Component } from "react";
-import axios from "axios";
-import "react-datepicker/dist/react-datepicker.css";
-import URL from "../../features/constants/services.constants";
-import { users } from "../User/_reducers/users.reducer";
+import React, { useState } from "react";
+import { BoxContainer, FormContainer, Input, SubmitButton } from "../User/Login/UserLogin/accountBox/common";
+import { Marginer } from "../User/Login/UserLogin/marginer";
+import { projectService } from "../../pages/User/_services/project.service";
+import { useParams } from "react-router-dom";
 
-export default class AddProject extends Component {
-    constructor(props) {
-        super(props);
-
-        this.onChangeprojectName = this.onChangeprojectName.bind(this);
-        this.onChangeprojectDescription = this.onChangeprojectDescription.bind(this);
-        this.onChangeprojectCollectedAmount = this.onChangeprojectCollectedAmount.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-
-        this.state = {
-            projectName: "",
-            projectDescription: "",
-            projectCollectedAmount: "",
-            compaign: "6256c4cb47d815717428d8f4",
-        };
-    }
-
-    onChangeprojectName(e) {
-        this.setState({
-            projectName: e.target.value,
-        });
-    }
-    onChangeprojectDescription(e) {
-        this.setState({
-            projectDescription: e.target.value,
-        });
-    }
-    onChangeprojectCollectedAmount(e) {
-        this.setState({
-            projectCollectedAmount: e.target.value,
-        });
-    }
-
-    onSubmit(e) {
+function ProjectAdd(props) {
+    const { _id } = useParams();
+    const [state, setState] = useState({ projectName: "", projectDescription: "", projectCollectedAmount: "", compaign: _id });
+    state.compaign = _id;
+    const showResponse = (response) => {
+        console.log(response);
+        //call to a backend to verify against recaptcha with private key
+    };
+    const handleChange = (e) => {
         e.preventDefault();
+        const { name, value } = e.target;
+        if (name === "projectName") {
+            setState((prevState) => {
+                return { ...prevState, projectName: value };
+            });
+        } else if (name === "projectDescription") {
+            setState((prevState) => {
+                return { ...prevState, projectDescription: value };
+            });
+        } else if (name === "projectCollectedAmount") {
+            setState((prevState) => {
+                return { ...prevState, projectCollectedAmount: value };
+            });
+        } else if (name === "compaign") {
+            setState((prevState) => {
+                return { ...prevState, _id };
+            });
+        }
+    };
 
-        const project = {
-            projectName: this.state.projectName,
-            projectDescription: this.state.projectDescription,
-            projectCollectedAmount: this.state.projectCollectedAmount,
-            compaign: this.state.compaign,
-            //user:localStorage.getItem('currentUserId')
-        };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(_id);
+        console.log(state);
+        if (state.projectName && state.projectDescription && state.projectCollectedAmount && state.compaign) {
+            projectService.addProject(state);
+        }
+    };
 
-        console.log(project);
-
-        axios.post(URL.baseApiUrl + URL.projects.addProject + `/"6256c4cb47d815717428d8f4"`).then((res) => console.log(res.data));
-        window.location = "/projects";
-    }
-
-    render() {
-        return (
-            <div class="form-style-5">
-                <h3>Creat New Compaign Log</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Project name: </label>
-                        <input type="text" required className="form-control" value={this.state.projectName} onChange={this.onChangeprojectName} />
-                    </div>
-
-                    <div className="form-group">
-                        <label>Description: </label>
-                        <input type="text" required className="form-control" value={this.state.projectDescription} onChange={this.onChangeprojectDescription} />
-                    </div>
-
-                    <div className="form-group">
-                        <label>project CollectedAmount: </label>
-                        <input type="number" required className="form-control" value={this.state.projectCollectedAmount} onChange={this.onChangeprojectCollectedAmount} />
-                    </div>
-
-                    <div className="form-group">
-                        <input type="submit" value="ADD" className="btn btn-primary" />
-                    </div>
-                </form>
+    return (
+        <div>
+            <h3>Creat New Project</h3>
+            <div className="form-group col-6 add-form">
+                <BoxContainer>
+                    <FormContainer>
+                        <Input id="projectName" name="projectName" type="text" placeholder="Name" onChange={handleChange} className="mb-2" />
+                        <Input id="projectDescription" name="projectDescription" type="text" placeholder="Description" onChange={handleChange} className="mb-2" />
+                        <Input id="projectCollectedAmount" name="projectCollectedAmount" type="number" placeholder="Collected amount" onChange={handleChange} />
+                    </FormContainer>
+                    <Marginer direction="vertical" margin={10} />
+                    <SubmitButton type="submit" onClick={handleSubmit}>
+                        Add new project
+                    </SubmitButton>
+                </BoxContainer>
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+// import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+// import { Button } from "primereact/button";
+// import { useSelector, useDispatch } from "react-redux";
+// import { useParams } from "react-router-dom";
+// import { selectedCompaign } from "../../features/actions/projects.actions";
+// // import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../features/actions/projects.actions";
+// import URL from "../../features/constants/services.constants";
+// import axios from "axios";
+// import "./projects.css";
+
+// const ProjectAdd = () => {
+//     // const dispatch = useDispatch();
+//     const [projectData, setProjectData] = useState(""  );
+//         // { projectName: "", projectDescription: "", projectCollectedAmount: 0 }
+
+//     console.log("projectData", projectData);
+//     const { _id } = useParams();
+//     const handleProjectData = (e) => {
+//         console.log(e);
+//         const { name, value } = e.target;
+//         setProjectData()
+//         // setProjectData((state) => ({
+//         //     ...state,
+//         //     [name]: value,
+//         // }));
+//     };
+//     // Add project id to the body
+//     useEffect(() => {
+//         if (_id && _id !== "") {
+//             setProjectData((state) => ({
+//                 ...state,
+//                 compaign: _id,
+//             }));
+//         }
+//     }, [_id]);
+
+//     const addProject = async () => {
+//         const result = await axios
+//             .post(URL.baseApiUrl + URL.projects.addProject, projectData)
+//             .then((res) => {
+//                 console.log("project added!");
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             });
+
+//         return result;
+//     };
+
+//     return (
+//         <div onClick={() => console.log("hello")}>
+//             <h3>Creat New Project</h3>
+//             <form>
+//                 <div className="form-group">
+//                     <label>Project name: </label>
+//                     <input type="text" required className="fp" name="projectName" value={projectData.projectName} onChange={(e) => handleProjectData(e)} />
+//                 </div>
+
+//                 <div className="form-group">
+//                     <label>Description: </label>
+//                     <input type="text" required className="k" name="projectDescription" value={projectData.projectDescription} onChange={(e) => handleProjectData(e)} />
+//                 </div>
+
+//                 <div className="form-group">
+//                     <label>project CollectedAmount: </label>
+//                     <input type="number" required className="l" name="projectCollectedAmount" value={projectData.projectCollectedAmount} onChange={(e) => handleProjectData(e)} />
+//                 </div>
+//                 <div className="form-group">
+//                     <button onClick={() => console.log("hello")}>test</button>
+//                     {/* <input type="submit" value="ADD" className="btn btn-primary" onSubmit={() => console.log("here")} /> */}
+//                     {/* <Button icon="pi pi-trash" className="button ml-1 col-5" label="Add" onClick={() => console.log("here")} /> */}
+//                 </div>
+//             </form>
+//         </div>
+//         // <div>
+//         //     <div>
+//         //         <div className="form-style-5">
+//         //             <h3>Creat New Project</h3>
+//         //             <form>
+//         //                 <div className="form-group">
+//         //                     <label>Project name: </label>
+//         //                     <input type="text" required className="fp" name="projectName" value={projectData.projectName} onChange={(e) => handleProjectData(e)} />
+//         //                 </div>
+
+//         //                 <div className="form-group">
+//         //                     <label>Description: </label>
+//         //                     <input type="text" required className="k" name="projectDescription" value={projectData.projectDescription} onChange={(e) => handleProjectData(e)} />
+//         //                 </div>
+
+//         //                 <div className="form-group">
+//         //                     <label>project CollectedAmount: </label>
+//         //                     <input type="number" required className="l" name="projectCollectedAmount" value={projectData.projectCollectedAmount} onChange={(e) => handleProjectData(e)} />
+//         //                 </div>
+//         //                 <div className="form-group">
+//         //                     <button onClick={() => console.log("hello")}>test</button>
+//         //                     {/* <input type="submit" value="ADD" className="btn btn-primary" onSubmit={() => console.log("here")} /> */}
+//         //                     {/* <Button icon="pi pi-trash" className="button ml-1 col-5" label="Add" onClick={() => console.log("here")} /> */}
+//         //                 </div>
+//         //             </form>
+//         //         </div>
+//         //     </div>
+//         //     {/* )} */}
+//         // </div>
+//     );
+// };
+
+export default ProjectAdd;

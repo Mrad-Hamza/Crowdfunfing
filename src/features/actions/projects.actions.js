@@ -1,6 +1,12 @@
 //import { action } from "typesafe-actions";
 import { ActionsTypes } from "../constants/projects.action.types";
 
+export const selectedCompaign = (compaign) => {
+    return {
+        type: ActionsTypes.SELECTED_COMPAIGN,
+        payload: compaign,
+    };
+};
 export const setProjects = (projects) => {
     return {
         type: ActionsTypes.SET_PROJECTS,
