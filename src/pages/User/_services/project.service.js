@@ -6,8 +6,15 @@ export const projectService = {
 };
 
 async function addProject(project) {
+    let formData = new FormData();
+    formData.append("projectName", project.projectName);
+    formData.append("projectDescription", project.projectDescription);
+    formData.append("projectCollectedAmount", project.projectCollectedAmount);
+    formData.append("compaign", project.compaign);
+    formData.append("image", project.image);
+    console.log(formData);
     return await axios
-        .post("http://localhost:5000/projects/add", project)
+        .post("http://localhost:5000/projects/add", formData)
         .then((res) => {
             console.log("project added!");
         })

@@ -42,12 +42,13 @@ router.route("/active/:id").get((req, res) => {
 
 //add
 router.route("/add").post(upload.single("image"), (req, res) => {
+    console.log(req.body);
     const projectName = req.body.projectName;
     const projectDescription = req.body.projectDescription;
     const projectType = "in progress";
     const projectCollectedAmount = req.body.projectCollectedAmount;
     const status = "ON";
-    const image = "bg.png";
+    const image = req.file.filename;
     const compaign = req.body.compaign;
 
     const newProject = new Project({
