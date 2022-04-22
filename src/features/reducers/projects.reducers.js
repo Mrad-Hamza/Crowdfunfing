@@ -2,6 +2,8 @@ import { ActionsTypes } from "../constants/projects.action.types";
 const initialState = {
     projects: [],
     tasksList: [],
+    invoiceProjectList: [],
+    complaintProjectList: [],
 };
 export const projectReducer = (state = initialState, { type, payload }) => {
     switch (type) {
@@ -9,7 +11,10 @@ export const projectReducer = (state = initialState, { type, payload }) => {
             return { ...state, projects: payload };
         case ActionsTypes.SET_TASKS:
             return { ...state, tasksList: payload };
-
+        case ActionsTypes.SET_INVOICEPROJECTS:
+            return { ...state, invoiceProjectList: payload };
+        case ActionsTypes.SET_COMPLAINTPROJECTS:
+            return { ...state, complaintProjectList: payload };
         default:
             return state;
     }

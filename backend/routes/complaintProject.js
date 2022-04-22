@@ -17,22 +17,29 @@ router.route("/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//getByIdProject method
+router.route("/all/:id").get((req, res) => {
+    Complaint.find({ project: req.params.id })
+        .then((complaints) => res.json(complaints))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add method
-router.route("/add").post((req, res) => {
+router.route("/add/:id").post((req, res) => {
     const complaintProjectTitle = req.body.complaintProjectTitle;
     const complaintDescription = req.body.complaintDescription;
-    const complaintType = req.body.complaintType;
-    const projectId = req.body.project;
-    const userId = req.body.user;
-    const user = User.findById(userId);
-    const project = Project.findById(projectId);
+    const complaintType = "in progress";
+    const project = req.params.id;
+    // const userId = req.body.user;
+    // const user = User.findById(userId);
+    // const project = Project.findById(projectId);
 
     const newComplaint = new Complaint({
         complaintProjectTitle,
         complaintDescription,
         complaintType,
         project,
-        user,
+        // user,
     });
     newComplaint
         .save()

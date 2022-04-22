@@ -14,8 +14,12 @@ const URL = {
         getTaskByProjectId: `/tasks/all`,
     },
     invoiceProjects: {
-        fetchInvoiceProjects: `/invoiceProjects/`,
-        getInvoiceByProjectId: `/invoiceProjects/all`,
+        fetchInvoiceProjects: `/invoiceProject/`,
+        getInvoiceByProjectId: `/invoiceProject/all`,
+    },
+    complaintProjects: {
+        fetchComplaintProject: `/complaintProject/`,
+        getComplaintByProjectId: `/complaintProject/all`,
     },
 };
 

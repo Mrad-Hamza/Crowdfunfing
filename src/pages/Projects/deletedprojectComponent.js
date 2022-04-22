@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
 import { projectService } from "./projectService";
 import "./projects.css";
-import logo from "../../assets/layout/images/project-logo.png";
 
 const DeletedProjectComponent = () => {
     const projects = useSelector((state) => state.projects.projects);

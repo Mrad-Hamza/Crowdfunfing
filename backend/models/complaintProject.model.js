@@ -26,12 +26,10 @@ const complaintProjectSchema = new Schema(
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",
-            required: true,
         },
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: true,
         },
     },
     {

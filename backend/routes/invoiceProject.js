@@ -34,6 +34,13 @@ router.route("/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//getByIdProject method
+router.route("/all/:id").get((req, res) => {
+    InvoiceProject.find({ project: req.params.id })
+        .then((invoices) => res.json(invoices))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add method (fonctionnel)
 router.route("/add/:id").post(upload.single("invoiceFile"), (req, res) => {
     const invoiceName = req.body.invoiceName;

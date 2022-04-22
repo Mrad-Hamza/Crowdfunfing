@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import CommentIcon from "@mui/icons-material/Comment";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DownloadIcon from "@mui/icons-material/Download";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -14,24 +19,26 @@ import Typography from "@mui/material/Typography";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
-import { setTasks } from "../../features/actions/projects.actions";
+import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../features/actions/projects.actions";
 import { Button } from "primereact/button";
 import URL from "../../features/constants/services.constants";
 import axios from "axios";
-// import logo from "../../assets/layout/images/project-logo.png";
-import pdf from "../../assets/layout/images/pdf.png";
 import "./projects.css";
 
 const ProjectDetails = () => {
     const dispatch = useDispatch();
     const project = useSelector((state) => state.project);
     const tasksList = useSelector((state) => state.projects.tasksList);
+    const invoiceProjectList = useSelector((state) => state.projects.invoiceProjectList);
+    const complaintProjectList = useSelector((state) => state.projects.complaintProjectList);
     const { projectName, projectDescription, projectCollectedAmount, image } = project;
     // const img = "../../assets/layout/images/" + image;
     const { _id } = useParams();
     //console.log(_id);
     console.log(project);
     console.log("tasksList:", tasksList);
+    console.log("invoiceProjectList:", invoiceProjectList);
+    console.log("complaintProjectList:", complaintProjectList);
 
     const fetchProjectDetails = async () => {
         const result = await axios.get(URL.baseApiUrl + URL.projects.fetchProjects + `/${_id}`).catch((err) => {
@@ -54,10 +61,42 @@ const ProjectDetails = () => {
         dispatch(setTasks(result.data));
     };
 
+    const [checked, setChecked] = React.useState([0]);
+
+    const handleToggle = (value) => () => {
+        const currentIndex = checked.indexOf(value);
+        const newChecked = [...checked];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        setChecked(newChecked);
+    };
+    const fetchInvoiceProjects = async () => {
+        const result = await axios.get(URL.baseApiUrl + URL.invoiceProjects.getInvoiceByProjectId + `/${_id}`).catch((err) => {
+            console.log("Err", err);
+        });
+
+        dispatch(setInvoiceProjects(result.data));
+    };
+
+    const fetchComplaintProjects = async () => {
+        const result = await axios.get(URL.baseApiUrl + URL.complaintProjects.getComplaintByProjectId + `/${_id}`).catch((err) => {
+            console.log("Err", err);
+        });
+
+        dispatch(setComplaintProjects(result.data));
+    };
+
     useEffect(() => {
         if (_id && _id !== "") {
             fetchProjectDetails();
             fetchTasks();
+            fetchInvoiceProjects();
+            fetchComplaintProjects();
         }
     }, [_id]);
 
@@ -91,39 +130,81 @@ const ProjectDetails = () => {
                             </div>
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 {tasksList.map((task) => {
-                                    return (
-                                        <div key={task._id}>
-                                            <ListItemButton onClick={handleClick}>
-                                                <ListItemText primary={task.taskName} />
-                                                {open ? <ExpandLess /> : <ExpandMore />}
-                                            </ListItemButton>
-                                            <Collapse in={open} timeout="auto" unmountOnExit>
-                                                <List component="div" disablePadding>
-                                                    <ListItemButton sx={{ pl: 4 }}>
-                                                        <ListItemIcon>
-                                                            <StarBorder />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={task.taskDescription} />
-                                                    </ListItemButton>
-                                                </List>
-                                            </Collapse>
-                                        </div>
-                                    );
+                                    if (task) {
+                                        return (
+                                            <div key={task._id}>
+                                                <ListItemButton onClick={handleClick}>
+                                                    <ListItemText primary={task.taskName} />
+                                                    {open ? <ExpandLess /> : <ExpandMore />}
+                                                </ListItemButton>
+                                                <Collapse in={open} timeout="auto" unmountOnExit>
+                                                    <List component="div" disablePadding>
+                                                        <ListItemButton sx={{ pl: 4 }}>
+                                                            <ListItemIcon>
+                                                                <StarBorder />
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={task.taskDescription} />
+                                                        </ListItemButton>
+                                                    </List>
+                                                </Collapse>
+                                            </div>
+                                        );
+                                    } else {
+                                        return <ListItemText primary="No task for this project" />;
+                                    }
                                 })}
                             </List>
                         </div>
                         <div className="container col-3">
                             <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
-                                {/* <div style={{ height: "140px" }} className="border-2 border-dashed surface-border"> */}
-                                <div className="font-medium text-500 my-2">
-                                    <CardMedia component="img" height="70" image={pdf} alt="logo" />
-                                </div>
-                                <div className="ff">
-                                    <Button icon="pi pi-download" label="Download" className="cc" />
-                                </div>
-                                {/* </div> */}
+                                {invoiceProjectList.map((invoiceProject) => {
+                                    if (invoiceProject)
+                                        return (
+                                            <div key={invoiceProject._id}>
+                                                <div className="ff">
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h6" component="div">
+                                                            {invoiceProject.invoiceName}
+                                                            <IconButton edge="end" aria-label="delete">
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                            <IconButton edge="end" aria-label="download">
+                                                                <DownloadIcon />
+                                                            </IconButton>
+                                                            <CardMedia component="img" height="70" image={require("../../assets/layout/images/" + invoiceProject.invoiceFile)} alt="logo" />
+                                                        </Typography>
+                                                    </CardContent>
+                                                </div>
+                                            </div>
+                                        );
+                                    else {
+                                        return <div className="font-medium text-500 my-2">test</div>;
+                                    }
+                                })}
                             </div>
-                            <div className="surface-card p-4 shadow-2 border-round my-2">{/* <div style={{ height: "250px" }} className="border-2 border-dashed surface-border"></div> */}</div>
+                            <div className="surface-card p-4 shadow-2 border-round my-2">
+                                <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+                                    {complaintProjectList.map((complaintProject) => {
+                                        const labelId = `checkbox-list-label-${complaintProject._id}`;
+
+                                        return (
+                                            <ListItem
+                                                key={complaintProject._id}
+                                                secondaryAction={
+                                                    <IconButton edge="end" aria-label="comments">
+                                                        <CommentIcon />
+                                                    </IconButton>
+                                                }
+                                                disablePadding
+                                            >
+                                                <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                    <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                </ListItemButton>
+                                            </ListItem>
+                                        );
+                                    })}
+                                </List>
+                            </div>
                         </div>
                     </div>
                 </div>
