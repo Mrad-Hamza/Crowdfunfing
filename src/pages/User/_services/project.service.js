@@ -12,6 +12,7 @@ async function addProject(project) {
     formData.append("projectCollectedAmount", project.projectCollectedAmount);
     formData.append("compaign", project.compaign);
     formData.append("image", project.image);
+    formData.append("user", project.user);
     console.log(formData);
     return await axios
         .post("http://localhost:5000/projects/add", formData)

@@ -50,6 +50,7 @@ router.route("/add").post(upload.single("image"), (req, res) => {
     const status = "ON";
     const image = req.file.filename;
     const compaign = req.body.compaign;
+    const user = req.body.user;
 
     const newProject = new Project({
         projectName,
@@ -59,6 +60,7 @@ router.route("/add").post(upload.single("image"), (req, res) => {
         image,
         status,
         compaign,
+        user,
     });
     // if (req.file) {
     //     newProject.image = req.file.filename;

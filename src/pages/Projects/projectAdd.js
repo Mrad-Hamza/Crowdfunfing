@@ -9,8 +9,8 @@ import { FileUpload } from "primereact/fileupload";
 function ProjectAdd(props) {
     const { _id } = useParams();
     let history = useHistory();
-  
-    const [state, setState] = useState({ projectName: "", projectDescription: "", projectCollectedAmount: "", compaign: _id, image: "bg.png" });
+
+    const [state, setState] = useState({ projectName: "", projectDescription: "", projectCollectedAmount: "", compaign: _id, image: "bg.png", user: localStorage.getItem("currentUserId") });
     state.compaign = _id;
     const showResponse = (response) => {
         console.log(response);
@@ -51,7 +51,7 @@ function ProjectAdd(props) {
     const onUpload = (e) => {
         console.log(e.files[0]);
         setState((prevState) => {
-            return { ...prevState, image: e.files[0] };
+            return { ...prevState, image: e.files[0] ,};
         });
     };
 
