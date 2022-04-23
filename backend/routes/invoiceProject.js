@@ -36,7 +36,7 @@ router.route("/:id").get((req, res) => {
 
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
-    InvoiceProject.find({ project: req.params.id })
+    InvoiceProject.find({ project: req.params.id, status: "ON" })
         .then((invoices) => res.json(invoices))
         .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -64,7 +64,31 @@ router.route("/add").post(upload.single("invoiceFile"), (req, res) => {
         .then(() => res.json("Invoice project added!"))
         .catch((err) => res.status(400).json("Error: " + err));
 });
+//Archive method
+router.route("/archive/:id").put((req, res) => {
+    InvoiceProject.findById(req.params.id)
+        .then((invoice) => {
+            invoice.status = "OFF";
+            invoice
+                .save()
+                .then(() => res.json("invoice archived!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
 
+//Activate method
+router.route("/activate/:id").put((req, res) => {
+    InvoiceProject.findById(req.params.id)
+        .then((invoice) => {
+            invoice.status = "ON";
+            invoice
+                .save()
+                .then(() => res.json("invoice activated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
 //update method
 router.route("/update/:id").put((req, res) => {
     InvoiceProject.findById(req.params.id)

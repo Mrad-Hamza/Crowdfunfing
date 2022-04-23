@@ -10,7 +10,7 @@ const ProjectComponent = () => {
     const projects = useSelector((state) => state.projects.projects);
 
     const renderList = projects.map((project) => {
-        const deleteUser = () => {
+        const deleteProject = () => {
             projectService.delete(project._id);
             window.location.reload(false);
         };
@@ -27,7 +27,7 @@ const ProjectComponent = () => {
                                     <Button icon="pi pi-info-circle" className="button col-5" label="Show" />
                                 </Link>
 
-                                <Button icon="pi pi-trash" className="button ml-1 col-5" label="Delete" onClick={deleteUser} />
+                                <Button icon="pi pi-trash" className="button ml-1 col-5" label="Delete" onClick={deleteProject} />
 
                                 <Link to={`/projects/${_id}`}>
                                     <Button icon="pi pi-pencil" className="button col-5 mt-1" label="Update" />
