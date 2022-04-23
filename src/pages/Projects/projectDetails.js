@@ -108,7 +108,7 @@ const ProjectDetails = () => {
                 <div>
                     <div className="projectdisplay">
                         <div
-                            className="container col-9"
+                            className="container col-8"
                             style={{
                                 backgroundImage: "../../assets/layout/images/" + image,
                             }}
@@ -129,7 +129,13 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                <div style={{ maxHeight: "270px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }}>
+                                Add new task
+                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
+                                    <IconButton edge="end" aria-label="plus">
+                                        <AddIcon />
+                                    </IconButton>
+                                </Link>
+                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }}>
                                     {tasksList.map((task) => {
                                         if (task) {
                                             return (
@@ -157,7 +163,7 @@ const ProjectDetails = () => {
                                 </div>
                             </List>
                         </div>
-                        <div className="container col-3">
+                        <div className="container col-4">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
                                 Add new invoice
                                 <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
@@ -166,37 +172,30 @@ const ProjectDetails = () => {
                                     </IconButton>
                                 </Link>
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }}>
-                                    {invoiceProjectList.map((invoiceProject) => {
-                                        const labelId = `checkbox-list-label-${invoiceProject._id}`;
-                                        if (invoiceProject)
-                                            return (
-                                                <div style={{ width: "200px", maxWidth: "100%", display: "flex", alignItems: "center", marginTop: "0px" }}>
-                                                    <div key={invoiceProject._id}>
-                                                        <div className="ff">
-                                                            <CardContent style={({ height: "20px" }, { width: "100%" })}>
-                                                                <ListItem
-                                                                    key={invoiceProject._id}
-                                                                    secondaryAction={
-                                                                        <IconButton edge="end" aria-label="download">
-                                                                            <DownloadIcon />
-                                                                        </IconButton>
-                                                                    }
-                                                                    disablePadding
-                                                                    style={{ height: "2px" }}
-                                                                >
-                                                                    <ListItemButton role={undefined} onClick={handleToggle(invoiceProject.invoiceName)} dense className="mr-4">
-                                                                        <ListItemText id={labelId} primary={invoiceProject.invoiceName} className="INV" />
-                                                                    </ListItemButton>
-                                                                </ListItem>
-                                                            </CardContent>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        else {
-                                            return <div className="font-medium text-500 my-2">test</div>;
-                                        }
-                                    })}
+                                    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+                                        {invoiceProjectList.map((invoiceProject) => {
+                                            const labelId = `checkbox-list-label-${invoiceProject._id}`;
+                                            if (invoiceProject)
+                                                return (
+                                                    <ListItem
+                                                        key={invoiceProject._id}
+                                                        secondaryAction={
+                                                            <IconButton edge="end" aria-label="download">
+                                                                <DownloadIcon />
+                                                            </IconButton>
+                                                        }
+                                                        disablePadding
+                                                    >
+                                                        <ListItemButton role={undefined} onClick={handleToggle(invoiceProject.invoiceName)} dense>
+                                                            <ListItemText id={labelId} primary={invoiceProject.invoiceName} />
+                                                        </ListItemButton>
+                                                    </ListItem>
+                                                );
+                                            else {
+                                                return <div className="font-medium text-500 my-2">test</div>;
+                                            }
+                                        })}
+                                    </List>
                                 </div>
                             </div>
                             <div style={{ height: "310px" }} className="surface-card p-4 shadow-2 border-round my-2">
@@ -206,8 +205,8 @@ const ProjectDetails = () => {
                                         <AddIcon />
                                     </IconButton>
                                 </Link>
-                                <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-                                    <div style={{ maxHeight: "150px", overflowY: "auto", overflowX: "hidden" }}>
+                                <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
+                                    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
                                             const labelId = `checkbox-list-label-${complaintProject._id}`;
 
@@ -227,8 +226,8 @@ const ProjectDetails = () => {
                                                 </ListItem>
                                             );
                                         })}
-                                    </div>
-                                </List>
+                                    </List>
+                                </div>
                             </div>
                         </div>
                     </div>
