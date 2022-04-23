@@ -156,9 +156,9 @@ const ProjectDetails = () => {
                             </List>
                         </div>
                         <div className="container col-3">
-                            <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
-                                New invoice
-                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "100%" }}>
+                            <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
+                                Add new invoice
+                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
                                     <IconButton edge="end" aria-label="plus">
                                         <AddIcon />
                                     </IconButton>
@@ -166,28 +166,30 @@ const ProjectDetails = () => {
                                 {/* <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "100%" }} className="mt-2 btn">
                                     <Button icon="pi pi-plus" className="button col-5 btn" />
                                 </Link> */}
-                                {invoiceProjectList.map((invoiceProject) => {
-                                    const labelId = `checkbox-list-label-${invoiceProject._id}`;
-                                    if (invoiceProject)
-                                        return (
-                                            <div style={{ width: "100%" }}>
-                                                <div key={invoiceProject._id}>
-                                                    <div className="ff">
-                                                        <CardContent style={{ height: "10px" }}>
-                                                            <ListItem
-                                                                key={invoiceProject._id}
-                                                                secondaryAction={
-                                                                    <IconButton edge="end" aria-label="download">
-                                                                        <DownloadIcon />
-                                                                    </IconButton>
-                                                                }
-                                                                disablePadding
-                                                            >
-                                                                <ListItemButton role={undefined} onClick={handleToggle(invoiceProject.invoiceName)} dense>
-                                                                    <ListItemText id={labelId} primary={invoiceProject.invoiceName} />
-                                                                </ListItemButton>
-                                                            </ListItem>
-                                                            {/* <Typography gutterBottom variant="h6" component="div">
+                                <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }}>
+                                    {invoiceProjectList.map((invoiceProject) => {
+                                        const labelId = `checkbox-list-label-${invoiceProject._id}`;
+                                        if (invoiceProject)
+                                            return (
+                                                <div style={{ width: "200px", maxWidth: "100%", display: "flex", alignItems: "center", marginTop: "0px" }}>
+                                                    <div key={invoiceProject._id}>
+                                                        <div className="ff">
+                                                            <CardContent style={({ height: "20px" }, { width: "100%" })}>
+                                                                <ListItem
+                                                                    key={invoiceProject._id}
+                                                                    secondaryAction={
+                                                                        <IconButton edge="end" aria-label="download">
+                                                                            <DownloadIcon />
+                                                                        </IconButton>
+                                                                    }
+                                                                    disablePadding
+                                                                    style={{ height: "2px" }}
+                                                                >
+                                                                    <ListItemButton role={undefined} onClick={handleToggle(invoiceProject.invoiceName)} dense className="mr-4">
+                                                                        <ListItemText id={labelId} primary={invoiceProject.invoiceName} className="INV" />
+                                                                    </ListItemButton>
+                                                                </ListItem>
+                                                                {/* <Typography gutterBottom variant="h6" component="div">
                                                             {invoiceProject.invoiceName}
                                                             <IconButton edge="end" aria-label="delete">
                                                                 <DeleteIcon />
@@ -196,16 +198,17 @@ const ProjectDetails = () => {
                                                                 <DownloadIcon />
                                                             </IconButton>
                                                             {/* <CardMedia component="img" height="70" image={require("../../assets/layout/images/" + invoiceProject.invoiceFile)} alt="logo" /> */}
-                                                            {/* </Typography> */}
-                                                        </CardContent>
+                                                                {/* </Typography> */}
+                                                            </CardContent>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    else {
-                                        return <div className="font-medium text-500 my-2">test</div>;
-                                    }
-                                })}
+                                            );
+                                        else {
+                                            return <div className="font-medium text-500 my-2">test</div>;
+                                        }
+                                    })}
+                                </div>
                             </div>
                             <div className="surface-card p-4 shadow-2 border-round my-2">
                                 <List sx={{ width: "100%", bgcolor: "background.paper" }}>

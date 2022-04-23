@@ -26,8 +26,13 @@
 .ff{
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 200px;
     max-height: 100px;
+}
+.invoiceList{
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
 }
 .cc{
     background:seagreen !important;
@@ -38,9 +43,9 @@
     border-color: black;
     border-color: rgb(129, 129, 129);
 }
-btn{
-    width: 10px !important;
-height: 5px !important;
+.INV{
+    display: flex !important;
+    align-items: flex-start !important;
 }
 .button:hover{
     background-color: rgb(129, 129, 129) !important;
