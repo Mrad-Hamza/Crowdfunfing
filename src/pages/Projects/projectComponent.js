@@ -30,7 +30,7 @@ const ProjectComponent = () => {
                                 <Button icon="pi pi-trash" className="button ml-1 col-5" label="Delete" onClick={deleteUser} />
 
                                 <Link to={`/projects/${_id}`}>
-                                    <Button icon="pi pi-pencil" className="button col-5" label="Update" />
+                                    <Button icon="pi pi-pencil" className="button col-5 mt-1" label="Update" />
                                 </Link>
 
                                 <Button icon="pi pi-heart" className="button ml-1 col-5" label="Rating" />

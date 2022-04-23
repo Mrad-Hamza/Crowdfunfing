@@ -27,6 +27,7 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    max-height: 100px;
 }
 .cc{
     background:seagreen !important;
@@ -34,7 +35,16 @@
 }
 .button{
     background-color: black;
+    border-color: black;
     border-color: rgb(129, 129, 129);
+}
+btn{
+    width: 10px !important;
+height: 5px !important;
+}
+.button:hover{
+    background-color: rgb(129, 129, 129) !important;
+    border-color: rgb(129, 129, 129) !important;
 }
 .button-container{
     display: flex;

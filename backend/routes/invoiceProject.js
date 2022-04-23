@@ -42,22 +42,26 @@ router.route("/all/:id").get((req, res) => {
 });
 
 //add method (fonctionnel)
-router.route("/add/:id").post(upload.single("invoiceFile"), (req, res) => {
+router.route("/add").post(upload.single("invoiceFile"), (req, res) => {
+    console.log(req.body);
+    const status = "ON";
     const invoiceName = req.body.invoiceName;
     const invoiceFile = req.file.filename;
-    const project = req.params.id;
+    const project = req.body.project;
+    const user = req.body.user;
 
     const newInvoice = new InvoiceProject({
         invoiceName,
         invoiceFile,
         project,
+        user,
+        status,
     });
-    if (req.file) {
-        newInvoice.image = req.file.filename;
-    }
+    console.log(newInvoice);
+    console.log(req);
     newInvoice
         .save()
-        .then(() => res.json("Invoce project added!"))
+        .then(() => res.json("Invoice project added!"))
         .catch((err) => res.status(400).json("Error: " + err));
 });
 

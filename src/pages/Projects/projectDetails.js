@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Button } from "primereact/button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -6,8 +7,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+import AddIcon from "@mui/icons-material/Add";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -15,8 +17,9 @@ import StarBorder from "@mui/icons-material/StarBorder";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import PopupForm from "./popupForm";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
 import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../features/actions/projects.actions";
 import URL from "../../features/constants/services.constants";
@@ -154,13 +157,37 @@ const ProjectDetails = () => {
                         </div>
                         <div className="container col-3">
                             <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
+                                New invoice
+                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "100%" }}>
+                                    <IconButton edge="end" aria-label="plus">
+                                        <AddIcon />
+                                    </IconButton>
+                                </Link>
+                                {/* <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "100%" }} className="mt-2 btn">
+                                    <Button icon="pi pi-plus" className="button col-5 btn" />
+                                </Link> */}
                                 {invoiceProjectList.map((invoiceProject) => {
+                                    const labelId = `checkbox-list-label-${invoiceProject._id}`;
                                     if (invoiceProject)
                                         return (
-                                            <div key={invoiceProject._id}>
-                                                <div className="ff">
-                                                    <CardContent>
-                                                        <Typography gutterBottom variant="h6" component="div">
+                                            <div style={{ width: "100%" }}>
+                                                <div key={invoiceProject._id}>
+                                                    <div className="ff">
+                                                        <CardContent style={{ height: "10px" }}>
+                                                            <ListItem
+                                                                key={invoiceProject._id}
+                                                                secondaryAction={
+                                                                    <IconButton edge="end" aria-label="download">
+                                                                        <DownloadIcon />
+                                                                    </IconButton>
+                                                                }
+                                                                disablePadding
+                                                            >
+                                                                <ListItemButton role={undefined} onClick={handleToggle(invoiceProject.invoiceName)} dense>
+                                                                    <ListItemText id={labelId} primary={invoiceProject.invoiceName} />
+                                                                </ListItemButton>
+                                                            </ListItem>
+                                                            {/* <Typography gutterBottom variant="h6" component="div">
                                                             {invoiceProject.invoiceName}
                                                             <IconButton edge="end" aria-label="delete">
                                                                 <DeleteIcon />
@@ -168,9 +195,10 @@ const ProjectDetails = () => {
                                                             <IconButton edge="end" aria-label="download">
                                                                 <DownloadIcon />
                                                             </IconButton>
-                                                            <CardMedia component="img" height="70" image={require("../../assets/layout/images/" + invoiceProject.invoiceFile)} alt="logo" />
-                                                        </Typography>
-                                                    </CardContent>
+                                                            {/* <CardMedia component="img" height="70" image={require("../../assets/layout/images/" + invoiceProject.invoiceFile)} alt="logo" /> */}
+                                                            {/* </Typography> */}
+                                                        </CardContent>
+                                                    </div>
                                                 </div>
                                             </div>
                                         );
@@ -189,13 +217,14 @@ const ProjectDetails = () => {
                                                 key={complaintProject._id}
                                                 secondaryAction={
                                                     <IconButton edge="end" aria-label="comments">
-                                                        <CommentIcon />
+                                                        <CommentIcon></CommentIcon>
                                                     </IconButton>
                                                 }
                                                 disablePadding
                                             >
                                                 <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
                                                     <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                    <PopupForm className="ml-2" />
                                                 </ListItemButton>
                                             </ListItem>
                                         );
