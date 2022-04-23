@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
-// import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
 import Collapse from "@mui/material/Collapse";
@@ -18,6 +18,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import PopupForm from "./popupForm";
+import { InvoiceProjectService } from "../User/_services/invoiceProject.service";
+import { ComplaintProjectService } from "../User/_services/complaintProject.service";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
@@ -174,15 +176,24 @@ const ProjectDetails = () => {
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }}>
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
+                                            const deleteInvoice = () => {
+                                                InvoiceProjectService.delete(invoiceProject._id);
+                                                window.location.reload(false);
+                                            };
                                             const labelId = `checkbox-list-label-${invoiceProject._id}`;
                                             if (invoiceProject)
                                                 return (
                                                     <ListItem
                                                         key={invoiceProject._id}
                                                         secondaryAction={
-                                                            <IconButton edge="end" aria-label="download">
-                                                                <DownloadIcon />
-                                                            </IconButton>
+                                                            <div>
+                                                                <IconButton edge="end" aria-label="delete" onClick={deleteInvoice}>
+                                                                    <DeleteIcon />
+                                                                </IconButton>
+                                                                <IconButton edge="end" aria-label="download">
+                                                                    <DownloadIcon />
+                                                                </IconButton>
+                                                            </div>
                                                         }
                                                         disablePadding
                                                     >
@@ -208,15 +219,24 @@ const ProjectDetails = () => {
                                 <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
+                                            const deleteComplaint = () => {
+                                                ComplaintProjectService.delete(complaintProject._id);
+                                                window.location.reload(false);
+                                            };
                                             const labelId = `checkbox-list-label-${complaintProject._id}`;
 
                                             return (
                                                 <ListItem
                                                     key={complaintProject._id}
                                                     secondaryAction={
-                                                        <IconButton edge="end" aria-label="comments">
-                                                            <CommentIcon></CommentIcon>
-                                                        </IconButton>
+                                                        <div>
+                                                            <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                            <IconButton edge="end" aria-label="comments">
+                                                                <CommentIcon></CommentIcon>
+                                                            </IconButton>
+                                                        </div>
                                                     }
                                                     disablePadding
                                                 >

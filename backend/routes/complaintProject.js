@@ -30,7 +30,7 @@ router.route("/:id").get((req, res) => {
 
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
-    Complaint.find({ project: req.params.id })
+    Complaint.find({ project: req.params.id ,status:"ON"})
         .then((complaints) => res.json(complaints))
         .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -58,6 +58,32 @@ router.route("/add").post(upload.single(""), (req, res) => {
     newComplaint
         .save()
         .then(() => res.json("Complaint project added!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Archive method
+router.route("/archive/:id").put((req, res) => {
+    Complaint.findById(req.params.id)
+        .then((complaint) => {
+            complaint.status = "OFF";
+            complaint
+                .save()
+                .then(() => res.json("complaint archived!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Activate method
+router.route("/activate/:id").put((req, res) => {
+    Complaint.findById(req.params.id)
+        .then((complaint) => {
+            complaint.status = "ON";
+            complaint
+                .save()
+                .then(() => res.json("complaint activated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
         .catch((err) => res.status(400).json("Error: " + err));
 });
 

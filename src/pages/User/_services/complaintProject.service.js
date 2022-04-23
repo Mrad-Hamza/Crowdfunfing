@@ -2,6 +2,8 @@ import axios from "axios";
 
 export const ComplaintProjectService = {
     addComplaint,
+    delete: _delete,
+    activate: _activate,
 };
 
 async function addComplaint(complaint) {
@@ -19,4 +21,18 @@ async function addComplaint(complaint) {
         .catch((err) => {
             console.log(err);
         });
+}
+
+function _activate(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/complaintProject/activate/${id}`, requestOptions);
+}
+
+function _delete(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/complaintProject/archive/${id}`, requestOptions);
 }
