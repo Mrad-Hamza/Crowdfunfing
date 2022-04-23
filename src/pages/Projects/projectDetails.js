@@ -17,12 +17,13 @@ import StarBorder from "@mui/icons-material/StarBorder";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import PopupForm from "./popupForm";
+import CustomizedDialogs from "./CustomizedDialogs";
 import { InvoiceProjectService } from "../User/_services/invoiceProject.service";
 import { ComplaintProjectService } from "../User/_services/complaintProject.service";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 import { selectedProject } from "../../features/actions/projects.actions";
+import CustomDialog from "./CustomDialog";
 import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../features/actions/projects.actions";
 import URL from "../../features/constants/services.constants";
 import axios from "axios";
@@ -137,7 +138,7 @@ const ProjectDetails = () => {
                                         <AddIcon />
                                     </IconButton>
                                 </Link>
-                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }}>
+                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         if (task) {
                                             return (
@@ -153,6 +154,11 @@ const ProjectDetails = () => {
                                                                     <StarBorder />
                                                                 </ListItemIcon>
                                                                 <ListItemText primary={task.taskDescription} />
+                                                                <Link to={`/projects/tasks/${task._id}`}>
+                                                                    <Button icon="pi pi-info-circle" className="button col-5" label="Show more" style={{ width: "120px", height: "30px", textAlign: "left" }} />
+                                                                </Link>
+                                                                <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} />
+                                                                {/* <CustomDialog /> */}
                                                             </ListItemButton>
                                                         </List>
                                                     </Collapse>
@@ -173,7 +179,7 @@ const ProjectDetails = () => {
                                         <AddIcon />
                                     </IconButton>
                                 </Link>
-                                <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }}>
+                                <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
                                             const deleteInvoice = () => {
@@ -216,7 +222,7 @@ const ProjectDetails = () => {
                                         <AddIcon />
                                     </IconButton>
                                 </Link>
-                                <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }}>
+                                <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
                                             const deleteComplaint = () => {
