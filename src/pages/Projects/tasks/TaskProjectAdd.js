@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Input, SubmitButton, Textarea } from "../../User/Login/UserLogin/accountBox/common";
 import { Marginer } from "../../User/Login/UserLogin/marginer";
-import { InvoiceProjectService } from "../../User/_services/invoiceProject.service";
+import { TaskProjectService } from "../../User/_services/taskProject.service";
 import { useParams, useHistory } from "react-router-dom";
 
-import "./invoice.css";
+import "./task.css";
 
 function TaskProjectAdd(props) {
     const { _id } = useParams();
@@ -33,25 +33,25 @@ function TaskProjectAdd(props) {
         console.log(state);
         if (state.taskName && state.taskDescription && state.project && state.user) {
             TaskProjectService.addTask(state);
-            // history.push(`/projects/${_id}`);
+            history.push(`/projects/${_id}`);
         }
     };
 
     return (
         <div>
             <div>
-                <div className="form-style-5 col-6">
-                    <h3>Creat New Complaint</h3>
-                    <form>
-                        <div className="form-group">
+                <div className="form-style-5 col-8" style={{ height: "450px" }}>
+                    <h3>Creat New Task</h3>
+                    <form className="mt-5">
+                        <div className="form-group mt-3" style={{ height: "100px" }}>
                             <label>Task title: </label>
                             <Input id="taskName" name="taskName" type="text" placeholder="Task title" onChange={handleChange} className="mb-2" />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mt-2">
                             <label>Description </label>
                             <Textarea id="taskDescription" name="taskDescription" placeholder="Task description " onChange={handleChange} className="mb-2" />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group mt-3">
                             <Marginer direction="vertical" margin={10} />
                             <SubmitButton type="submit" onClick={handleSubmit}>
                                 Add new Task
