@@ -117,7 +117,7 @@ const ProjectDetails = () => {
                                 <div className="font-medium text-500 mb-1">
                                     <CardMedia component="img" height="80" image={require("../../assets/layout/images/" + image)} alt="logo" />
                                 </div>
-                                <div className="ff">
+                                <div className="projectDetails">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
                                             {projectName} : {projectCollectedAmount} DT
@@ -129,30 +129,32 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                {tasksList.map((task) => {
-                                    if (task) {
-                                        return (
-                                            <div key={task._id}>
-                                                <ListItemButton onClick={handleClick}>
-                                                    <ListItemText primary={task.taskName} />
-                                                    {open ? <ExpandLess /> : <ExpandMore />}
-                                                </ListItemButton>
-                                                <Collapse in={open} timeout="auto" unmountOnExit>
-                                                    <List component="div" disablePadding>
-                                                        <ListItemButton sx={{ pl: 4 }}>
-                                                            <ListItemIcon>
-                                                                <StarBorder />
-                                                            </ListItemIcon>
-                                                            <ListItemText primary={task.taskDescription} />
-                                                        </ListItemButton>
-                                                    </List>
-                                                </Collapse>
-                                            </div>
-                                        );
-                                    } else {
-                                        return <ListItemText primary="No task for this project" />;
-                                    }
-                                })}
+                                <div style={{ maxHeight: "270px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }}>
+                                    {tasksList.map((task) => {
+                                        if (task) {
+                                            return (
+                                                <div key={task._id}>
+                                                    <ListItemButton onClick={handleClick}>
+                                                        <ListItemText primary={task.taskName} />
+                                                        {open ? <ExpandLess /> : <ExpandMore />}
+                                                    </ListItemButton>
+                                                    <Collapse in={open} timeout="auto" unmountOnExit>
+                                                        <List component="div" disablePadding>
+                                                            <ListItemButton sx={{ pl: 4 }}>
+                                                                <ListItemIcon>
+                                                                    <StarBorder />
+                                                                </ListItemIcon>
+                                                                <ListItemText primary={task.taskDescription} />
+                                                            </ListItemButton>
+                                                        </List>
+                                                    </Collapse>
+                                                </div>
+                                            );
+                                        } else {
+                                            return <ListItemText primary="No task for this project" />;
+                                        }
+                                    })}
+                                </div>
                             </List>
                         </div>
                         <div className="container col-3">
@@ -163,9 +165,6 @@ const ProjectDetails = () => {
                                         <AddIcon />
                                     </IconButton>
                                 </Link>
-                                {/* <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "100%" }} className="mt-2 btn">
-                                    <Button icon="pi pi-plus" className="button col-5 btn" />
-                                </Link> */}
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }}>
                                     {invoiceProjectList.map((invoiceProject) => {
                                         const labelId = `checkbox-list-label-${invoiceProject._id}`;
@@ -189,16 +188,6 @@ const ProjectDetails = () => {
                                                                         <ListItemText id={labelId} primary={invoiceProject.invoiceName} className="INV" />
                                                                     </ListItemButton>
                                                                 </ListItem>
-                                                                {/* <Typography gutterBottom variant="h6" component="div">
-                                                            {invoiceProject.invoiceName}
-                                                            <IconButton edge="end" aria-label="delete">
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                            <IconButton edge="end" aria-label="download">
-                                                                <DownloadIcon />
-                                                            </IconButton>
-                                                            {/* <CardMedia component="img" height="70" image={require("../../assets/layout/images/" + invoiceProject.invoiceFile)} alt="logo" /> */}
-                                                                {/* </Typography> */}
                                                             </CardContent>
                                                         </div>
                                                     </div>
@@ -210,28 +199,35 @@ const ProjectDetails = () => {
                                     })}
                                 </div>
                             </div>
-                            <div className="surface-card p-4 shadow-2 border-round my-2">
+                            <div style={{ height: "310px" }} className="surface-card p-4 shadow-2 border-round my-2">
+                                Add new Complaint
+                                <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
+                                    <IconButton edge="end" aria-label="plus">
+                                        <AddIcon />
+                                    </IconButton>
+                                </Link>
                                 <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-                                    {complaintProjectList.map((complaintProject) => {
-                                        const labelId = `checkbox-list-label-${complaintProject._id}`;
+                                    <div style={{ maxHeight: "150px", overflowY: "auto", overflowX: "hidden" }}>
+                                        {complaintProjectList.map((complaintProject) => {
+                                            const labelId = `checkbox-list-label-${complaintProject._id}`;
 
-                                        return (
-                                            <ListItem
-                                                key={complaintProject._id}
-                                                secondaryAction={
-                                                    <IconButton edge="end" aria-label="comments">
-                                                        <CommentIcon></CommentIcon>
-                                                    </IconButton>
-                                                }
-                                                disablePadding
-                                            >
-                                                <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
-                                                    <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
-                                                    <PopupForm className="ml-2" />
-                                                </ListItemButton>
-                                            </ListItem>
-                                        );
-                                    })}
+                                            return (
+                                                <ListItem
+                                                    key={complaintProject._id}
+                                                    secondaryAction={
+                                                        <IconButton edge="end" aria-label="comments">
+                                                            <CommentIcon></CommentIcon>
+                                                        </IconButton>
+                                                    }
+                                                    disablePadding
+                                                >
+                                                    <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                        <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                    </ListItemButton>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </div>
                                 </List>
                             </div>
                         </div>

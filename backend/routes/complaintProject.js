@@ -1,8 +1,19 @@
 const router = require("express").Router();
 let Complaint = require("../models/complaintProject.model");
-let Project = require("../models/project.model");
-let User = require("../models/user.model");
+// let Project = require("../models/project.model");
+// let User = require("../models/user.model");
+const multer = require("multer");
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "../src/assets/layout/images");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+var upload = multer({ storage: storage });
 //getAll method
 router.route("/").get((req, res) => {
     Complaint.find()
@@ -25,22 +36,25 @@ router.route("/all/:id").get((req, res) => {
 });
 
 //add method
-router.route("/add/:id").post((req, res) => {
+router.route("/add").post(upload.single(""), (req, res) => {
+    console.log(req.body);
+    const status = "ON";
     const complaintProjectTitle = req.body.complaintProjectTitle;
     const complaintDescription = req.body.complaintDescription;
     const complaintType = "in progress";
-    const project = req.params.id;
-    // const userId = req.body.user;
-    // const user = User.findById(userId);
-    // const project = Project.findById(projectId);
+    const project = req.body.project;
+    const user = req.body.user;
 
     const newComplaint = new Complaint({
         complaintProjectTitle,
         complaintDescription,
         complaintType,
         project,
-        // user,
+        user,
+        status,
     });
+    console.log(newComplaint);
+    console.log(req);
     newComplaint
         .save()
         .then(() => res.json("Complaint project added!"))

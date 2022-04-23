@@ -16,8 +16,8 @@ const ProjectComponent = () => {
         };
         const { _id, projectName, image } = project;
         return (
-            <div className="xs:col-12 md:col-8 lg:col-3 projectComponent" key={_id}>
-                <div className="card m-3 border-1 surface-border">
+            <div className="xs:col-12 md:col-8 lg:col-3 projectComponent " key={_id}>
+                <div className="card m-3 border-1 surface-border shadow-4">
                     <div className="text-center">
                         <img className="w-9 shadow-2 my-3 mx-0" src={require("../../assets/layout/images/" + image)} />
                         <div className="text-xl font-bold mb-3"> {projectName}</div>

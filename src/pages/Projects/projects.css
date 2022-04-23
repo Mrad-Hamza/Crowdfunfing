@@ -29,6 +29,10 @@
     width: 200px;
     max-height: 100px;
 }
+.projectDetails{
+    display: flex;
+    justify-content: center;
+}
 .invoiceList{
     display: flex !important;
     justify-content: flex-start !important;

@@ -6,6 +6,10 @@ const ComplaintType = Object.freeze({
     Done: "done",
 });
 
+const Status = Object.freeze({
+    ON: "ON",
+    OFF: "OFF",
+});
 const complaintProjectSchema = new Schema(
     {
         complaintProjectTitle: {
@@ -22,6 +26,11 @@ const complaintProjectSchema = new Schema(
             type: String,
             required: true,
             enum: Object.values(ComplaintType),
+        },
+        status: {
+            type: String,
+            required: true,
+            enum: Object.values(Status),
         },
         project: {
             type: Schema.Types.ObjectId,
