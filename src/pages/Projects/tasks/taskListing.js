@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import TaskComponent from "../tasks/taskComponent";
+import TaskComponent from "./taskComponent";
 // import { setTasks } from "../../features/actions/tasks.actions";
-import URL from "../../features/constants/services.constants";
+import URL from "../../../features/constants/services.constants";
 import axios from "axios";
 
 const TaskListing = () => {

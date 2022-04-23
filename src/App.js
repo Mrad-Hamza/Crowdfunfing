@@ -64,6 +64,7 @@ import forumCreate from "./pages/Forums/forumCreate";
 import Crud from "./pages/Crud";
 import InvoiceProjectAdd from "./pages/Projects/InvoiceProjects/invoiceAdd";
 import ComplaintProjectAdd from "./pages/Projects/ComplaintProjects/complaintAdd";
+import TaskProjectAdd from "./pages/Projects/tasks/TaskProjectAdd";
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
@@ -336,6 +337,7 @@ const App = () => {
                         <Route path="/projects/add/:_id" component={ProjectAdd} />
                         <Route path="/projects/invoiceProject/add/:_id" component={InvoiceProjectAdd} />
                         <Route path="/projects/complaintProject/add/:_id" component={ComplaintProjectAdd} />
+                        <Route path="/projects/task/add/:_id" component={TaskProjectAdd} />
                         <Route path="/forums" exact component={ForumListing} />
                         <Route path="/comment" component={ForumsComment} />
                         <Route path="/edit/:_id" component={updateForum} />

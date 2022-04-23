@@ -130,7 +130,7 @@ const ProjectDetails = () => {
                             </div>
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 Add new task
-                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
+                                <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
                                     <IconButton edge="end" aria-label="plus">
                                         <AddIcon />
                                     </IconButton>
