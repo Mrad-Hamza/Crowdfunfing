@@ -6,6 +6,8 @@ export function authHeader() {
             'Authorization' : 'Bearer '+token,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+
     };
     } else {
         return {};

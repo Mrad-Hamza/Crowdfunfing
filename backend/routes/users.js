@@ -2,20 +2,31 @@ const router = require('express').Router();
 const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
+var fs = require('fs');
 let User = require('../models/user.model');
+let Role = require('../models/role-user.model')
+let Image = require('../models/image.model')
+const fetch = require('node-fetch')
 const nodemailer = require('nodemailer');
 const {protect} = require('../middleware/authMiddleware')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com")
 
-const storage = multer.diskStorage({
-  destination: (req,file,cb) => {
-    cb(null,'uploads')
-  },
-  filename:(req,file,cb)=>{
-    cb(null,file.originalname)
-  }
-})
+var fs = require('fs');
+var path = require('path');
+require('dotenv/config');
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '../src/assets/layout/images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage });
+
 
 router.route('/').get((req, res) => {
   User.find()
@@ -23,21 +34,91 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/addUserImage').put(upload.single('image'),(req, res) => {
+    const image = {
+            contentType: 'image/*',
+            imgName:req.file.filename
+        }
+    console.log(req.body.data)
+    User.findByIdAndUpdate(req.body.data)
+    .then(user=>{
+        user.img=image
+        user.save()
+        .then(()=>res.json('Image added to user haha'))
+        .catch(err => res.status(400).json('Error: ' + err));
+    })
+});
+
+router.route('/add').post(upload.single('image'),(req, res) => {
   const username = req.body.username;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
-  const roles = req.body.roles
-
-  const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+  const img = {
+            contentType: 'image/png',
+            imgName:"NoPic.png"
+        }
+  var roles = req.body.roles
+  if (!roles){
+      roles = 'Simple User'
+  }
+  const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
 
   newUser.save()
     .then(() => res.json('User added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.post('/facebooklogin',(req,res) => {
+    const {userID,accessToken} = req.body
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`
+    fetch(urlGraphFacebook,{
+        method:`GET`
+    })
+    .then(res=> res.json())
+    .then(response=>{
+        const {email,name} =response;
+        User.findOne({'mailAddress':email}).exec((err,user) => {
+            if(err) {
+                    return response.status(400).json({
+                        error :"User does not exist"
+                    })
+            }else {
+                if (user) {
+                        const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                        })
+                        console.log(user)
+                        return res.json({accessToken : accessToken,
+                            userId : user.id,
+                            userName : user.username,
+                            mail : user.mailAddress
+                        })
+                    }
+                else {
+                    console.log(email,name)
+                    let password= email+process.env.ACCES_TOKEN_SECRET
+                    const username = name
+                    const firstname = name
+                    const img = {
+                        contentType: 'image/png',
+                        imgName:"NoPic.png"
+                    }
+                    const lastname = name
+                    const mailAddress = email;
+                    const roles = 'Simple User'
+                    const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
+                    const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                    })
+                    newUser.save()
+                    return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
+                }
+            }
+        })
+    })
+})
 router.post('/googlelogin' , (req,res) => {
     const idToken = req.body.tokenId
     client.verifyIdToken({idToken, audience:"98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com"})
@@ -64,12 +145,17 @@ router.post('/googlelogin' , (req,res) => {
                         const firstname = given_name;
                         const lastname = family_name;
                         const mailAddress = email;
-                        const newUser = new User({username,firstname,lastname,mailAddress,password});
+                        const img = {
+                            contentType: 'image/png',
+                            imgName:"NoPic.png"
+                        }
+                        const roles = 'Simple User'
+                        const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
                         newUser.save()
-                        return res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
+                        return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
                     }
                 }
             })
@@ -85,7 +171,17 @@ router.get('/profile/:search', protect, (req,res) => {
     .then(user => res.json(user))
 })
 
+router.get('/search/:search', (req,res) => {
+  User.findOne({$or:[
+     {'username': req.params.search},
+     {'mailAddress': req.params.search}
+   ]})
+    .then(user => res.json(user))
+})
+
 router.route('/:id').get((req, res) => {
+    console.log(req.params.id)
+    console.log("rzst")
   User.findById(req.params.id)
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -104,8 +200,9 @@ router.route('/affectImage/:idU/:idM').put( (req,res) => {
 router.route('/affectRole/:idU/:idR').put( (req,res) => {
   User.findByIdAndUpdate(req.params.idU)
     .then(user=>{
-      user.roles = req.params.idR
-      user.save()
+
+        user.roles = req.params.idR
+        user.save()
         .then(()=>res.json('Role added to user haha'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
@@ -120,13 +217,15 @@ router.route('/:id').delete((req, res) => {
 });
 
 router.route('/update/:id').put((req, res) => {
-  User.findById(req.params.id)
+  User.findByIdAndUpdate(req.params.id)
     .then(user => {
-      user.username = req.body.username;
-      user.firstname = req.body.firstname;
-      user.lastname = req.body.lastname;
-      user.mailAddress = req.body.mailAddress;
-      user.password = req.body.password;
+      user.username = req.body.body.username;
+      user.firstname = req.body.body.firstname;
+      user.lastname = req.body.body.lastname;
+      user.mailAddress = req.body.body.mailAddress;
+      user.password = req.body.body.password;
+      user.roles = req.body.body.roles;
+      user.img = req.body.body.img;
       user.save()
         .then(() => res.json('User updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -156,7 +255,7 @@ router.route('/ForgotPassword/:mail').post( (req,res) => {
     requireTLS: true,
     auth : {
         user : "fundise.noreply@gmail.com",
-        pass: "fundise@123"
+        pass: "HzJxDKrxS2LNwa9"
         }
     })
     let randomCode = (Math.random() + 1).toString(36).substring(7);

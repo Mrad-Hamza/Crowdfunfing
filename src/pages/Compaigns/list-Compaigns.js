@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import { saveAs } from 'file-saver';
+import { Button } from 'primereact/button';
+import moment from 'moment';
 
 
 const Compaign = props => (
@@ -13,11 +15,14 @@ const Compaign = props => (
     <td>{props.compaign.typeCompaign}</td>
     <td>{props.compaign.objective}</td>
     <td>{props.compaign.description}</td>
-    <td>{props.compaign.deadline}</td>
+    <td>{moment(props.compaign.deadline).format('DD/MM/YYYY')}</td>
     <td>{props.compaign.Verified}</td>
     <td>{props.compaign.Status}</td>
     <td>
-    <Link to={"/update/"+props.compaign._id}>edit</Link> |<a href="#" onClick={() => { props.deleteCompaign(props.compaign._id) }}>delete</a>
+    <div className="actions">
+              <Link to={"/update/"+props.compaign._id}><Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" /></Link>
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => { props.deleteCompaign(props.compaign._id)}}/>
+            </div>
     </td>
   </tr>
 )
@@ -83,16 +88,22 @@ export default class CompaignList extends Component {
 
   }
 
+
   render() {
-    return (
+    return ( 
+      
       
         <div className="col-12">
         <div className="card">
-          
-        <button class="btn" onClick={this.createAndDownloadPdf} ><i class="fa fa-download"></i> Download</button>
-        <div class="but">
-        <button class="btnn" ><Link to={"/ADD"}>ADD +</Link></button>
-        </div>
+
+        <div class="p-toolbar p-component mb-4" role="toolbar">
+  <div class="p-toolbar-group-left"> 
+  <div class="my-2">
+  <Link to="/ADDCompaign"><Button label="New"  icon="pi pi-plus" className="p-button-success mr-2" /></Link>
+  <Button label="Download" icon="pi pi-file-pdf" className="p-button-help" onClick={this.createAndDownloadPdf} />
+  </div></div><div class="p-toolbar-group-right">
+  <Link to="/ListDeadline"><Button label="Dedlaine" icon="pi pi-angle-double-up" styleClass="ui-button-info"/> </Link>
+           </div></div>
         <div class="wrapper">
     <img class="search-icon"  src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2Ljk2NiA1Ni45NjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2Ljk2NiA1Ni45NjY7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4Ij4KPHBhdGggZD0iTTU1LjE0Niw1MS44ODdMNDEuNTg4LDM3Ljc4NmMzLjQ4Ni00LjE0NCw1LjM5Ni05LjM1OCw1LjM5Ni0xNC43ODZjMC0xMi42ODItMTAuMzE4LTIzLTIzLTIzcy0yMywxMC4zMTgtMjMsMjMgIHMxMC4zMTgsMjMsMjMsMjNjNC43NjEsMCw5LjI5OC0xLjQzNiwxMy4xNzctNC4xNjJsMTMuNjYxLDE0LjIwOGMwLjU3MSwwLjU5MywxLjMzOSwwLjkyLDIuMTYyLDAuOTIgIGMwLjc3OSwwLDEuNTE4LTAuMjk3LDIuMDc5LTAuODM3QzU2LjI1NSw1NC45ODIsNTYuMjkzLDUzLjA4LDU1LjE0Niw1MS44ODd6IE0yMy45ODQsNmM5LjM3NCwwLDE3LDcuNjI2LDE3LDE3cy03LjYyNiwxNy0xNywxNyAgcy0xNy03LjYyNi0xNy0xN1MxNC42MSw2LDIzLjk4NCw2eiIgZmlsbD0iIzAwMDAwMCIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
     <input class="search" onChange={this.searchHandel} placeholder="Search" type="text" />

@@ -22,7 +22,10 @@ router.route("/").get((req, res) => {
 });
 
 //add events
+
 router.route("/createEvent").post(upload.single("eventImage"),(req, res) => {
+
+
     const nameEvent = req.body.nameEvent;
     const startDateEvent = req.body.startDateEvent;
     const endDateEvent = req.body.endDateEvent;
