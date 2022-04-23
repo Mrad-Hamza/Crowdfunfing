@@ -132,6 +132,8 @@ const App = () => {
     console.log("Current User Id = "+localStorage.getItem('currentUserId'))
     console.log("Current UserName = "+localStorage.getItem('currentUsername'))
     console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
+    console.log("User = " + localStorage.getItem('user'));
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!

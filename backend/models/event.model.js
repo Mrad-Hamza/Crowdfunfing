@@ -19,7 +19,7 @@ const eventSchema = new Schema(
         },
         endDateEvent: {
             type: Date,
-            required:true
+            required: true,
         },
         descriptionEvent: {
             type: String,
@@ -39,14 +39,15 @@ const eventSchema = new Schema(
         },
         eventImage: {
             // type: String
-            contentType:String,
-            imgName:String
+            contentType: String,
+            imgName: String,
         },
         eventType: {
             type: String,
             //required: true,
             // enum: Object.values(EventType),
         },
+        comments: { type: [String], default: [] },
         commentEvents: [
             {
                 type: Schema.Types.ObjectId,
@@ -58,7 +59,6 @@ const eventSchema = new Schema(
         timestamps: true,
     }
 );
-eventSchema.index({ nameEvent: "text" });
 
 const Event = mongoose.model("Event", eventSchema);
 

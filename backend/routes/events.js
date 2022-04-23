@@ -1,7 +1,8 @@
 const router = require("express").Router();
 let Event = require("../models/event.model");
 const moment = require("moment");
-const multer = require ("multer")
+const multer = require ("multer");
+const { ObjectId } = require("mongodb");
 
 const storage = multer.diskStorage({
     destination:(req,file,callback)=>{
@@ -130,6 +131,19 @@ router.post("/search/", async (req, res)  => {
     }
 });
 
+router.route("/commentEvent/:id/").post(async (req, res) => {
+    const { id } = req.params;
+    //  const objectId = new ObjectId(id);
+    const comments = req.body.comments;
+    const event = await Event.findById(id);
+    event.comments.push(comments);
+    console.log(id);
+    console.log(comments);
+
+    const updatedEvent = await Event.findByIdAndUpdate(id, event, { new: true });
+
+    res.json(updatedEvent);
+});
 
 
 module.exports = router;

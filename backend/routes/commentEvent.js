@@ -1,22 +1,36 @@
 const router = require('express').Router();
-const CommentEvent = require('../models/commentEvent.model');
+const CommentEvent = require("../models/commentEvent.model");
+const Event = require('../models/event.model')
+const multer = require("multer");
+
+const upload = multer({});
+
 
 //retrieve all the comments
 router.route('/').get((req, res) => {
     CommentEvent.find()
-    .then(comments => res.json(comments))
-    .catch(err => res.status(400).json('Error: ' + err));
+        .then((comments) => res.json(comments))
+        .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//add comment 
-router.route('/add').post((req, res) => {
-    const content = req.body.content;
-    const event = req.body.event;
-    const newCommentEvent = new CommentEvent({content,event});
-    newCommentEvent.save()
-      .then(() => res.json('Comment added!'))
-      .catch(err => res.status(400).json('Error: ' + err));
+
+//add method
+router.route("/addComment").post(upload.single(""),(req, res) => {
+const comment= req.body.comment;
+const user = req.body.user;
+const event = req.body.event
+const newCommentEvent = new CommentEvent({
+  comment,
+  user,
+  event
+    
   });
+newCommentEvent
+    .save()
+    .then(() => res.json("Comment added!"))
+    .catch((err) => res.status(400).json("Error: " + err));
+
+});
 
   //retrieve the comment by id 
 router.route('/:id').get((req, res) => {

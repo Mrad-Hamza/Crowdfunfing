@@ -20,6 +20,16 @@ export const selectedEventReducer = (state = {}, { type, payload }) => {
             return { ...state, ...payload };
         case eventActionsTypes.REMOVE_SELECTED_EVENT:
             return {};
+        case eventActionsTypes.COMMENT:
+            return {
+                ...state,
+                events: state.events.map((event) => {
+                    if (event._id === +payload._id) {
+                        return payload;
+                    }
+                    return event;
+                }),
+            };
         default:
             return state;
     }

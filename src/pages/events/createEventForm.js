@@ -53,7 +53,7 @@ function FormLayoutDemo({ history }) {
         formData.append("eventType",eventType)
 
         formData.append("eventImage", fileName);
-
+        console.log(formData);
         axios.post(`http://localhost:5000/events/createEvent`, formData);
         history.push("/showEvents");
     };

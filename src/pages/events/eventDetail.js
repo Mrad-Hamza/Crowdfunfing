@@ -10,6 +10,8 @@ import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
 import { Link } from "react-router-dom";
 import { deleteEventAction} from "../../features/actions/eventActions";
+import CommentSection from "./commentSection";
+
 
 
 
@@ -67,9 +69,11 @@ const EventDetail = ({ history }) => {
                         <br />
                         <Divider />
                         <div className=" p-fluid">
-                            <h5>Comment Section </h5>
+                            {/* <h5>Comment Section </h5> */}
                             <div className="formgrid grid">
-                                <div className="field col">
+                                <CommentSection event={event} />
+
+                                {/* <div className="field col">
                                     <label htmlFor="name2">Comments</label>
                                     <InputText id="name2" type="text" />
                                 </div>
@@ -79,7 +83,7 @@ const EventDetail = ({ history }) => {
                                     <Button style={{ marginTop: "10px" }} fullWidth disabled color="primary" variant="contained">
                                         Comment
                                     </Button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <span className="p-buttonset ">

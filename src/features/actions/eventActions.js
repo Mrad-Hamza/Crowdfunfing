@@ -1,5 +1,6 @@
 import { eventActionsTypes } from "../constants/eventActionsTypes";
 import axios from "axios";
+import {useParams} from "react-router-dom"
 
 export const setEvents = (events) => {
     return {
@@ -116,7 +117,6 @@ export const updateEventAction = (id,nameEvent, startDateEvent, endDateEvent, de
         });
     }
 };
-
 export const getEventsByFilter = (arg) => async (dispatch) => {
     try {
         const response = await axios.post("http://localhost:5000/events/search", arg);
@@ -133,5 +133,18 @@ export const getEventsByFilter = (arg) => async (dispatch) => {
             type: eventActionsTypes.ERROR,
             payload: message,
         });
+    }
+};
+
+
+export const commentEvent = (value ,id) => async (dispatch) => {
+    try {
+        console.log(id);
+        const data = await axios.post(`http://localhost:5000/events/commentEvent/${id}/`, value); ;
+        console.log(data);
+        dispatch({ type: eventActionsTypes.COMMENT, payload: data });
+        return data.comments;
+    } catch (error) {
+        console.log(error);
     }
 };
