@@ -53,14 +53,6 @@ const TaskDetails = () => {
         setOpen(!open);
     };
 
-    // const fetchTasks = async () => {
-    //     const result = await axios.get(URL.baseApiUrl + URL.tasks.getTaskByProjectId + `/${_id}`).catch((err) => {
-    //         console.log("Err", err);
-    //     });
-
-    //     dispatch(setTasks(result.data));
-    // };
-
     const [checked, setChecked] = React.useState([0]);
 
     const handleToggle = (value) => () => {
@@ -128,59 +120,6 @@ const TaskDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            {/* <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                Add new task
-                                <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
-                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
-                                    {tasksList.map((task) => {
-                                        if (task) {
-                                            return (
-                                                <div key={task._id}>
-                                                    <ListItemButton style={{ display: "flex" }}>
-                                                        <ListItemText primary={task.taskName} />
-                                                        <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Complaint" />
-                                                            </IconButton>
-                                                        </Link>
-                                                        <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Invoice" />
-                                                            </IconButton>
-                                                        </Link>
-                                                        <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} />
-
-                                                        {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                            {/* </ListItemButton>
-                                                     <Collapse in={open} timeout="auto" unmountOnExit>
-                                                        <List component="div" disablePadding>
-                                                            <ListItemButton sx={{ pl: 4 }}>
-                                                                <ListItemIcon>
-                                                                    <StarBorder />
-                                                                </ListItemIcon>
-                                                                <ListItemText primary={task.taskDescription} />
-                                                                <Link to={`/projects/tasks/${task._id}`}>
-                                                                    <Button icon="pi pi-info-circle" className="button col-5" label="Show more" style={{ width: "120px", height: "30px", textAlign: "left" }} />
-                                                                </Link>
-                                                                <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} />
-                                                                {/* <CustomDialog /> */}
-                            {/* </ListItemButton> */}
-                            {/* </List> */}
-                            {/* </Collapse> */}
-                            {/* </div>
-                                            );
-                                        } else {
-                                            return <ListItemText primary="No task for this project" />;
-                                        }
-                                    })} */}
-                            {/* </div>
-                            </List> */}
 
                             {/* <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll"> */}
                             <div className=" col-12" style={{ display: "flex", width: "950px", height: "350px" }}>
@@ -191,11 +130,11 @@ const TaskDetails = () => {
                                             <AddIcon />
                                         </IconButton>
                                     </Link>
-                                    <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
+                                    <div style={{ maxHeight: "210px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {invoiceTaskList.map((invoiceTask) => {
                                                 const deleteInvoice = () => {
-                                                    // InvoiceProjectService.delete(invoiceTask._id);
+                                                    InvoiceTaskService.delete(invoiceTask._id);
                                                     window.location.reload(false);
                                                 };
                                                 const labelId = `checkbox-list-label-${invoiceTask._id}`;
@@ -238,7 +177,7 @@ const TaskDetails = () => {
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {complaintTaskList.map((complaintTask) => {
                                                 const deleteComplaint = () => {
-                                                    // ComplaintProjectService.delete(complaintTaskList._id);
+                                                    ComplaintTaskService.delete(complaintTaskList._id);
                                                     window.location.reload(false);
                                                 };
                                                 const labelId = `checkbox-list-label-${complaintTask._id}`;

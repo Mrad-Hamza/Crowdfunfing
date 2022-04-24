@@ -29,7 +29,7 @@ function InvoiceTaskAdd(props) {
         console.log(state);
         if (state.invoiceName && state.task && state.user) {
             InvoiceTaskService.addInvoice(state);
-            // history.push(`/projects/tasks/${_id}`);
+            history.push(`/projects/task/${_id}`);
         }
     };
 
