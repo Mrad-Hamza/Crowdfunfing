@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { InputText } from "primereact/inputtext";
 import { Divider } from "primereact/divider";
 import { Link } from "react-router-dom";
-import { deleteEventAction} from "../../features/actions/eventActions";
+import { deleteEventAction, setCommentsEvent} from "../../features/actions/eventActions";
 import CommentSection from "./commentSection";
 
 
@@ -20,7 +20,7 @@ import { RemoveSelectedEvent, selectedEvent } from "../../features/actions/event
 const EventDetail = ({ history }) => {
     const event = useSelector((state) => state.event);
     const { id, nameEvent, descriptionEvent, urlEvent, startDateEvent, endDateEvent, location, eventType } = event;
-    const eventDelete = useSelector((state) => state.noteDelete);
+
     //const { , error: errorDelete, success: successDelete } = eventDelete;
     const { _id } = useParams();
     const dispatch = useDispatch();
@@ -38,6 +38,8 @@ const EventDetail = ({ history }) => {
         }
         history.push("/showEvents");
     };
+
+    
 
     const header = <img alt="Card" src="images/usercard.png" onError={(e) => (e.target.src = "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")} />;
     const footer = (
@@ -69,21 +71,8 @@ const EventDetail = ({ history }) => {
                         <br />
                         <Divider />
                         <div className=" p-fluid">
-                            {/* <h5>Comment Section </h5> */}
                             <div className="formgrid grid">
-                                <CommentSection event={event} />
-
-                                {/* <div className="field col">
-                                    <label htmlFor="name2">Comments</label>
-                                    <InputText id="name2" type="text" />
-                                </div>
-                                <div className="field col">
-                                    <label htmlFor="email2">Write a comment</label>
-                                    <InputTextarea placeholder="Comment" autoResize rows="3" cols="30" />{" "}
-                                    <Button style={{ marginTop: "10px" }} fullWidth disabled color="primary" variant="contained">
-                                        Comment
-                                    </Button>
-                                </div> */}
+                                <CommentSection  />
                             </div>
                         </div>
                         <span className="p-buttonset ">

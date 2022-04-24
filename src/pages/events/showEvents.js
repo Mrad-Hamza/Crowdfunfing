@@ -11,17 +11,7 @@ import { InputText } from "primereact/inputtext";
 
 
 const ShowEvents = () => {
-    // const listValue = [
-    //     { name: "San Francisco", code: "SF" },
-    //     { name: "London", code: "LDN" },
-    //     { name: "Paris", code: "PRS" },
-    //     { name: "Istanbul", code: "IST" },
-    //     { name: "Berlin", code: "BRL" },
-    //     { name: "Barcelona", code: "BRC" },
-    //     { name: "Rome", code: "RM" },
-    // ];
-
-    // const [picklistSourceValue, setPicklistSourceValue] = useState(listValue);
+    
     const [picklistTargetValue, setPicklistTargetValue] = useState([]);
     // const [orderlistValue, setOrderlistValue] = useState(listValue);
 
@@ -31,10 +21,7 @@ const ShowEvents = () => {
     const [sortOrder, setSortOrder] = useState(null);
     const [sortField, setSortField] = useState(null);
 
-    // const sortOptions = [
-    //     { label: "Price High to Low", value: "!price" },
-    //     { label: "Price Low to High", value: "price" },
-    // ];
+    
 	
     useEffect(() => {
         const productService = new ProductService();

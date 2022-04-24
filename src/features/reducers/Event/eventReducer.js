@@ -2,12 +2,16 @@ import { eventActionsTypes } from "../../constants/eventActionsTypes"
 
 const initialState = {
     events: [],
+    commentsEventList: [],
 };
 
 export const eventReducer = (state = initialState, { type, payload}) => {
 switch (type) {
     case eventActionsTypes.FETCH_EVENTS:
         return { ...state, events: payload };
+    case eventActionsTypes.SET_COMMENTSEVENT:
+        return { ...state, commentsEventList: payload };
+    
     default:
         return state;
 }
@@ -23,12 +27,12 @@ export const selectedEventReducer = (state = {}, { type, payload }) => {
         case eventActionsTypes.COMMENT:
             return {
                 ...state,
-                events: state.events.map((event) => {
-                    if (event._id === +payload._id) {
-                        return payload;
-                    }
-                    return event;
-                }),
+                // events: state.events.map((event) => {
+                //     if (event._id === +payload._id) {
+                //         return payload;
+                //     }
+                //     return event;
+                // }),
             };
         default:
             return state;

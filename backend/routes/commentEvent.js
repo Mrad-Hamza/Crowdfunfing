@@ -58,5 +58,12 @@ router.route('/update/:id').put((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//getByIdEvent method
+router.route("/all/:id").get((req, res) => {
+    //const project = Project.findById(req.params.id);
+    CommentEvent.find({ event: req.params.id })
+        .then((events) => res.json(events))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
 
 module.exports = router;

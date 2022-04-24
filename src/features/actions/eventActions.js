@@ -16,6 +16,7 @@ export const selectedEvent = (event) => {
     };
 };
 
+
 export const RemoveSelectedEvent = () => {
     return {
         type: eventActionsTypes.REMOVE_SELECTED_EVENT,
@@ -140,7 +141,7 @@ export const getEventsByFilter = (arg) => async (dispatch) => {
 export const commentEvent = (value ,id) => async (dispatch) => {
     try {
         console.log(id);
-        const data = await axios.post(`http://localhost:5000/events/commentEvent/${id}/`, value); ;
+        const data = await axios.post(`http://localhost:5000/events/commentEvent/${id}/`, value); 
         console.log(data);
         dispatch({ type: eventActionsTypes.COMMENT, payload: data });
         return data.comments;
@@ -148,3 +149,11 @@ export const commentEvent = (value ,id) => async (dispatch) => {
         console.log(error);
     }
 };
+
+export const setCommentsEvent = (commentEvent) => {
+    return {
+        type: eventActionsTypes.SET_COMMENTSEVENT,
+        payload: commentEvent,
+    };
+};
+
