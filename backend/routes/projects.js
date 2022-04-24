@@ -74,13 +74,14 @@ router.route("/add").post(upload.single("image"), (req, res) => {
 });
 
 //update method
-router.route("/update/:id").put((req, res) => {
-    Project.findById(req.params.id)
+router.route("/update").put(upload.single("image"), (req, res) => {
+    console.log("id = ", req.body.id);
+    Project.findById(req.body.id)
         .then((project) => {
             project.projectName = req.body.projectName;
             project.projectDescription = req.body.projectDescription;
-            project.projectType = req.body.projectType;
             project.projectCollectedAmount = req.body.projectCollectedAmount;
+            project.image = req.file.filename;
             project
                 .save()
                 .then(() => res.json("project updated!"))

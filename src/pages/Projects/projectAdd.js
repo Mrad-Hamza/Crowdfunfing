@@ -51,7 +51,7 @@ function ProjectAdd(props) {
     const onUpload = (e) => {
         console.log(e.files[0]);
         setState((prevState) => {
-            return { ...prevState, image: e.files[0] ,};
+            return { ...prevState, image: e.files[0] };
         });
     };
 
@@ -59,7 +59,7 @@ function ProjectAdd(props) {
         <div>
             <div>
                 <div className="form-style-5 col-6">
-                    <h3>Creat New Project</h3>
+                    <h3>Create New Project</h3>
                     <form>
                         <div className="form-group">
                             <label>Name: </label>

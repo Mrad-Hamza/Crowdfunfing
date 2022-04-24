@@ -3,7 +3,20 @@ import axios from "axios";
 export const projectService = {
     register,
     addProject,
+    UpdateProject,
+    getproject,
 };
+
+async function getproject(id) {
+    return await axios
+        .get("http://localhost:5000/projects", id)
+        .then((res) => {
+            console.log("project added!");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
 
 async function addProject(project) {
     let formData = new FormData();
@@ -18,6 +31,24 @@ async function addProject(project) {
         .post("http://localhost:5000/projects/add", formData)
         .then((res) => {
             console.log("project added!");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+async function UpdateProject(project) {
+    let formData = new FormData();
+    formData.append("id", project.id);
+    formData.append("projectName", project.projectName);
+    formData.append("projectDescription", project.projectDescription);
+    formData.append("projectCollectedAmount", project.projectCollectedAmount);
+    formData.append("image", project.image);
+    console.log(formData);
+    return await axios
+        .put("http://localhost:5000/projects/update", formData)
+        .then((res) => {
+            console.log("project updated!");
         })
         .catch((err) => {
             console.log(err);
