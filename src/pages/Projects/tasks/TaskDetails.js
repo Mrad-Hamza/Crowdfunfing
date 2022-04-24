@@ -186,7 +186,7 @@ const TaskDetails = () => {
                             <div className=" col-12" style={{ display: "flex", width: "950px", height: "350px" }}>
                                 <div style={{ height: "280px", width: "475px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
                                     Add new invoice
-                                    <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
+                                    <Link to={`/projects/task/invoice/add/${_id}`} style={{ width: "200px" }}>
                                         <IconButton edge="end" aria-label="plus">
                                             <AddIcon />
                                         </IconButton>
@@ -229,7 +229,7 @@ const TaskDetails = () => {
                                 </div>
                                 <div style={{ height: "280px", width: "470px" }} className="surface-card p-4 shadow-2 border-round">
                                     Add new Complaint
-                                    <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
+                                    <Link to={`/projects/task/complaint/add/${_id}`} style={{ width: "200px" }}>
                                         <IconButton edge="end" aria-label="plus">
                                             <AddIcon />
                                         </IconButton>
