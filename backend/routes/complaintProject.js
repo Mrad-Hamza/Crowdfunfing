@@ -30,7 +30,7 @@ router.route("/:id").get((req, res) => {
 
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
-    Complaint.find({ project: req.params.id ,status:"ON"})
+    Complaint.find({ project: req.params.id, status: "ON" })
         .then((complaints) => res.json(complaints))
         .catch((err) => res.status(400).json("Error: " + err));
 });

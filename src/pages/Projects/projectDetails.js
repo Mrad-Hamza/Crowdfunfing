@@ -145,6 +145,12 @@ const ProjectDetails = () => {
                                                 <div key={task._id}>
                                                     <ListItemButton style={{ display: "flex" }}>
                                                         <ListItemText primary={task.taskName} />
+                                                        <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
+                                                            <IconButton edge="end" aria-label="plus">
+                                                                <AddIcon />
+                                                                <ListItemText primary="Complaint" />
+                                                            </IconButton>
+                                                        </Link>
                                                         <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
                                                             <IconButton edge="end" aria-label="plus">
                                                                 <AddIcon />
