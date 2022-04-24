@@ -49,6 +49,8 @@ app.use('/comment', commentsRouter);
 const imageRouter = require("./routes/image");
 app.use("/image", imageRouter);
 
+const paymentRouter = require("./routes/payment");
+app.use("/payment",paymentRouter);
 
 const compaignRouter = require('./routes/compaigns');
 app.use('/compaigns', compaignRouter);

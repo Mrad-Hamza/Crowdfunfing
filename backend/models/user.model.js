@@ -106,9 +106,7 @@ userSchema.statics.getAuthenticated = function (username, mailAddress, password,
 
 userSchema.methods.incLoginAttempts = function (cb) {
     // if we have a previous lock that has expired, restart at 1
-    console.log(Date.now());
     if (this.lockUntil && this.lockUntil < Date.now()) {
-        console.log(this.lockUntil);
         return this.updateOne({ $set: { loginAttempts: 1 }, $unset: { lockUntil: 1 } }, cb);
     }
     // otherwise we're incrementing

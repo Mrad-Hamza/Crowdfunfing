@@ -1,17 +1,14 @@
+const faceapi = require('face-api.js')
 const router = require('express').Router();
-const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
 var fs = require('fs');
 let User = require('../models/user.model');
-let Role = require('../models/role-user.model')
-let Image = require('../models/image.model')
 const fetch = require('node-fetch')
 const nodemailer = require('nodemailer');
 const {protect} = require('../middleware/authMiddleware')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com")
-
 var fs = require('fs');
 var path = require('path');
 require('dotenv/config');
@@ -27,19 +24,22 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-
 router.route('/').get((req, res) => {
   User.find()
     .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/FaceRecognition').get((req,res)=> {
+    faceapi.nets.ssdMobilenetv1.loadFromDisk('./weights')
+})
+
+
 router.route('/addUserImage').put(upload.single('image'),(req, res) => {
     const image = {
             contentType: 'image/*',
             imgName:req.file.filename
         }
-    console.log(req.body.data)
     User.findByIdAndUpdate(req.body.data)
     .then(user=>{
         user.img=image
@@ -89,15 +89,14 @@ router.post('/facebooklogin',(req,res) => {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
-                        console.log(user)
                         return res.json({accessToken : accessToken,
                             userId : user.id,
                             userName : user.username,
-                            mail : user.mailAddress
+                            mail : user.mailAddress,
+                            role : user.roles
                         })
                     }
                 else {
-                    console.log(email,name)
                     let password= email+process.env.ACCES_TOKEN_SECRET
                     const username = name
                     const firstname = name
@@ -113,7 +112,7 @@ router.post('/facebooklogin',(req,res) => {
                             expiresIn: '180000',
                     })
                     newUser.save()
-                    return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
+                    return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress, role : newUser.roles})
                 }
             }
         })
@@ -136,8 +135,7 @@ router.post('/googlelogin' , (req,res) => {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
-                        return res.json({accessToken : accessToken , userId : user.id, userName : user.username, mail : user.mailAddress
-                        })
+                        return res.json({accessToken : accessToken ,role: user.roles, userId : user.id, userName : user.username, mail : user.mailAddress})
                     }
                     else {
                         let password= email+process.env.ACCES_TOKEN_SECRET
@@ -155,7 +153,7 @@ router.post('/googlelogin' , (req,res) => {
                             expiresIn: '180000',
                         })
                         newUser.save()
-                        return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
+                        return res.json({accessToken : accessToken,role : newUser.roles, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
                     }
                 }
             })
@@ -180,8 +178,6 @@ router.get('/search/:search', (req,res) => {
 })
 
 router.route('/:id').get((req, res) => {
-    console.log(req.params.id)
-    console.log("rzst")
   User.findById(req.params.id)
     .then(user => res.json(user))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -236,13 +232,30 @@ router.route('/update/:id').put((req, res) => {
 router.route('/PasswordUpdate/:mail/:password').put((req,res)=>{
     User.findOne({'mailAddress':req.params.mail})
     .then(user => {
-        console.log(user)
         user.password = req.params.password
         user.save()
         .then(() => res.json('User updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
+    let mailTransporter = nodemailer.createTransport({
+    service :'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth : {
+        user : "fundise.noreply@gmail.com",
+        pass: "HzJxDKrxS2LNwa9"
+        }
+    })
+    let details = {
+        from : "fundise.noreply@gmail.com",
+        to : req.params.mail,
+        subject : "Password Changed Succesfully.",
+        text : "Your new password is "+req.params.password
+    }
+    mailTransporter.sendMail(details)
 })
 
 
@@ -278,7 +291,7 @@ router.route('/login').post( (req, res) => {
         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
           expiresIn: '180000',
         })
-        res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
+        res.json({accessToken : accessToken, userId : user.id,role: user.roles, userName : user.username, mail : user.mailAddress})
         return;
     }
     // otherwise we can determine why we failed

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { Route, useLocation } from 'react-router-dom';
+import { Route, useLocation,useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { AppTopbar } from './components/layout/AppTopbar';
@@ -58,12 +58,16 @@ import ForumListing from "./pages/Forums/forumListing";
 import ForumsComment from "./pages/Forums/ForumsComment";
 import updateForum from "./pages/Forums/updateForum";
 import forumCreate from "./pages/Forums/forumCreate";
-
-
+import { Routes } from "./pages/Front/Components/Routes"
+import { Home } from "./pages/Front/Components/RouteComponents/Home";
+import  Navbar  from "./pages/Front/Components/Navbar";
+import { Footer } from "./pages/Front/Components/Footer";
 import Crud from "./pages/Crud"
+import PaymentPage from "./pages/Payment/PaymentPage"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -76,6 +80,7 @@ const App = () => {
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+    const history = useHistory();
     console.log("🚀 ~ file: App.js ~ line 41 ~ App ~ location", location);
 
     PrimeReact.ripple = true;
@@ -87,7 +92,11 @@ const App = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            userService.checkToken()
+            if (userService.checkToken()) {
+                history.push("/");
+                userService.logout()
+                window.location.reload(false);
+            }
         }, 1000);
     })
 
@@ -130,6 +139,8 @@ const App = () => {
     console.log("Current User Id = "+localStorage.getItem('currentUserId'))
     console.log("Current UserName = "+localStorage.getItem('currentUsername'))
     console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
+    console.log("Current Role = "+localStorage.getItem('currentRoles'))
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -304,8 +315,14 @@ const App = () => {
 
 
 
-    if (token) {
-         return (
+if (token) {
+    if(localStorage.getItem("currentRoles")==="Simple User") {
+        return (
+            <Routes/>
+        );
+    }
+    else if (localStorage.getItem("currentRoles")==="Admin") {
+        return (
          <div className={wrapperClass} onClick={onWrapperClick}>
             <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
@@ -320,14 +337,12 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/empty" component={EmptyPage} />
-
                     <Route path="/crud" component={Crud} />
-
-
                     <Route path="/compaigns" component={Compaigns} />
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/ADD" component={addCompaign} />
+                    <Route path="/PaymentPage" component={PaymentPage} />
                     {/* <Route path="/add" component={forumCreate}/> */}
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
@@ -352,16 +367,16 @@ const App = () => {
                 <div className="layout-mask p-component-overlay"></div>
             </CSSTransition>
         </div>
-    );
-
+        );
+    }
 }
-    else {
+else {
         return (
             <AppContainer>
                  <AccountBox/>
             </AppContainer>
         );
-    }
+}
 }
 export default App;
 
