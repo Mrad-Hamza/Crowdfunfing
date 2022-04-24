@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 
-const CustomDialog = ({ open, setOpen, }) => {
+const CustomDialog = ({ open, setOpen }) => {
     const handleClose = () => {
         setOpen(false);
     };

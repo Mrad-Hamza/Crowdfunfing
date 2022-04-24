@@ -61,5 +61,32 @@ export const selectedComplaintProject = (complaintProject) => {
         payload: complaintProject,
     };
 };
+export const setInvoiceTasks = (invoiveTasks) => {
+    return {
+        type: ActionsTypes.SET_INVOICETASKS,
+        payload: invoiveTasks,
+    };
+};
+
+export const selectedInvoiceTask = (invoiceTask) => {
+    return {
+        type: ActionsTypes.SELECTED_INVOICETASK,
+        payload: invoiceTask,
+    };
+};
+
+export const setComplaintTasks = (complaintTasks) => {
+    return {
+        type: ActionsTypes.SET_COMPLAINTTASKS,
+        payload: complaintTasks,
+    };
+};
+
+export const selectedComplaintTask = (complaintTask) => {
+    return {
+        type: ActionsTypes.SELECTED_COMPLAINTTASK,
+        payload: complaintTask,
+    };
+};
 
 //export const fetchProjects = () => action(ActionTypes.FETCH_PROJECTS.request);

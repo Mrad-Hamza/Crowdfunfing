@@ -21,6 +21,14 @@ const URL = {
         fetchComplaintProject: `/complaintProject/`,
         getComplaintByProjectId: `/complaintProject/all`,
     },
+    invoiceTasks: {
+        fetchInvoiceTasks: `/invoiceTask/`,
+        getInvoiceByTaskId: `/invoiceTask/all`,
+    },
+    complaintTasks: {
+        fetchComplaintTasks: `/complaintTask/`,
+        getComplaintByTaskId: `/complaintTask/all`,
+    },
 };
 
 export default URL;

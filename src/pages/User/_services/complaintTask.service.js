@@ -16,7 +16,7 @@ async function addComplaint(complaint) {
     return await axios
         .post("http://localhost:5000/complaintTask/add", formData)
         .then((res) => {
-            console.log("complaint project added!");
+            console.log("complaint task added!");
         })
         .catch((err) => {
             console.log(err);

@@ -22,8 +22,8 @@ router.route("/").get((req, res) => {
 });
 
 //getAll method
-router.route("/").get((req, res) => {
-    Complaint.find()
+router.route("/all/:id").get((req, res) => {
+    Complaint.find({ task: req.params.id, status: "ON" })
         .then((complaints) => res.json(complaints))
         .catch((err) => res.status(400).json("Error: " + err));
 });

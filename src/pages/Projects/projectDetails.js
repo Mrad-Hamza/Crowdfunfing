@@ -157,7 +157,12 @@ const ProjectDetails = () => {
                                                                 <ListItemText primary="Invoice" />
                                                             </IconButton>
                                                         </Link>
-                                                        <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} />
+                                                        <Link to={`/projects/task/${task._id}`}>
+                                                            <IconButton edge="end" aria-label="comment">
+                                                                <CommentIcon />
+                                                            </IconButton>
+                                                        </Link>
+                                                        {/* <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} /> */}
 
                                                         {/* {open ? <ExpandLess /> : <ExpandMore />} */}
                                                     </ListItemButton>
