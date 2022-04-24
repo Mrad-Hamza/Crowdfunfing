@@ -1,18 +1,30 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Status = Object.freeze({
+    ON: "ON",
+    OFF: "OFF",
+});
 const invoiceTaskSchema = new Schema(
     {
+        invoiceName: {
+            type: String,
+        },
         invoiceFile: {
             type: String,
         },
-        invoiceDate: {
-            type: Date,
-            required: true,
-        },
-        Task: {
+        task: {
             type: Schema.Types.ObjectId,
-            ref: "Project",
+            ref: "Task",
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+        status: {
+            type: String,
+            required: true,
+            enum: Object.values(Status),
         },
     },
     {

@@ -71,14 +71,14 @@ export default function CustomizedDialogs({ title, description, state }) {
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
                     Task title : {title}
                 </BootstrapDialogTitle>
-                <DialogContent dividers>
+                <DialogContent dividers style={{ width: "600px", height: "400px" }}>
                     <Typography gutterBottom>Description :{description}</Typography>
                     {/* {/* <Typography gutterBottom>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</Typography> */}
                     <Typography gutterBottom>State : {state}</Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleClose}>
-                        Save changes
+                        Close
                     </Button>
                 </DialogActions>
             </BootstrapDialog>

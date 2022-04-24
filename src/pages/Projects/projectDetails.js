@@ -143,11 +143,19 @@ const ProjectDetails = () => {
                                         if (task) {
                                             return (
                                                 <div key={task._id}>
-                                                    <ListItemButton onClick={handleClick}>
+                                                    <ListItemButton style={{ display: "flex" }}>
                                                         <ListItemText primary={task.taskName} />
-                                                        {open ? <ExpandLess /> : <ExpandMore />}
+                                                        <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
+                                                            <IconButton edge="end" aria-label="plus">
+                                                                <AddIcon />
+                                                                <ListItemText primary="Invoice" />
+                                                            </IconButton>
+                                                        </Link>
+                                                        <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} />
+
+                                                        {/* {open ? <ExpandLess /> : <ExpandMore />} */}
                                                     </ListItemButton>
-                                                    <Collapse in={open} timeout="auto" unmountOnExit>
+                                                    {/* <Collapse in={open} timeout="auto" unmountOnExit>
                                                         <List component="div" disablePadding>
                                                             <ListItemButton sx={{ pl: 4 }}>
                                                                 <ListItemIcon>
@@ -159,9 +167,9 @@ const ProjectDetails = () => {
                                                                 </Link>
                                                                 <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} />
                                                                 {/* <CustomDialog /> */}
-                                                            </ListItemButton>
-                                                        </List>
-                                                    </Collapse>
+                                                    {/* </ListItemButton> */}
+                                                    {/* </List> */}
+                                                    {/* </Collapse> */}
                                                 </div>
                                             );
                                         } else {
@@ -235,13 +243,11 @@ const ProjectDetails = () => {
                                                 <ListItem
                                                     key={complaintProject._id}
                                                     secondaryAction={
-                                                        <div>
+                                                        <div style={{ display: "flex" }}>
                                                             <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
                                                                 <DeleteIcon />
                                                             </IconButton>
-                                                            <IconButton edge="end" aria-label="comments">
-                                                                <CommentIcon></CommentIcon>
-                                                            </IconButton>
+                                                            <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
                                                         </div>
                                                     }
                                                     disablePadding
