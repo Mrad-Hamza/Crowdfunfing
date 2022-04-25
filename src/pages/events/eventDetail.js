@@ -32,6 +32,7 @@ const EventDetail = ({ history }) => {
         });
         dispatch(selectedEvent(response.data));
     };
+    
     const deleteHandler = (id) => {
         if (window.confirm("Are you sure?")) {
             dispatch(deleteEventAction(id));

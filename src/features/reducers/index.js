@@ -10,6 +10,8 @@ const reducers = combineReducers({
     eventCreate: eventReducer,
     eventUpdate:eventReducer,
     eventDelete:eventReducer,
+    commentUpdate:eventReducer,
+    commentDelete:eventReducer
 });
 
 export default reducers;

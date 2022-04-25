@@ -65,6 +65,32 @@ export const eventUpdateReducer = (state = {}, action) => {
             return state;
     }
 };
+export const commentUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case eventActionsTypes.COMMENT_UPDATE_REQUEST:
+            return { loading: true };
+        case eventActionsTypes.COMMENT_UPDATE_SUCCESS:
+            return { loading: false, success: true };
+        case eventActionsTypes.COMMENT_UPDATE_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
+export const commentDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case eventActionsTypes.COMMENT_DELETE_REQUEST:
+            return { loading: true };
+        case eventActionsTypes.COMMENT_DELETE_SUCCESS:
+            return { loading: false, success: true };
+        case eventActionsTypes.COMMENT_DELETE_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
+
 
 export const eventDeleteReducer = (state = {}, action) => {
     switch (action.type) {

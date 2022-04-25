@@ -49,9 +49,9 @@ router.route('/delete/:id').delete((req, res) => {
 // update comment
 router.route('/update/:id').put((req, res) => {
     CommentEvent.findById(req.params.id)
-    .then(comment => {
-        comment.content = req.body.content;
-        comment.save()
+    .then(comm=> {
+        comm.comment = req.body.comment;
+        comm.save()
         .then(() => res.json('Comment updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
