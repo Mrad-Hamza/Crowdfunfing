@@ -1,7 +1,24 @@
 const router = require("express").Router();
 let Task = require("../models/task.model");
 let Project = require("../models/project.model");
+const multer = require("multer");
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "../src/assets/layout/images");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+var upload = multer({ storage: storage });
+//getAll method
+router.route("/").get((req, res) => {
+    Task.find()
+        .then((complaints) => res.json(complaints))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
 //getAll method
 router.route("/").get((req, res) => {
     Task.find()
@@ -40,11 +57,12 @@ router.route("/:id").get((req, res) => {
 });
 
 //add method
-router.route("/add").post((req, res) => {
+router.route("/add").post(upload.single(""), (req, res) => {
     const taskName = req.body.taskName;
     const taskDescription = req.body.taskDescription;
-    const taskType = req.body.taskType;
+    const taskType = "in progress";
     const project = req.body.project;
+    const user = req.body.user;
     const status = "ON";
 
     const newTask = new Task({
@@ -53,19 +71,11 @@ router.route("/add").post((req, res) => {
         taskType,
         project,
         status,
+        user,
     });
     newTask
         .save()
         .then(() => res.json("Task added!"))
-        .catch((err) => res.status(400).json("Error: " + err));
-    Project.findById(project)
-        .then((projectt) => {
-            projectt.tasks.push(newTask);
-            projectt
-                .save()
-                .then(() => res.json("task added to project"))
-                .catch((err) => res.status(400).json("Error: " + err));
-        })
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
