@@ -1,5 +1,0 @@
-export const ActionsTypes = {
-    SET_TASKS: "SET_TASKS",
-    SELECTED_TASK: "ELECTED_TASK",
-    REMOVE_SELECTED_TASK: "REMOVE_SELECTED_TASK",
-};

@@ -1,8 +1,19 @@
 const router = require("express").Router();
 let Complaint = require("../models/complaintProject.model");
-let Project = require("../models/project.model");
-let User = require("../models/user.model");
+// let Project = require("../models/project.model");
+// let User = require("../models/user.model");
+const multer = require("multer");
 
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "../src/assets/layout/images");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+var upload = multer({ storage: storage });
 //getAll method
 router.route("/").get((req, res) => {
     Complaint.find()
@@ -17,15 +28,22 @@ router.route("/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//getByIdProject method
+router.route("/all/:id").get((req, res) => {
+    Complaint.find({ project: req.params.id, status: "ON" })
+        .then((complaints) => res.json(complaints))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add method
-router.route("/add").post((req, res) => {
+router.route("/add").post(upload.single(""), (req, res) => {
+    console.log(req.body);
+    const status = "ON";
     const complaintProjectTitle = req.body.complaintProjectTitle;
     const complaintDescription = req.body.complaintDescription;
-    const complaintType = req.body.complaintType;
-    const projectId = req.body.project;
-    const userId = req.body.user;
-    const user = User.findById(userId);
-    const project = Project.findById(projectId);
+    const complaintType = "in progress";
+    const project = req.body.project;
+    const user = req.body.user;
 
     const newComplaint = new Complaint({
         complaintProjectTitle,
@@ -33,10 +51,39 @@ router.route("/add").post((req, res) => {
         complaintType,
         project,
         user,
+        status,
     });
+    console.log(newComplaint);
+    console.log(req);
     newComplaint
         .save()
         .then(() => res.json("Complaint project added!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Archive method
+router.route("/archive/:id").put((req, res) => {
+    Complaint.findById(req.params.id)
+        .then((complaint) => {
+            complaint.status = "OFF";
+            complaint
+                .save()
+                .then(() => res.json("complaint archived!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Activate method
+router.route("/activate/:id").put((req, res) => {
+    Complaint.findById(req.params.id)
+        .then((complaint) => {
+            complaint.status = "ON";
+            complaint
+                .save()
+                .then(() => res.json("complaint activated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
