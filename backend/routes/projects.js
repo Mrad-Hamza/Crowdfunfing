@@ -1,6 +1,8 @@
 const router = require("express").Router();
 let Project = require("../models/project.model");
+let User = require("../models/user.model");
 const multer = require("multer");
+const nodemailer = require("nodemailer");
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -62,15 +64,32 @@ router.route("/add").post(upload.single("image"), (req, res) => {
         compaign,
         user,
     });
-    // if (req.file) {
-    //     newProject.image = req.file.filename;
-    // }
     console.log(newProject);
     console.log(req);
     newProject
         .save()
-        .then(() => res.json("Project added!"))
+        .then(() => {
+            res.json("Project added!");
+        })
         .catch((err) => res.status(400).json("Error: " + err));
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: "fundise.noreply@gmail.com",
+            pass: "HzJxDKrxS2LNwa9",
+        },
+    });
+    let details = {
+        from: "fundise.noreply@gmail.com",
+        to: req.body.userMail,
+        subject: "Project added succesfully.",
+        text: " Dear admin the project " + projectName + "is created succesfully",
+    };
+    mailTransporter.sendMail(details);
 });
 
 //update method
