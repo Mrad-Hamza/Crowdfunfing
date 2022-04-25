@@ -142,4 +142,11 @@ router.route("/:id").delete((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.get("/search/:key", async (req, res) => {
+    let data = await Project.find({
+        $or: [{ projectName: { $regex: req.params.key } }],
+    });
+    res.send(data);
+});
+
 module.exports = router;
