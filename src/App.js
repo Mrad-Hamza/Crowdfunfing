@@ -7,6 +7,8 @@ import { CSSTransition } from 'react-transition-group';
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
 import { AppMenu } from "./Backoffice/components/layout/AppMenu";
+import { AppConfig } from "./AppConfig";
+
 
 import styled from "styled-components";
 
@@ -58,7 +60,6 @@ import { userService } from "./Backoffice/pages/User/_services/user.service";
 import ForumListing from "./Backoffice/pages/Forums/forumListing";
 import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
 import updateForum from "./Backoffice/pages/Forums/updateForum";
-import forumCreate from "./Backoffice/pages/Forums/forumCreate";
 
 
 import { Routes } from "./Front/Components/Routes"
@@ -369,6 +370,7 @@ if (token) {
                     </div>
                     <AppFooter layoutColorMode={layoutColorMode} />
                 </div>
+                <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
             <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
                 <div className="layout-mask p-component-overlay"></div>
