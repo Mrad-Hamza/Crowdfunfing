@@ -6,6 +6,11 @@ const ProjectType = Object.freeze({
     Done: "done",
 });
 
+const Status = Object.freeze({
+    ON: "ON",
+    OFF: "OFF",
+});
+
 const projectSchema = new Schema(
     {
         projectName: {
@@ -29,6 +34,19 @@ const projectSchema = new Schema(
         },
         image: {
             type: String,
+        },
+        status: {
+            type: String,
+            required: true,
+            enum: Object.values(Status),
+        },
+        compaign: {
+            type: Schema.Types.ObjectId,
+            ref: "Compaign",
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "user",
         },
         tasks: [
             {

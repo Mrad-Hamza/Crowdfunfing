@@ -2,7 +2,7 @@ const router = require('express').Router();
 let Comment = require('../models/comment.model');
 let Forum = require('../models/forum.model');
 const nodemailer = require('nodemailer');
-const mysql =require('mysql');
+
 
 router.route('/').get((req, res) => {
     Comment.find()

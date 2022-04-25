@@ -6,35 +6,53 @@ export const userService = {
     logout,
     register,
     checkToken,
+    facebooklogin,
+    getUserImage,
     getAll,
     addUser,
     googlelogin,
+    getUserByMailOrUsername,
     getProfile,
     update,
     changePassword,
     forgotpassword,
+    addUserImage,
     delete: _delete
 };
 
-
-function addUser(user) {
-    const token = localStorage.getItem('token')
-    const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
-        console.log(localStorage.getItem('token')+ " aa")
-        logout()
-        refreshPage()
+async function addUserImage(image){
+    let formData = new FormData()
+        let idUser = localStorage.getItem("currentUserId")
+    formData.append('image',image)
+    formData.append('data',idUser)
+    console.log(formData)
+    console.log(idUser)
+    const headers = {
+        method : 'PUT',
+        'Content-Type': 'multipart/form-data',
+        data : {
+            id: idUser
+        }
     }
-    else {
-        axios.post('http://localhost:5000/users/add',user)
+    return await axios.put('http://localhost:5000/users/addUserImage',formData)
+}
+
+async function addUser(user) {
+        return await axios.post('http://localhost:5000/users/add',user)
             .then(res =>{
             console.log("User added!")
         })
         .catch(err=>{
             console.log(err)
         })
-    }
+}
 
+async function getUserByMailOrUsername(search) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/users/'+search,requestOptions)
 }
 function googlelogin(tokenId){
     axios({
@@ -44,6 +62,7 @@ function googlelogin(tokenId){
             tokenId : tokenId
         }
     }).then(res => {
+        console.log(res.data)
         localStorage.setItem('token',res.data.accessToken)
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)
@@ -51,19 +70,48 @@ function googlelogin(tokenId){
         authHeader();
     })
 }
-function login(username, password) {
-    const data = {
-        username : username,
-        mailAddress : username,
-        password : password
-    }
-    axios.post(`http://localhost:5000/users/login`,data)
-    .then(res=> {
+function facebooklogin(accessToken,userID){
+    axios({
+        method:"POST",
+        url:"http://localhost:5000/users/facebooklogin",
+        data: {
+            accessToken : accessToken, userID : userID
+        }
+    }).then(res => {
+        console.log(res)
         localStorage.setItem('token',res.data.accessToken)
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)
         localStorage.setItem('currentMailAddress',res.data.mail)
         authHeader();
+    })
+}
+async function login(username, password) {
+    const data = {
+        username : username,
+        mailAddress : username,
+        password : password
+    }
+    return await axios.post(`http://localhost:5000/users/login`,data)
+    .then(res=> {
+        if(res.data==="Invalid details"){
+            return res.data
+        }
+        else if (res.data==="You failed too many times.") {
+            return res.data
+        }
+        else if (res.data ==="No User Found!") {
+            return res.data
+        }
+        else {
+            console.log(res)
+            localStorage.setItem('token',res.data.accessToken)
+            localStorage.setItem('currentUserId',res.data.userId)
+            localStorage.setItem('currentUsername',res.data.userName)
+            localStorage.setItem('currentMailAddress',res.data.mail)
+            authHeader();
+            return res.data
+        }
 
     })
     .catch(err=>{
@@ -80,6 +128,14 @@ function refreshPage() {
         window.location.reload(false);
     }
 
+async function getUserImage(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/image/'+id,requestOptions)
+}
+
 async function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -88,12 +144,12 @@ async function getAll() {
     return await axios.get(`http://localhost:5000/users`, requestOptions)
 }
 
-function getProfile() {
+async function getProfile() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(),
     };
-        const result = axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('username'),requestOptions)
+        const result =  await axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('currentMailAddress'),requestOptions)
         .then((res) =>  res.data)
         return result
 }
@@ -124,14 +180,13 @@ async function changePassword(mailAddress,password){
     return await axios.put('http://localhost:5000/users/PasswordUpdate/'+mailAddress+"/"+password,requestOptions)
 }
 
-function update(user) {
+async function update(user) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: user
     };
-    checkToken()
-    return fetch(`http://localhost:5000/users/${user.id}`, requestOptions).then(handleResponse);;
+    return axios.put(`http://localhost:5000/users/update/${user._id}`, requestOptions)
 }
 function checkToken(){
     const token = localStorage.getItem('token')
@@ -141,6 +196,8 @@ function checkToken(){
         refreshPage()
     }
 }
+
+
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {

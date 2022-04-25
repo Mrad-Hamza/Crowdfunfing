@@ -1,0 +1,16 @@
+.p-button.p-fileupload-choose{
+    background-color: black !important;
+    border-color: black;
+}
+.p-button.p-fileupload-choose:hover{
+    background-color: rgb(129, 129, 129) !important;
+    border-color: rgb(129, 129, 129) !important;
+}
+.p-button{
+    background-color: black !important;
+    border-color: black;
+}
+.p-button:hover{
+    background-color: rgb(129, 129, 129) !important;
+    border-color: rgb(129, 129, 129) !important;
+}

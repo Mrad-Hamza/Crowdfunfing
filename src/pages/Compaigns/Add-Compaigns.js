@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { users } from '../User/_reducers/users.reducer';
 
 export default class AddCompaign extends Component {
   constructor(props) {
@@ -72,6 +73,7 @@ export default class AddCompaign extends Component {
   }
 
 
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -83,7 +85,8 @@ export default class AddCompaign extends Component {
       description: this.state.description,
       deadline: this.state.deadline,
       Verified: this.state.Verified,
-      Status: this.state.Status
+      Status: this.state.Status,
+      user:localStorage.getItem('currentUserId')
 }
 
 console.log(compaign);
