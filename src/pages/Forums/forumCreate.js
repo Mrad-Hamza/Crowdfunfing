@@ -1,106 +1,100 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
+import './App.css';
+import { Link } from 'react-router-dom';
 
-const customStyles = {
-  content: {
-  
-  
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    height: "390px",
-    width: "330px",
-    backgroundColor: "#1c1e21",
-    color: "white"
-  }
-};
+import "react-datepicker/dist/react-datepicker.css";
 
-class AddForum extends Component {
-  state = {
-    
-  
-      title: "",
-      description: "",
-     
-    
-  };
+export default class forumCreate extends Component {
+  constructor(props) {
+    super(props);
 
-  
-   handleChange = e =>
-   {
-      this.setState({
-    [e.target.title]: e.target.value 
-    });}
-    postforum =e=>{
-      e.preventDefault()
-      axios.post('http://localhost:5000/forums/add',{
-        title: this.state.title,
-        description: this.state.description,
-        
-      })
-
-    //   .then(
-    //     this.props.getforum(),
-    //   this.setState({
-    //     title: '',
-    //     description: '',
-      
+    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChangeDescription = this.onChangeDescription.bind(this);
    
-    //   })
-      
-      
-      
-    //   )
-    }
-  render() {
-    return (
-      <div>
-       
- 
-      
-             <form style={{  display: "flex",flexDirection: "column",}} onSubmit={
-                this.postforum
-        
-            }
-                
-                >
-            <label style={{ margin: "15px" }}>
-             Adding contact
-           </label>
-          <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              placeholder="title..."
-            //   onChange={this.handleChange}
-              style={{ margin: "15px",padding:"10px",borderRadius:"5px"}}
-            />
-           
-           <input
-              type="text"
-              name="description"
-              value={this.state.description}
-              placeholder="description..."
-            //   onChange={this.handleChange}
-              style={{ margin: "15px",padding:"10px",borderRadius:"5px"}}
-            />
-              <button type="submit"
-              style={{ margin: "15px" ,padding:"10px",borderRadius:"5px"}}>
-                Submit
-              </button>
-         
-              <button style={{ margin: "15px" ,padding:"10px",borderRadius:"5px"}}>
-                Cancel
-              </button>
-      
-              </form>
-    
-      </div>
-    );
+    this.onSubmit = this.onSubmit.bind(this);
+
+    this.state = {
+      title: '',
+      description: '',
+     
   }
+  }
+
+  
+
+  
+
+  onChangeTitle(e) {
+    this.setState({
+        title: e.target.value
+    })
+  }
+  onChangeDescription(e) {
+    this.setState({
+        description: e.target.value
+    })
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const forum = {
+      
+      title: this.state.title,
+      
+      description: this.state.description,
+    
 }
 
-export default AddForum;
+console.log(forum);
+
+axios.post('http://localhost:5000/forums/add/', forum)
+.then(res => console.log(res.data));
+
+// window.location = '/compaignsList';
+}
+
+  render() {
+    return (
+      <div class="form-style-5">
+      <h3>Creat New forum</h3>
+      <form onSubmit={this.onSubmit}>
+
+        <div className="form-group"> 
+          <label>Title: </label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.title}
+              onChange={this.onChangeTitle}
+              />
+        </div>
+
+        <div className="form-group"> 
+          <label>Description: </label>
+          <input  type="text"
+              required
+              className="form-control"
+              value={this.state.description}
+              onChange={this.onChangeDescription}
+              />
+        </div>
+
+      
+
+     
+
+
+        <div className="form-group">
+          <input type="submit" value="add forum" className="btn btn-primary" />
+          <div className="form-group">
+        <button class="btnn" ><Link to={"/forums"}>Cancel</Link></button>
+        </div>
+        </div>
+        
+      </form>
+    </div>
+    )
+  }
+}

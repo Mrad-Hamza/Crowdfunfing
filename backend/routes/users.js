@@ -2,20 +2,31 @@ const router = require('express').Router();
 const UserRole = require('../models/role-user.model');
 const multer = require('multer')
 const jwt = require('jsonwebtoken')
+var fs = require('fs');
 let User = require('../models/user.model');
+let Role = require('../models/role-user.model')
+let Image = require('../models/image.model')
+const fetch = require('node-fetch')
 const nodemailer = require('nodemailer');
 const {protect} = require('../middleware/authMiddleware')
 const {OAuth2Client} = require('google-auth-library')
 const client = new OAuth2Client("98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com")
 
-const storage = multer.diskStorage({
-  destination: (req,file,cb) => {
-    cb(null,'uploads')
-  },
-  filename:(req,file,cb)=>{
-    cb(null,file.originalname)
-  }
-})
+var fs = require('fs');
+var path = require('path');
+require('dotenv/config');
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '../src/assets/layout/images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+});
+
+var upload = multer({ storage: storage });
+
 
 router.route('/').get((req, res) => {
   User.find()
@@ -23,21 +34,93 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/add').post((req, res) => {
+router.route('/addUserImage').put(upload.single('image'),(req, res) => {
+    const image = {
+            contentType: 'image/png',
+            imgName:req.file.originalname
+        }
+      User.findByIdAndUpdate(req.body.id)
+      .then(user=>{
+          console.log(user)
+          user.img=image
+          user.save()
+          .then(()=>res.json('Image added to user haha'))
+            .catch(err => res.status(400).json('Error: ' + err));
+      })
+
+
+});
+
+router.route('/add').post(upload.single('image'),(req, res) => {
   const username = req.body.username;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const mailAddress = req.body.mailAddress;
   const password = req.body.password;
-  const roles = req.body.roles
-
-  const newUser = new User({username,firstname,lastname,mailAddress,password,roles});
+  const img = {
+            data: fs.readFileSync(path.join(process.cwd() + '/../src/assets/layout/images/'+ req.file.originalname)),
+            contentType: 'image/png',
+            imgName:req.file.originalname
+        }
+  var roles = req.body.roles
+  if (!roles){
+      roles = "62417c2021431e2b5efbfaea"
+  }
+  const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
 
   newUser.save()
     .then(() => res.json('User added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.post('/facebooklogin',(req,res) => {
+    const {userID,accessToken} = req.body
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=id,name,email&access_token=${accessToken}`
+    fetch(urlGraphFacebook,{
+        method:`GET`
+    })
+    .then(res=> res.json())
+    .then(response=>{
+        const {email,name} =response;
+        User.findOne({'mailAddress':email}).exec((err,user) => {
+            if(err) {
+                    return response.status(400).json({
+                        error :"User does not exist"
+                    })
+            }else {
+                if (user) {
+                        const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                        })
+                        return res.json({accessToken : accessToken,
+                            userId : user.id,
+                            userName : user.username,
+                            mail : user.mailAddres
+                        })
+                    }
+                else {
+                    console.log(email,name)
+                    let password= email+process.env.ACCES_TOKEN_SECRET
+                    const username = name
+                    const firstname = name
+                    const img = {
+                        contentType: 'image/png',
+                        imgName:"NoPic.png"
+                    }
+                    const lastname = name
+                    const mailAddress = email;
+                    const roles = "62417c2021431e2b5efbfaea"
+                    const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
+                    const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
+                            expiresIn: '180000',
+                    })
+                    newUser.save()
+                    return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
+                }
+            }
+        })
+    })
+})
 router.post('/googlelogin' , (req,res) => {
     const idToken = req.body.tokenId
     client.verifyIdToken({idToken, audience:"98128393533-fb736bc4b2637vn8t1028bcf0e6mv0lj.apps.googleusercontent.com"})
@@ -64,12 +147,17 @@ router.post('/googlelogin' , (req,res) => {
                         const firstname = given_name;
                         const lastname = family_name;
                         const mailAddress = email;
-                        const newUser = new User({username,firstname,lastname,mailAddress,password});
+                        const img = {
+                            contentType: 'image/png',
+                            imgName:"NoPic.png"
+                        }
+                        const roles = "62417c2021431e2b5efbfaea"
+                        const newUser = new User({username,firstname,lastname,mailAddress,password,roles,img});
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET,{
                             expiresIn: '180000',
                         })
                         newUser.save()
-                        return res.json({accessToken : accessToken, userId : user.id, userName : user.username, mail : user.mailAddress})
+                        return res.json({accessToken : accessToken, userId : newUser.id, userName : newUser.username, mail : newUser.mailAddress})
                     }
                 }
             })
@@ -79,6 +167,14 @@ router.post('/googlelogin' , (req,res) => {
 
 router.get('/profile/:search', protect, (req,res) => {
     User.findOne({$or:[
+     {'username': req.params.search},
+     {'mailAddress': req.params.search}
+   ]})
+    .then(user => res.json(user))
+})
+
+router.get('/:search', (req,res) => {
+  User.findOne({$or:[
      {'username': req.params.search},
      {'mailAddress': req.params.search}
    ]})
@@ -104,8 +200,9 @@ router.route('/affectImage/:idU/:idM').put( (req,res) => {
 router.route('/affectRole/:idU/:idR').put( (req,res) => {
   User.findByIdAndUpdate(req.params.idU)
     .then(user=>{
-      user.roles = req.params.idR
-      user.save()
+
+        user.roles = req.params.idR
+        user.save()
         .then(()=>res.json('Role added to user haha'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
@@ -156,7 +253,7 @@ router.route('/ForgotPassword/:mail').post( (req,res) => {
     requireTLS: true,
     auth : {
         user : "fundise.noreply@gmail.com",
-        pass: "fundise@123"
+        pass: "HzJxDKrxS2LNwa9"
         }
     })
     let randomCode = (Math.random() + 1).toString(36).substring(7);
@@ -234,7 +331,4 @@ function authenticateToken(req,res,nex){
   .next()
   })
 }
-
-
-
 module.exports = router;

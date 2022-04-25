@@ -22,7 +22,7 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
-import { getIsRtlScrollbarOnLeft } from '@fullcalendar/core';
+// import { getIsRtlScrollbarOnLeft } from '@fullcalendar/core';
 
 
 //import Modal from "react-modal";
@@ -58,9 +58,8 @@ import ForumListing from "./pages/Forums/forumListing";
 import ForumsComment from "./pages/Forums/ForumsComment";
 import updateForum from "./pages/Forums/updateForum";
 import forumCreate from "./pages/Forums/forumCreate";
+import comment from "./pages/Forums/comment"
 
-
-import Crud from "./pages/Crud"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
@@ -264,7 +263,7 @@ const App = () => {
                     items: [
                         { label: "ListForums", icon: "pi pi-fw pi-list",to: "/forums" },
                         { label: "ListComments", icon: "pi pi-fw pi-list",to: "/comment" },
-                        { label: "AddForum", icon: "pi pi-fw pi-list",to: "/add" },
+                        { label: "AddForum", icon: "pi pi-fw pi-list",to: "/addforums" },
                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -322,7 +321,7 @@ const App = () => {
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/empty" component={EmptyPage} />
 
-                    <Route path="/crud" component={Crud} />
+                    {/* <Route path="/crud" component={Crud} /> */}
 
 
                     <Route path="/compaigns" component={Compaigns} />
@@ -342,7 +341,8 @@ const App = () => {
                     <Route path="/forums" exact component={ForumListing} />
                     <Route path="/comment" component={ForumsComment}/>
                     <Route path="/edit/:_id" component={updateForum}/>
-                    <Route path="/add" component={forumCreate}/>
+                    <Route path="/addforums" component={forumCreate}/>
+                    <Route path="/showcmnt" component={comment}/>
                 </div>
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
