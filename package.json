@@ -55,7 +55,8 @@
         "semantic-ui-react": "^2.1.2",
         "styled-components": "^5.2.1",
         "typescript": "^4.6.2",
-        "use-history": "^1.4.1"
+        "use-history": "^1.4.1",
+        "web-vitals": "^0.2.4"
     },
     "scripts": {
         "start": "react-scripts start",
