@@ -66,6 +66,8 @@
         "styled-components": "^5.2.1",
         "typescript": "^4.6.2",
         "web-vitals": "^0.2.4"
+
+       
     },
     "scripts": {
         "start": "react-scripts start",
