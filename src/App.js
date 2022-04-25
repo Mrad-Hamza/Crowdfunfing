@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
-import { Route, useLocation } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
+import React, { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import { Route, useLocation,useHistory } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 
-import { AppTopbar } from "./components/layout/AppTopbar";
-import { AppFooter } from "./components/layout/AppFooter";
-import { AppMenu } from "./components/layout/AppMenu";
+import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
+import { AppFooter } from "./Backoffice/components/layout/AppFooter";
+import { AppMenu } from "./Backoffice/components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
+
 
 import styled from "styled-components";
 
-import { AccountBox } from "./pages/User/Login/UserLogin/accountBox";
-import UsersList from "./pages/User/Login/Users/UsersList";
+import { AccountBox } from "./Backoffice/pages/User/Login/UserLogin/accountBox";
+import UsersList from "./Backoffice/pages/User/Login/Users/UsersList";
 
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
@@ -21,26 +22,25 @@ import "./assets/demo/flags/flags.css";
 import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
-import { getIsRtlScrollbarOnLeft } from "@fullcalendar/core";
 
 //import Modal from "react-modal";
-import Events from "./pages/events/events";
+import Events from "./Backoffice/pages/events/events";
 
-import ProjectListing from "./pages/Projects/projectListing";
-import ProjectDeletedListing from "./pages/Projects/projectDeletedListing";
-import ProjectAdd from "./pages/Projects/projectAdd";
-import ProjectDetails from "./pages/Projects/projectDetails";
+import ProjectListing from "./Backoffice/pages/Projects/projectListing";
+import ProjectDeletedListing from "./Backoffice/pages/Projects/projectDeletedListing";
+import ProjectAdd from "./Backoffice/pages/Projects/projectAdd";
+import ProjectDetails from "./Backoffice/pages/Projects/projectDetails";
 //import routes from "./routes";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./Backoffice/components/Dashboard";
 import PrimeReact from "primereact/api";
 
 import { Tooltip } from "primereact/tooltip";
 
-import ListDeadline from "./pages/Compaigns/list-deadline";
-import Compaigns from "./pages/Compaigns/Compaigns";
-import CompaignsList from "./pages/Compaigns/list-Compaigns";
-import upadateCompaign from "./pages/Compaigns/Edit-Comapaign";
-import addCompaign from "./pages/Compaigns/Add-Compaigns";
+import ListDeadline from "./Backoffice/pages/Compaigns/list-deadline";
+import Compaigns from "./Backoffice/pages/Compaigns/Compaigns";
+import CompaignsList from "./Backoffice/pages/Compaigns/list-Compaigns";
+import upadateCompaign from "./Backoffice/pages/Compaigns/Edit-Comapaign";
+import addCompaign from "./Backoffice/pages/Compaigns/Add-Compaigns";
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -49,29 +49,34 @@ import "./assets/demo/flags/flags.css";
 import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
-import createEventForm from "./pages/events/createEventForm";
-import statisticsEvent from "./pages/events/statisticsEvent";
-import eventListing from "./pages/events/eventListing";
+import createEventForm from "./Backoffice/pages/events/createEventForm";
+import statisticsEvent from "./Backoffice/pages/events/statisticsEvent";
+import eventListing from "./Backoffice/pages/events/eventListing";
 // import showEvents from "./pages/events/showEvents";
-import EventDetail from "./pages/events/eventDetail";
-import { userService } from "./pages/User/_services/user.service";
+import EventDetail from "./Backoffice/pages/events/eventDetail";
+import { userService } from "./Backoffice/pages/User/_services/user.service";
 
-import ForumListing from "./pages/Forums/forumListing";
-import ForumsComment from "./pages/Forums/ForumsComment";
-import updateForum from "./pages/Forums/updateForum";
-import forumCreate from "./pages/Forums/forumCreate";
+import ForumListing from "./Backoffice/pages/Forums/forumListing";
+import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
+import updateForum from "./Backoffice/pages/Forums/updateForum";
 
-import Crud from "./pages/Crud";
-import InvoiceProjectAdd from "./pages/Projects/InvoiceProjects/invoiceAdd";
-import ComplaintProjectAdd from "./pages/Projects/ComplaintProjects/complaintAdd";
-import TaskProjectAdd from "./pages/Projects/tasks/TaskProjectAdd";
-import InvoiceTaskAdd from "./pages/Projects/tasks/InvoiceTasks/invoiceTaskAdd";
-import ComplaintTaskAdd from "./pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
-import TaskDetails from "./pages/Projects/tasks/TaskDetails";
-import ProjectUpdate from "./pages/Projects/projectUpdate";
-const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
+
+import { Routes } from "./Front/Components/Routes"
+import Crud from "./Backoffice/pages/Crud"
+import PaymentPage from "./Backoffice/pages/Payment/PaymentPage";
+
+import InvoiceProjectAdd from "./Backoffice/pages/Projects/InvoiceProjects/invoiceAdd";
+import ComplaintProjectAdd from "./Backoffice/pages/Projects/ComplaintProjects/complaintAdd";
+import TaskProjectAdd from "./Backoffice/pages/Projects/tasks/TaskProjectAdd";
+import InvoiceTaskAdd from "./Backoffice/pages/Projects/tasks/InvoiceTasks/invoiceTaskAdd";
+import ComplaintTaskAdd from "./Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
+import TaskDetails from "./Backoffice/pages/Projects/tasks/TaskDetails";
+import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
+
+const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
-const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
+const TimelineDemo = React.lazy(() => import("./Backoffice/pages/TimelineDemo"));
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -84,6 +89,7 @@ const App = () => {
     const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
     const copyTooltipRef = useRef();
     const location = useLocation();
+    const history = useHistory();
     console.log("🚀 ~ file: App.js ~ line 41 ~ App ~ location", location);
 
     PrimeReact.ripple = true;
@@ -95,7 +101,11 @@ const App = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            userService.checkToken();
+            if (userService.checkToken()) {
+                history.push("/");
+                userService.logout()
+                window.location.reload(false);
+            }
         }, 1000);
     });
 
@@ -128,22 +138,19 @@ const App = () => {
         setLayoutColorMode(mode);
     };
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
-    console.log("Current User Id = " + localStorage.getItem("currentUserId"));
-    console.log("Current UserName = " + localStorage.getItem("currentUsername"));
-    console.log("Current MailAddress = " + localStorage.getItem("currentMailAddress"));
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
+    console.log("Current User Id = "+localStorage.getItem('currentUserId'))
+    console.log("Current UserName = "+localStorage.getItem('currentUsername'))
+    console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
+    console.log("Current Role = "+localStorage.getItem('currentRoles'))
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -303,16 +310,24 @@ const App = () => {
         "layout-theme-light": layoutColorMode === "light",
     });
 
-    if (token) {
+
+
+if (token) {
+    if(localStorage.getItem("currentRoles")==="Simple User") {
         return (
-            <div className={wrapperClass} onClick={onWrapperClick}>
-                <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
+            <Routes/>
+        );
+    }
+    else if (localStorage.getItem("currentRoles")==="Admin") {
+        return (
+         <div className={wrapperClass} onClick={onWrapperClick}>
+            <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-                <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
 
-                <div className="layout-sidebar" onClick={onSidebarClick}>
-                    <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
-                </div>
+            <div className="layout-sidebar" onClick={onSidebarClick}>
+                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
+            </div>
 
                 <div className="layout-main-container">
                     <div className="layout-main">
@@ -321,6 +336,8 @@ const App = () => {
                         <Route path="/empty" component={EmptyPage} />
 
                         <Route path="/crud" component={Crud} />
+
+                        <Route path="/PaymentPage" component={PaymentPage} />
 
                         {/* Route compaigns */}
                         <Route path="/compaigns" component={Compaigns} />
@@ -352,20 +369,22 @@ const App = () => {
                     </div>
                     <AppFooter layoutColorMode={layoutColorMode} />
                 </div>
-
                 <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
-                <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
-                    <div className="layout-mask p-component-overlay"></div>
-                </CSSTransition>
-            </div>
+            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                <div className="layout-mask p-component-overlay"></div>
+            </CSSTransition>
+        </div>
         );
-    } else {
+    }
+}
+else {
         return (
             <AppContainer>
                 <AccountBox />
             </AppContainer>
         );
-    }
-};
+}
+}
+
 export default App;
