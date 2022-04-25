@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 //import * as serviceWorker from './serviceWorker';
 import { HashRouter } from "react-router-dom";
-import ScrollToTop from "./helper/ScrollToTop";
-import store from "./features/store";
+import ScrollToTop from "./Backoffice/helper/ScrollToTop";
+import store from "./Backoffice/features/store";
 import {Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 

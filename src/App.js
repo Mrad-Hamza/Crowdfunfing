@@ -1,44 +1,18 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { Route, useLocation,useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
-import { AppTopbar } from './components/layout/AppTopbar';
-import { AppFooter} from './components/layout/AppFooter'
-import {AppMenu} from './components/layout/AppMenu'
-import { AppConfig } from './AppConfig';
+import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
+import { AppFooter } from "./Backoffice/components/layout/AppFooter";
+import { AppMenu } from "./Backoffice/components/layout/AppMenu";
 
 import styled from "styled-components";
 
-import { AccountBox } from './pages/User/Login/UserLogin/accountBox'
-import UsersList from './pages/User/Login/Users/UsersList';
+import { AccountBox } from "./Backoffice/pages/User/Login/UserLogin/accountBox";
+import UsersList from "./Backoffice/pages/User/Login/Users/UsersList";
 
-
-import 'primereact/resources/primereact.css';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
-import 'prismjs/themes/prism-coy.css';
-import './assets/demo/flags/flags.css';
-import './assets/demo/Demos.scss';
-import './assets/layout/layout.scss';
-import './App.scss';
-import { getIsRtlScrollbarOnLeft } from '@fullcalendar/core';
-
-
-//import Modal from "react-modal";
-import Events from "./pages/events/events";
-
-import ProjectListing from "./pages/Projects/projectListing";
-import ProjectDetails from "./pages/Projects/projectDetails";
-//import routes from "./routes";
-import Dashboard from "./components/Dashboard";
-import PrimeReact from "primereact/api";
-
-import { Tooltip } from "primereact/tooltip";
-import Compaigns from "./pages/Compaigns/Compaigns";
-import CompaignsList from "./pages/Compaigns/list-Compaigns"
-import upadateCompaign from "./pages/Compaigns/Edit-Comapaign"
-import addCompaign from "./pages/Compaigns/Add-Compaigns"
 import "primereact/resources/primereact.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
@@ -47,26 +21,61 @@ import "./assets/demo/flags/flags.css";
 import "./assets/demo/Demos.scss";
 import "./assets/layout/layout.scss";
 import "./App.scss";
-import createEventForm from "./pages/events/createEventForm";
-import statisticsEvent from "./pages/events/statisticsEvent";
-import eventListing from "./pages/events/eventListing"
-// import showEvents from "./pages/events/showEvents";
-import EventDetail from "./pages/events/eventDetail";
-import { userService } from "./pages/User/_services/user.service"
 
-import ForumListing from "./pages/Forums/forumListing";
-import ForumsComment from "./pages/Forums/ForumsComment";
-import updateForum from "./pages/Forums/updateForum";
-import forumCreate from "./pages/Forums/forumCreate";
-import { Routes } from "./pages/Front/Components/Routes"
-import { Home } from "./pages/Front/Components/RouteComponents/Home";
-import  Navbar  from "./pages/Front/Components/Navbar";
-import { Footer } from "./pages/Front/Components/Footer";
-import Crud from "./pages/Crud"
-import PaymentPage from "./pages/Payment/PaymentPage"
-const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
+//import Modal from "react-modal";
+import Events from "./Backoffice/pages/events/events";
+
+import ProjectListing from "./Backoffice/pages/Projects/projectListing";
+import ProjectDeletedListing from "./Backoffice/pages/Projects/projectDeletedListing";
+import ProjectAdd from "./Backoffice/pages/Projects/projectAdd";
+import ProjectDetails from "./Backoffice/pages/Projects/projectDetails";
+//import routes from "./routes";
+import Dashboard from "./Backoffice/components/Dashboard";
+import PrimeReact from "primereact/api";
+
+import { Tooltip } from "primereact/tooltip";
+
+import ListDeadline from "./Backoffice/pages/Compaigns/list-deadline";
+import Compaigns from "./Backoffice/pages/Compaigns/Compaigns";
+import CompaignsList from "./Backoffice/pages/Compaigns/list-Compaigns";
+import upadateCompaign from "./Backoffice/pages/Compaigns/Edit-Comapaign";
+import addCompaign from "./Backoffice/pages/Compaigns/Add-Compaigns";
+import "primereact/resources/primereact.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import "prismjs/themes/prism-coy.css";
+import "./assets/demo/flags/flags.css";
+import "./assets/demo/Demos.scss";
+import "./assets/layout/layout.scss";
+import "./App.scss";
+import createEventForm from "./Backoffice/pages/events/createEventForm";
+import statisticsEvent from "./Backoffice/pages/events/statisticsEvent";
+import eventListing from "./Backoffice/pages/events/eventListing";
+// import showEvents from "./pages/events/showEvents";
+import EventDetail from "./Backoffice/pages/events/eventDetail";
+import { userService } from "./Backoffice/pages/User/_services/user.service";
+
+import ForumListing from "./Backoffice/pages/Forums/forumListing";
+import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
+import updateForum from "./Backoffice/pages/Forums/updateForum";
+import forumCreate from "./Backoffice/pages/Forums/forumCreate";
+
+
+import { Routes } from "./Front/Components/Routes"
+import Crud from "./Backoffice/pages/Crud"
+import PaymentPage from "./Backoffice/pages/Payment/PaymentPage";
+
+import InvoiceProjectAdd from "./Backoffice/pages/Projects/InvoiceProjects/invoiceAdd";
+import ComplaintProjectAdd from "./Backoffice/pages/Projects/ComplaintProjects/complaintAdd";
+import TaskProjectAdd from "./Backoffice/pages/Projects/tasks/TaskProjectAdd";
+import InvoiceTaskAdd from "./Backoffice/pages/Projects/tasks/InvoiceTasks/invoiceTaskAdd";
+import ComplaintTaskAdd from "./Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
+import TaskDetails from "./Backoffice/pages/Projects/tasks/TaskDetails";
+import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
+
+const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
-const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
+const TimelineDemo = React.lazy(() => import("./Backoffice/pages/TimelineDemo"));
 
 
 const App = () => {
@@ -88,7 +97,7 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         setTimeout(() => {
@@ -98,7 +107,7 @@ const App = () => {
                 window.location.reload(false);
             }
         }, 1000);
-    })
+    });
 
     useEffect(() => {
         if (mobileMenuActive) {
@@ -107,7 +116,6 @@ const App = () => {
             removeClass(document.body, "body-overflow-hidden");
         }
     }, [mobileMenuActive]);
-
 
     useEffect(() => {
         copyTooltipRef && copyTooltipRef.current && copyTooltipRef.current.updateTargetEvents();
@@ -130,10 +138,7 @@ const App = () => {
         setLayoutColorMode(mode);
     };
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
     console.log("Current User Id = "+localStorage.getItem('currentUserId'))
@@ -144,10 +149,8 @@ const App = () => {
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -209,19 +212,16 @@ const App = () => {
     };
     const isDesktop = () => {
         return window.innerWidth >= 992;
-    }
+    };
 
     const AppContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     `;
-
-
-
 
     const menu = [
         {
@@ -236,17 +236,16 @@ const App = () => {
                     label: "Users",
                     icon: "pi pi-fw pi-users",
                     items: [
-                        {label: 'List', icon: 'pi pi-fw pi-list', to:'/UsersList'},
-                        {label: 'Dashboad', icon: 'pi pi-fw pi-chart-line',to:'/'},
-                    ]
-
+                        { label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" },
+                        { label: "Dashboad", icon: "pi pi-fw pi-chart-line", to: "/" },
+                    ],
                 },
                 {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
                     items: [
-                        { label: "List", icon: "pi pi-fw pi-list" , to: "/compaignsList"},
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line"  , to: "/compaignsList" }
+                        { label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" },
+                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line", to: "/compaignsList" },
                     ],
                 },
                 {
@@ -264,7 +263,8 @@ const App = () => {
                     icon: "pi pi-fw pi-flag",
                     items: [
                         { label: "List", icon: "pi pi-fw pi-list", to: "/projects" },
-                        { label: "Tasks", icon: "pi pi-fw pi-clone" },
+                        { label: "Deleted list", icon: "pi pi-fw pi-times", to: "/deletedprojects" },
+                        // { label: "Tasks", icon: "pi pi-fw pi-clone" },
                         { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -272,9 +272,9 @@ const App = () => {
                     label: "Forums",
                     icon: "pi pi-fw pi-tag",
                     items: [
-                        { label: "ListForums", icon: "pi pi-fw pi-list",to: "/forums" },
-                        { label: "ListComments", icon: "pi pi-fw pi-list",to: "/comment" },
-                        { label: "AddForum", icon: "pi pi-fw pi-list",to: "/add" },
+                        { label: "ListForums", icon: "pi pi-fw pi-list", to: "/forums" },
+                        { label: "ListComments", icon: "pi pi-fw pi-list", to: "/comment" },
+                        { label: "AddForum", icon: "pi pi-fw pi-list", to: "/add" },
                         { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
@@ -296,21 +296,18 @@ const App = () => {
     };
 
     const removeClass = (element, className) => {
-        if (element.classList)
-            element.classList.remove(className);
-        else
-            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-    }
-    const wrapperClass = classNames('layout-wrapper', {
-        'layout-overlay': layoutMode === 'overlay',
-        'layout-static': layoutMode === 'static',
-        'layout-static-sidebar-inactive': staticMenuInactive && layoutMode === 'static',
-        'layout-overlay-sidebar-active': overlayMenuActive && layoutMode === 'overlay',
-        'layout-mobile-sidebar-active': mobileMenuActive,
-        'p-input-filled': inputStyle === 'filled',
-        'p-ripple-disabled': ripple === false,
-        'layout-theme-light': layoutColorMode === 'light'
-
+        if (element.classList) element.classList.remove(className);
+        else element.className = element.className.replace(new RegExp("(^|\\b)" + className.split(" ").join("|") + "(\\b|$)", "gi"), " ");
+    };
+    const wrapperClass = classNames("layout-wrapper", {
+        "layout-overlay": layoutMode === "overlay",
+        "layout-static": layoutMode === "static",
+        "layout-static-sidebar-inactive": staticMenuInactive && layoutMode === "static",
+        "layout-overlay-sidebar-active": overlayMenuActive && layoutMode === "overlay",
+        "layout-mobile-sidebar-active": mobileMenuActive,
+        "p-input-filled": inputStyle === "filled",
+        "p-ripple-disabled": ripple === false,
+        "layout-theme-light": layoutColorMode === "light",
     });
 
 
@@ -332,36 +329,46 @@ if (token) {
                 <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
             </div>
 
-            <div className="layout-main-container">
-                <div className="layout-main">
-                    <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-                    <Route path="/timeline" component={TimelineDemo} />
-                    <Route path="/empty" component={EmptyPage} />
-                    <Route path="/crud" component={Crud} />
-                    <Route path="/compaigns" component={Compaigns} />
-                    <Route path="/compaignsList" component={CompaignsList} />
-                    <Route path="/update/:id" component={upadateCompaign} />
-                    <Route path="/ADD" component={addCompaign} />
-                    <Route path="/PaymentPage" component={PaymentPage} />
-                    {/* <Route path="/add" component={forumCreate}/> */}
-                    <Route path="/UsersList" component={UsersList} />
-                    {/* <Route path="/projects" component={Projects} /> */}
-                    <Route path="/events" exact component={Events} />
-                    <Route path="/create-event" component={createEventForm} />
-                    <Route path="/statistcs"  component={statisticsEvent} />
-                    <Route path="/showEvents" component={eventListing} />
-                    <Route path="/events/:_id" component={EventDetail}/>
-                    <Route path="/projects" exact component={ProjectListing} />
-                    <Route path="/projects/:_id" component={ProjectDetails} />
-                    <Route path="/forums" exact component={ForumListing} />
-                    <Route path="/comment" component={ForumsComment}/>
-                    <Route path="/edit/:_id" component={updateForum}/>
+                <div className="layout-main-container">
+                    <div className="layout-main">
+                        <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                        <Route path="/timeline" component={TimelineDemo} />
+                        <Route path="/empty" component={EmptyPage} />
 
+                        <Route path="/crud" component={Crud} />
+
+                        <Route path="/PaymentPage" component={PaymentPage} />
+
+                        {/* Route compaigns */}
+                        <Route path="/compaigns" component={Compaigns} />
+                        <Route path="/compaignsList" component={CompaignsList} />
+                        <Route path="/update/:id" component={upadateCompaign} />
+                        <Route path="/ADDCompaign" component={addCompaign} />
+                        <Route path="/ListDeadline" component={ListDeadline} />
+                        {/* <Route path="/add" component={forumCreate}/> */}
+                        <Route path="/UsersList" component={UsersList} />
+                        <Route path="/events" exact component={Events} />
+                        <Route path="/create-event" component={createEventForm} />
+                        <Route path="/statistcs" component={statisticsEvent} />
+                        <Route path="/showEvents" component={eventListing} />
+                        <Route path="/events/:_id" component={EventDetail} />
+                        <Route path="/projects" exact component={ProjectListing} />
+                        <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
+                        <Route path="/projects/:_id" exact component={ProjectDetails} />
+                        <Route path="/projects/task/:_id" exact component={TaskDetails} />
+                        <Route path="/projects/add/:_id" component={ProjectAdd} />
+                        <Route path="/projects/update/:_id" component={ProjectUpdate} />
+                        <Route path="/projects/invoiceProject/add/:_id" component={InvoiceProjectAdd} />
+                        <Route path="/projects/complaintProject/add/:_id" component={ComplaintProjectAdd} />
+                        <Route path="/projects/task/add/:_id" component={TaskProjectAdd} />
+                        <Route path="/projects/task/invoice/add/:_id" component={InvoiceTaskAdd} />
+                        <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
+                        <Route path="/forums" exact component={ForumListing} />
+                        <Route path="/comment" component={ForumsComment} />
+                        <Route path="/edit/:_id" component={updateForum} />
+                    </div>
+                    <AppFooter layoutColorMode={layoutColorMode} />
                 </div>
-                <AppFooter layoutColorMode={layoutColorMode} />
-            </div>
-
-            <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
             <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
                 <div className="layout-mask p-component-overlay"></div>
@@ -373,10 +380,10 @@ if (token) {
 else {
         return (
             <AppContainer>
-                 <AccountBox/>
+                <AccountBox />
             </AppContainer>
         );
 }
 }
-export default App;
 
+export default App;
