@@ -119,9 +119,11 @@ const CommentSection = () => {
                                                   </IconButton>
                                               </Tooltip>
                                               <Tooltip title="Edit" placement="top">
-                                                  <IconButton>
-                                                      <EditIcon />
-                                                  </IconButton>
+                                                  <Link to={`/updateCommentEvent/${_id}`}>
+                                                      <IconButton>
+                                                          <EditIcon />
+                                                      </IconButton>
+                                                  </Link>
                                               </Tooltip>
                                               <Tooltip title="Delete" placement="top-end">
                                                   <IconButton onClick={() => deleteComment(c._id)}>

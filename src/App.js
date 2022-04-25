@@ -65,6 +65,7 @@ import forumCreate from "./pages/Forums/forumCreate";
 import Crud from "./pages/Crud";
 import InvoiceProjectAdd from "./pages/Projects/InvoiceProjects/invoiceAdd";
 import ComplaintProjectAdd from "./pages/Projects/ComplaintProjects/complaintAdd";
+import editCommentEvent from "./pages/events/editCommentEvent";
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
@@ -331,6 +332,7 @@ const App = () => {
                         <Route path="/statistcs" component={statisticsEvent} />
                         <Route path="/showEvents" component={eventListing} />
                         <Route path="/updateEvent/:idEvent" component={SignleEvent} />
+                        <Route path="/updateCommentEvent/:_id" component={editCommentEvent} />
                         <Route path="/events/:_id" component={EventDetail} />
                         <Route path="/projects" exact component={ProjectListing} />
                         <Route path="/deletedprojects" exact component={ProjectDeletedListing} />

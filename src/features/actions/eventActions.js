@@ -192,12 +192,8 @@ export const deleteCommentAction = (_id) => async (dispatch, getState) => {
 export const updateCommentAction = (id, comment) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: eventActionsTypes.COMMENT_DELETE_REQUEST,
+            type: eventActionsTypes.COMMENT_UPDATE_REQUEST,
         });
-
-        // const {
-        //     userLogin: { userInfo },
-        // } = getState();
 
         const config = {
             headers: {
@@ -215,7 +211,7 @@ export const updateCommentAction = (id, comment) => async (dispatch, getState) =
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
         dispatch({
-            type: eventActionsTypes.COMMENT_DELETE_FAIL,
+            type: eventActionsTypes.COMMENT_UPDATE_FAIL,
             payload: message,
         });
     }
