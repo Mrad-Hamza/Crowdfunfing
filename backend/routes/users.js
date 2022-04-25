@@ -88,7 +88,13 @@ router.post("/facebooklogin", (req, res) => {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET, {
                             expiresIn: "180000",
                         });
-                        return res.json({ accessToken: accessToken, userId: user.id, userName: user.username, mail: user.mailAddress, role: user.roles });
+                        return res.json({
+                            accessToken: accessToken,
+                            userId: user.id,
+                            userName: user.username,
+                            mail: user.mailAddress,
+                            role: user.roles,
+                        });
                     } else {
                         let password = email + process.env.ACCES_TOKEN_SECRET;
                         const username = name;
@@ -152,11 +158,15 @@ router.post("/googlelogin", (req, res) => {
 });
 
 router.get("/profile/:search", protect, (req, res) => {
-    User.findOne({ $or: [{ username: req.params.search }, { mailAddress: req.params.search }] }).then((user) => res.json(user));
+    User.findOne({
+        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
+    }).then((user) => res.json(user));
 });
 
 router.get("/search/:search", (req, res) => {
-    User.findOne({ $or: [{ username: req.params.search }, { mailAddress: req.params.search }] }).then((user) => res.json(user));
+    User.findOne({
+        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
+    }).then((user) => res.json(user));
 });
 
 router.route("/:id").get((req, res) => {
@@ -289,26 +299,26 @@ router.route("/login").post((req, res) => {
         }
     });
     /*User.findOne({$or:[
-     {username: req.body.username},
-     {mailAddress: req.body.mailAddress}
-   ]}).clone()
-  .then(user => {
-    if (user == null ) {
-    return res.status(400).send('Cannot find user')
-  }
-  try {
-     user.comparePassword(req.body.password, function(err, isMatch) {
-        if (err) {
-          res.json("Not allowed")
-        }
-        else {
-          res.json(isMatch)
-        }
-    });
-  } catch {
-    res.status(500).send()
-  }
-  })*/
+      {username: req.body.username},
+      {mailAddress: req.body.mailAddress}
+    ]}).clone()
+   .then(user => {
+     if (user == null ) {
+     return res.status(400).send('Cannot find user')
+   }
+   try {
+      user.comparePassword(req.body.password, function(err, isMatch) {
+         if (err) {
+           res.json("Not allowed")
+         }
+         else {
+           res.json(isMatch)
+         }
+     });
+   } catch {
+     res.status(500).send()
+   }
+   })*/
 });
 
 function authenticateToken(req, res, nex) {
