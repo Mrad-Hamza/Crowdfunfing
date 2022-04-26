@@ -29,7 +29,7 @@ router.route("/").get((req, res) => {
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
     //const project = Project.findById(req.params.id);
-    Task.find({ project: req.params.id })
+    Task.find({ project: req.params.id, status: "ON" })
         .then((tasks) => res.json(tasks))
         .catch((err) => res.status(400).json("Error: " + err));
 });

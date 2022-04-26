@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Button } from "primereact/button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -8,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddIcon from "@mui/icons-material/Add";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -30,7 +30,7 @@ const TaskDetails = () => {
     const tasksList = useSelector((state) => state.projects.tasksList);
     const invoiceTaskList = useSelector((state) => state.projects.invoiceTaskList);
     const complaintTaskList = useSelector((state) => state.projects.complaintTaskList);
-    const { taskName, taskDescription, taskType } = task;
+    const { taskName, taskDescription, taskType, taskAmount } = task;
     const { _id } = useParams();
     console.log(_id);
     console.log(task);
@@ -112,7 +112,7 @@ const TaskDetails = () => {
                                 <div className="projectDetails">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {taskName} : {taskType}
+                                            {taskName} : {taskType} : {taskAmount} DT
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {taskDescription}
@@ -188,26 +188,55 @@ const TaskDetails = () => {
                                                     ComplaintTaskService.delete(complaintTaskList._id);
                                                     window.location.reload(false);
                                                 };
-                                                const labelId = `checkbox-list-label-${complaintTask._id}`;
 
-                                                return (
-                                                    <ListItem
-                                                        key={complaintTask._id}
-                                                        secondaryAction={
-                                                            <div style={{ display: "flex" }}>
-                                                                <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                    <DeleteIcon />
-                                                                </IconButton>
-                                                                <CustomizedDialogs title={complaintTask.complaintTaskTitle} description={complaintTask.complaintDescription} state={complaintTaskList.complaintType} />
-                                                            </div>
-                                                        }
-                                                        disablePadding
-                                                    >
-                                                        <ListItemButton role={undefined} onClick={handleToggle(complaintTask.complaintTaskTitle)} dense>
-                                                            <ListItemText id={labelId} primary={complaintTask.complaintTaskTitle} />
-                                                        </ListItemButton>
-                                                    </ListItem>
-                                                );
+                                                const validateComplaint = () => {
+                                                    ComplaintTaskService.validate(complaintTaskList._id);
+                                                    window.location.reload(false);
+                                                };
+                                                const labelId = `checkbox-list-label-${complaintTask._id}`;
+                                                if (complaintTask && complaintTask.complaintType === "in progress" && taskType === "in progress") {
+                                                    return (
+                                                        <div style={{ backgroundColor: "#FFFABE" }}>
+                                                            <ListItem
+                                                                key={complaintTask._id}
+                                                                secondaryAction={
+                                                                    <div style={{ display: "flex" }}>
+                                                                        <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
+                                                                            <DeleteIcon />
+                                                                        </IconButton>
+                                                                        <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
+                                                                            <CheckCircleIcon />
+                                                                        </IconButton>
+                                                                        <CustomizedDialogs title={complaintTask.complaintTaskTitle} description={complaintTask.complaintDescription} state={complaintTaskList.complaintType} />
+                                                                    </div>
+                                                                }
+                                                                disablePadding
+                                                            >
+                                                                <ListItemButton role={undefined} onClick={handleToggle(complaintTask.complaintTaskTitle)} dense>
+                                                                    <ListItemText id={labelId} primary={complaintTask.complaintTaskTitle} />
+                                                                </ListItemButton>
+                                                            </ListItem>
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <div style={{ backgroundColor: "#E3FFCA" }}>
+                                                            <ListItem
+                                                                key={complaintTask._id}
+                                                                secondaryAction={
+                                                                    <div style={{ display: "flex" }}>
+                                                                        <CustomizedDialogs title={complaintTask.complaintTaskTitle} description={complaintTask.complaintDescription} state={complaintTaskList.complaintType} />
+                                                                    </div>
+                                                                }
+                                                                disablePadding
+                                                            >
+                                                                <ListItemButton role={undefined} onClick={handleToggle(complaintTask.complaintTaskTitle)} dense>
+                                                                    <ListItemText id={labelId} primary={complaintTask.complaintTaskTitle} />
+                                                                </ListItemButton>
+                                                            </ListItem>
+                                                        </div>
+                                                    );
+                                                }
                                             })}
                                         </List>
                                     </div>

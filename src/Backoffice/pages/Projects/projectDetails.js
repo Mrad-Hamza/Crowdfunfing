@@ -137,7 +137,7 @@ const ProjectDetails = () => {
                                 <div className="projectDetails">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {projectName} : {projectCollectedAmount} / {resteAmount}DT
+                                            {projectName} : {resteAmount} / {projectCollectedAmount} DT
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {projectDescription}
@@ -158,7 +158,7 @@ const ProjectDetails = () => {
                                 )}
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
-                                        if (task && task.taskType == "in progress") {
+                                        if (task && task.taskType === "in progress") {
                                             return (
                                                 <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
                                                     <ListItemButton style={{ display: "flex" }}>
@@ -192,7 +192,7 @@ const ProjectDetails = () => {
                                                     </ListItemButton>
                                                 </div>
                                             );
-                                        } else if (task && task.taskType == "validated") {
+                                        } else if (task && task.taskType === "validated") {
                                             return (
                                                 <div key={task._id} style={{ backgroundColor: "#E3FFCA" }}>
                                                     <ListItemButton style={{ display: "flex" }}>
