@@ -29,7 +29,7 @@ const Compaigns = ()=> {
         <div>
            
                 <CompaignComponent />
-           
+
         </div>
     );
 };

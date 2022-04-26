@@ -11,7 +11,13 @@ router.route('/').get((req, res) => {
 
 
 router.route('/dedlaine').get((req, res) => {
-  Compaign.find({ deadline: { $lte: '2022-04-13'} })
+  Compaign.find({deadline: {  $lte: '2022-04-27'} })
+  .then(Compaigns => res.json(Compaigns))
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/front').get((req, res) => {
+  Compaign.find({ deadline: { $gte: '2022-04-27'} })
   .then(Compaigns => res.json(Compaigns))
   .catch(err => res.status(400).json('Error: ' + err));
 });

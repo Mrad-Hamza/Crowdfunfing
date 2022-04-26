@@ -25,7 +25,7 @@ const Routes = () => {
         style={{
           border: "1px solid lightgrey",
           marginLeft: "-8px",
-          width: "105%",
+          width: "100%",
           borderBottom: "none",
         }}
       />
