@@ -92,11 +92,12 @@ const Compaign = (props) => (
               border: "4px solid #34ca96",
               borderRadius: "4px",
             }}
-          />
+          /> 
+          <br/>
           <div style={{ padding: "4px 6px 0px 20px", clear: "both" }}>
             {}
             <span style={{ fontSize: "12px", float: "right" }}>
-            <a href="" class="nn btn btn-secondary"style={{ background : "#343a40" }}><strong>
+            <a href="" class="btn btn-secondary"style={{ background : "#343a40" }}><strong>
               <i class="fa fa-credit-card pull-left"></i> Make a donation</strong></a>
              
             </span>
