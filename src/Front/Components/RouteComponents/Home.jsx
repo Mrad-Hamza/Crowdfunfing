@@ -18,11 +18,11 @@ const Home = () => {
   return (
     <div>
     <FeaturedCarousal />
-    <ProjectCard/>
+     <ProjectCard/>
     <CollectionsItem />
     <CrowdfundingBanner />
     <Categories />
-    <Curious />
+    <Curious /> 
 
     </div>
   );

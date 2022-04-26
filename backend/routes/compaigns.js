@@ -11,7 +11,13 @@ router.route('/').get((req, res) => {
 
 
 router.route('/dedlaine').get((req, res) => {
-  Compaign.find({ deadline: { $lte: '2022-04-13'} })
+  Compaign.find({deadline: {  $lte: '2022-04-27'} })
+  .then(Compaigns => res.json(Compaigns))
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/front').get((req, res) => {
+  Compaign.find({ deadline: { $gte: '2022-04-27'} })
   .then(Compaigns => res.json(Compaigns))
   .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -70,10 +76,18 @@ router.route('/:id').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
 router.route('/:id').delete((req, res) => {
   Compaign.findByIdAndDelete(req.params.id)
     .then(() => res.json('Compaign deleted.'))
     .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/campaignUser/:key').get((req, res) => {
+  CompaignUser=Compaign.find({ user: req.params.key });
+  CompaignUser.find({deadline: {  $lte: '2022-04-27'} })
+  .then(Compaign => res.json(Compaign))
+  .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/update/:id').put((req, res) => {
@@ -109,6 +123,7 @@ router.get("/search/:key",async (req,res)=>{
 
 
 });
+
 
 const pdf = require('html-pdf');
 const pdfTemplate = require('./documents');

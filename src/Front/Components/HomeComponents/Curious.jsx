@@ -1,9 +1,9 @@
 import React from "react";
-import CampaignTopImg from "../../Images/CampaignTopImg.png"
+import CampaignTopImg from "../../Images/CampaignTopImg.png";
 const Curious = () => {
-  return (
-    <div style={{ display: "flex", flexDirection: "row", margin: "50px 15%" }}>
-      <div>
+    return (
+        <div style={{ display: "flex", flexDirection: "row", margin: "50px 15%" }}>
+            {/* <div>
         <img
           src={CampaignTopImg}
           alt="campaignImg"
@@ -34,7 +34,7 @@ const Curious = () => {
           >
             SIGN UP NOW
           </button>
-          <button
+          {/* <button
             style={{
               border: "1px solid #e51075",
               color: "#e51075",
@@ -45,12 +45,12 @@ const Curious = () => {
               margin: "5px",
             }}
           >
-            LEARN MORE
-          </button>
+            {/* LEARN MORE */}
+            {/* </button> */}
+            {/* </div>
+      </div> */}
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export { Curious };

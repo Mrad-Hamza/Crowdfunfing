@@ -1,14 +1,14 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import classNames from 'classnames';
-import { Route, useLocation, useHistory } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
+import React, { useState, useEffect, useRef } from "react";
+import classNames from "classnames";
+import { Route, useLocation, useHistory } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
+
 
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
 import { AppMenu } from "./Backoffice/components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
-
 
 import styled from "styled-components";
 
@@ -61,9 +61,8 @@ import ForumListing from "./Backoffice/pages/Forums/forumListing";
 import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
 import updateForum from "./Backoffice/pages/Forums/updateForum";
 
-
-import { Routes } from "./Front/Components/Routes"
-import Crud from "./Backoffice/pages/Crud"
+import { Routes } from "./Front/Components/Routes";
+import Crud from "./Backoffice/pages/Crud";
 import PaymentPage from "./Backoffice/pages/Payment/PaymentPage";
 
 import InvoiceProjectAdd from "./Backoffice/pages/Projects/InvoiceProjects/invoiceAdd";
@@ -77,7 +76,6 @@ import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
 const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./Backoffice/pages/TimelineDemo"));
-
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -104,7 +102,7 @@ const App = () => {
         setTimeout(() => {
             if (userService.checkToken()) {
                 history.push("/");
-                userService.logout()
+                userService.logout();
                 window.location.reload(false);
             }
         }, 1000);
@@ -139,18 +137,17 @@ const App = () => {
         setLayoutColorMode(mode);
     };
 
-
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
     // KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
-    console.log("Current User Id = " + localStorage.getItem('currentUserId'))
-    console.log("Current UserName = " + localStorage.getItem('currentUsername'))
-    console.log("Current MailAddress = " + localStorage.getItem('currentMailAddress'))
-    console.log("Current Role = " + localStorage.getItem('currentRoles'))
+    console.log("Current User Id = " + localStorage.getItem("currentUserId"));
+    console.log("Current UserName = " + localStorage.getItem("currentUsername"));
+    console.log("Current MailAddress = " + localStorage.getItem("currentMailAddress"));
+    console.log("Current Role = " + localStorage.getItem("currentRoles"));
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 
     const onWrapperClick = (event) => {
@@ -236,18 +233,12 @@ const App = () => {
                 {
                     label: "Users",
                     icon: "pi pi-fw pi-users",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" },
-                        { label: "Dashboad", icon: "pi pi-fw pi-chart-line", to: "/" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" }],
                 },
                 {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line", to: "/compaignsList" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" }],
                 },
                 {
                     label: "Events",
@@ -266,7 +257,6 @@ const App = () => {
                         { label: "List", icon: "pi pi-fw pi-list", to: "/projects" },
                         { label: "Deleted list", icon: "pi pi-fw pi-times", to: "/deletedprojects" },
                         // { label: "Tasks", icon: "pi pi-fw pi-clone" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
@@ -276,16 +266,12 @@ const App = () => {
                         { label: "ListForums", icon: "pi pi-fw pi-list", to: "/forums" },
                         { label: "ListComments", icon: "pi pi-fw pi-list", to: "/comment" },
                         { label: "AddForum", icon: "pi pi-fw pi-list", to: "/add" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
                     label: "Transactions",
                     icon: "pi pi-fw pi-dollar",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list" }],
                 },
             ],
         },
@@ -311,8 +297,7 @@ const App = () => {
         "layout-theme-light": layoutColorMode === "light",
     });
 
-
-
+    
     if (token) {
         if (localStorage.getItem("currentRoles") === "Simple User") {
             return (
@@ -327,6 +312,7 @@ const App = () => {
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
                     <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+
 
                     <div className="layout-sidebar" onClick={onSidebarClick}>
                         <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
@@ -348,7 +334,11 @@ const App = () => {
                             <Route path="/update/:id" component={upadateCompaign} />
                             <Route path="/ADDCompaign" component={addCompaign} />
                             <Route path="/ListDeadline" component={ListDeadline} />
+
                             <Route path="/addforums" component={forumCreate}/>
+
+                            {/* <Route path="/add" component={forumCreate}/> */}
+
                             <Route path="/UsersList" component={UsersList} />
                             <Route path="/events" exact component={Events} />
                             <Route path="/create-event" component={createEventForm} />
@@ -368,8 +358,7 @@ const App = () => {
                             <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
                             <Route path="/forums" exact component={ForumListing} />
                             <Route path="/comment" component={ForumsComment} />
-                           
-                            <Route path="/edit/:_id" component={updateForum} />
+                          <Route path="/edit/:_id" component={updateForum} />
                         </div>
                         <AppFooter layoutColorMode={layoutColorMode} />
                     </div>
@@ -381,14 +370,17 @@ const App = () => {
                 </div>
             );
         }
-    }
-    else {
+
+
+    } else {
+
         return (
             <AppContainer>
                 <AccountBox />
             </AppContainer>
         );
     }
-}
+
+};
 
 export default App;

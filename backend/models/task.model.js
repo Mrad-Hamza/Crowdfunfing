@@ -27,6 +27,10 @@ const taskSchema = new Schema(
             required: true,
             enum: Object.values(TaskType),
         },
+        taskAmount: {
+            type: Number,
+            required: true,
+        },
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",
