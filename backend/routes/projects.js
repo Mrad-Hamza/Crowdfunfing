@@ -1,5 +1,6 @@
 const router = require("express").Router();
 let Project = require("../models/project.model");
+let Compaign = require("../models/compaign.model");
 let User = require("../models/user.model");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
@@ -54,7 +55,15 @@ router.route("/add").post(upload.single("image"), (req, res) => {
     const compaign = req.body.compaign;
     const user = req.body.user;
     const resteAmount = req.body.projectCollectedAmount;
-
+    Compaign.findById(compaign)
+        .then((compaign) => {
+            compaign.Verified = 1;
+            compaign
+                .save()
+                .then(() => res.json("compaign updated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
     const newProject = new Project({
         projectName,
         projectDescription,

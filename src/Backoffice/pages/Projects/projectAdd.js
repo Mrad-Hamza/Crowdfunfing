@@ -44,7 +44,7 @@ function ProjectAdd(props) {
         console.log(state);
         if (state.projectName && state.projectDescription && state.projectCollectedAmount && state.compaign) {
             projectService.addProject(state);
-            // history.push("/projects");
+            history.push("/projects");
         }
     };
 
