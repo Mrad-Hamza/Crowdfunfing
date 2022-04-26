@@ -1,35 +1,57 @@
 import React, { Component } from 'react';
-import './App.css';
-import { confirmAlert } from 'react-confirm-alert';
+import './comment.css';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from "primereact/button";
 import "react-datepicker/dist/react-datepicker.css";
 
 
 const Comment = props => (
-  <tr>
-  <td>{props.comment.email}</td>
-    <td>{props.comment.content}</td>
-    <td>{props.comment.forum}</td>
+  <div>
+
+<div class="container">      
+	<div class="be-comment">
+		<div class="be-comment-content">
+			
+				<span class="be-comment-name">
+					<a href="blog-detail-2.html">    <a href="#" data-toggle="collapse" data-target=".forum-content"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                          {props.comment.email}</a>
+					</span>
+				<span class="be-comment-time">
+				<i class="pi pi-clock" ></i>
+          {props.comment.createdAt}
+				</span>
+
+			<p class="be-comment-text">
+      {props.comment.content}
+     
+			</p>
+   
+		</div>
   
- 
-    <td>
-     <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" 
+   </div>  <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" 
      onClick={() => { props.deleteComment(props.comment._id) }}></Button>
     
      <Button  icon="pi pi-envelope" className="p-button-rounded p-button-warning mt-2"  onClick={() => { props.sendMail(props.comment.email) }}></Button>
-   </td>
- </tr>
+   </div>
+ </div>
 )
 
 export default class commentList extends Component {
   constructor(props) {
     super(props);
 
+    this.onChangeEmail= this.onChangeEmail.bind(this);
+    this.onChangeContent = this.onChangeContent.bind(this);
+   
+    this.onSubmit = this.onSubmit.bind(this);
     this.deleteComment = this.deleteComment.bind(this)
     this.sendMail = this.sendMail.bind(this)
-
-    this.state = {comments: []};
+    
+    this.state = {comments: [],
+    
+    email: '',
+    content: ''};
   }
  
 
@@ -53,8 +75,34 @@ export default class commentList extends Component {
     })
   
   }
+  onChangeEmail(e) {
+    this.setState({
+        email: e.target.value
+    })
+  }
+  onChangeContent(e) {
+    this.setState({
+        content: e.target.value
+    })
+  }
 
-  
+  onSubmit(e) {
+    e.preventDefault();
+
+    const comment = {
+      
+      email: this.state.email,
+      
+      content: this.state.content,
+    
+}
+
+console.log(comment);
+
+axios.post('http://localhost:5000/comment/add/', comment)
+.then(res => console.log(res.data));
+
+}
   sendMail(mail) {
     axios.post('http://localhost:5000/comment/badmsg/'+mail)
 
@@ -86,24 +134,43 @@ export default class commentList extends Component {
       <div className="grid crud-demo">
       <div className="col-12">
           <div className="card">
-    
-        <h3>List of comments</h3>
-        <table className="commentList">
-          <thead className="commentList">
-            <tr>
-              <th>User Email</th>
-              <th>Content</th>
-              <th>Forum</th>
-              <th>Actions</th>
-    
-    
-            </tr>
-          </thead>
-          <tbody>
+
             { this.commentList() }
-          </tbody>
-        </table>
+        
+            <div class="form-block">
+     
+      <form onSubmit={this.onSubmit}>
+
+     
+				
+          <input  type="text"
+          placeholder="Your email"
+              required
+              class="be-comment-text"
+              value={this.state.email}
+              onChange={this.onChangeEmail}
+              />
+       
+
+        <div className="form-group"> 
+         
+          <textarea   type="text"
+              required
+              placeholder="Your comment"
+              class="be-comment-text"
+              value={this.state.content}
+              onChange={this.onChangeContent}
+              />
+        </div>
+
+        <button  type="submit"  className="btn btn-primary pull-right"> send</button>
+        
+      
+        
+      </form>
+    </div>
       </div></div></div>
+      
     )
   }
 }

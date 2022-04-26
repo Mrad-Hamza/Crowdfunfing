@@ -119,6 +119,10 @@ async function login(username, password) {
 
 function logout() {
     // remove user from local storage to log user out
+    localStorage.removeItem('currentUserId')
+    localStorage.removeItem('currentUsername')
+    localStorage.removeItem('currentMailAddress')
+    localStorage.removeItem('currentRoles')
     localStorage.removeItem('token');
 }
 function refreshPage() {

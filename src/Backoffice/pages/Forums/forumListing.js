@@ -2,19 +2,40 @@ import React, { Component, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "primereact/button";
 import axios from 'axios';
-import './App.css';
+// import './App.css';
+import './forum.css';
 
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const Forum = props => (
   
-  <tr>
-    <td>{props.forum.title}</td>
-    <td>{props.forum.description}</td>
-    <td>  
+  <div>
+     <div class="card mb-2">
+                    <div class="card-body p-2 p-sm-3">
+                    <p>{props.forum.title}</p>    
+                    <div  class="p-toolbar ">  
+                               
+     <div class="media forum-item">
+                            <a href="#" data-toggle="collapse" data-target=".forum-content"><img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="mr-3 rounded-circle" width="50" alt="User" /></a>
+                            <div class="media-body">
+                                <h6><a href="#" data-toggle="collapse" data-target=".forum-content" class="text-body">User</a></h6>
+                                <p class="text-secondary">
+                               </p>
+                                <p class="text-muted"> <i class="pi pi-clock" ></i> <span class="text-secondary font-weight-bold">{props.forum.createdAt}</span></p>
+                            </div>
+                            {/* <div class="text-muted small text-center align-self-center">
+                                <span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> 19</span>
+                                <span><i class="far fa-comment ml-2"></i> 3</span>
+                            </div> */}
+                            
+                         
+                        </div>
+
    
- 
+    <p>{props.forum.description}</p>
+    <p>  
+   
  
      <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => { props.deleteForum(props.forum._id) }}></Button>
    
@@ -23,12 +44,17 @@ const Forum = props => (
         
      </Button>  
     </Link>
-  
+    <Link to={"/comment/"+props.forum._id}> 
     <Button icon="pi pi-comments" className="p-button-rounded p-button-success mt-2"  onClick={() => { props.showComment(props.forum._id) }}></Button>
-      
-    </td>
-   
-  </tr>
+    </Link>
+    </p> 
+    
+    <div class="text-muted small text-center align-self-center">
+                               <span><i class="pi pi-comments" ></i>  {props.forum.__v}</span>
+                            </div>    </div> 
+                </div>
+   </div>
+  </div>
 
 )
 
@@ -81,14 +107,11 @@ export default class forumList extends Component {
 // }
 
 showComment(id) {
-  axios.get('http://localhost:5000/forums/com/'+id
-)
-.then(response => { console.log(response.data)});
+  axios.get('http://localhost:5000/forums/com/'+id)
+  .then(res => console.log(res.data));
 
-this.setState({
-    forums: this.state.forums.filter(el => el._id !== id)
     
-})
+
 
 }
 
@@ -130,21 +153,13 @@ searchHandel = (event)=>{
       <input class="search" onChange={this.searchHandel} placeholder="Search" type="text" />
      
         <h3>list forums</h3>
-        <table className="table" border ="2">
-          <thead className="thead-light">
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.forumList() }
-          </tbody>
-        </table>
-      </div>
-      </div>
+           
+       
+                 { this.forumList() }
+                 </div></div>
+            
+      
+   
     )
   }
 }

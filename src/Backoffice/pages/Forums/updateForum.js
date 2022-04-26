@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
+import './forum.css';
 import "react-datepicker/dist/react-datepicker.css";
 
 export default class ForumEdit extends Component {
