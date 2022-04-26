@@ -265,7 +265,7 @@ router.route("/login").post((req, res) => {
         if (user) {
             // handle login success
             const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET, {
-                expiresIn: "300000",
+               // expiresIn: "300000",
             });
             res.json({ accessToken: accessToken, userId: user.id, role: user.roles, userName: user.username, mail: user.mailAddress });
             return;

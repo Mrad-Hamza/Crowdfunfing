@@ -41,7 +41,7 @@ Status: {
 cumulateAmount: {
   type: Number,
   required: true,
- 
+  minlength: [1, 'Objective Compaign Minimum 1 charachters.'],
 },
 
   user: 

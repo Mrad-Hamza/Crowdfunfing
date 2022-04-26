@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import moment from "moment";
 import data from "../../data.json";
 import img from "../../Images/EditIcon.PNG";
-import image from "../../Images/crowdfunding.jpg";
+import image from "../../Images/123456.jpeg";
 import {
   HeartOutlined,
   LeftCircleOutlined,
@@ -22,147 +22,204 @@ const Card = styled.div`
 `;
 
 const Compaign = (props) => (
+  <div style={{
+    width: "33.3333333%",
+    float: "left",
+    position: "relative",
+    paddingRight: "15px",
+    paddingLeft: "15px",
+    paddingBottom: "30px"
+  }}>
 
 
-
-         
-
-      <Card  className=" border" style={{ width: "50%", height: "auto", padding: "0 10px 0 10px",float:"left" }}>
-        <div >
-          <img style={{  width: "100%" }}
-            src={img}
-            className="card-img-top"
-            
-          />
-         
-        </div>
-        <div >
-          <img style={{  width: "100%",height: "225px" }}
-            src={image}
-            className="card-img-top"
-            
-          />
-         
-        </div>
-       
-
-        <div style={{ height: "100px" }} className="card-body">
-  <div>
-    <span style={{ color: "#268366" }}>{props.compaign.typeCompaign}</span>
-    <span style={{ float: "right" }}>
-      <HeartOutlined
-        style={{ fontSize: "20px", color: "lightgrey" }}
-      />
-    </span>
-  </div>
-  <h5 style={{ fontSize: "17px" }} className="card-title">
-    {props.compaign.nameCompaign}
-  </h5>
-  <p style={{ fontSize: "12px" }} className="card-text">
-    {props.compaign.description}
-  </p>
-</div>
+    <Card className=" border" style={{
+      width: "100%",
+      height: "auto",
+      boxShadow: " 10px 10px 20px #00000029",
 
 
-        <br />
-        <div
-          className=" text-muted p-1"
-          style={{ position: "relative", top: "20px" }}
-        >
-          <div style={{ padding: "1px 0px 0px 20px" }}>
-            <div style={{ float: "left" }}>
-              <h4>
-                {moment(props.compaign.deadline).format('DD/MM/YYYY')}
-                <span
-                  style={{ padding: "1px 6px 0px 2px", fontSize: "13px" }}
-                >
-                  {}
+    }}>
+
+      <div style={{}}>
+        <img style={{ width: "100%", height: "225px" }}
+          src={image}
+          className="card-img-top"
+
+        />
+      </div>
+
+
+      <div style={{ backgroundColor: "#ffffff" }}>
+
+
+        <div style={{
+          position: "relative",
+          margin: "auto",
+          padding: ".6rem 1.2rem 0 1.2rem",
+          backgroundColor: " #fff",
+          borderRadius: "15px",
+          marginTop: "-5rem",
+          width: "95%",
+          minHeight: "150px"
+        }} className="card-body">
+
+
+          <div style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            height: "30px",
+          }}>
+            <h2 style={{
+              fontWeight: "normal",
+              fontSize: "18px",
+              lineheight: "1.6783216783216783rem",
+              fontFamily: "Oswald, sans-serif",
+              textTransform: "unset",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              paddingBottom: "5px",
+            }}>{props.compaign.typeCompaign}</h2>
+            <div style={{
+              marginLeft: "25%",
+              width: "50%",
+              content: "",
+              background: "-webkit-linear-gradient(left, rgb(239 214 146) 0%, rgb(150 115 66) 100%)",
+              display: "block",
+              height: "4px",
+              bottom: "0",
+              marginBottom: "20px",
+            }}>
+
+            </div>
+
+          </div>
+          <strong style={{}} className="card-title">
+            {props.compaign.nameCompaign}
+          </strong>
+          <p style={{ fontSize: "12px" }} className="card-text">
+            {props.compaign.description}
+          </p>
+
+          <div style={{
+            paddingRight: "2.4rem",
+            paddingBottom: "1.2rem",
+            bottom: 0,
+            width: "100%"
+          }}>
+            <div style={{
+              borderRadius: "10px",
+              border: "0px solid #ffffff",
+              marginBottom: "0px !important",
+              backgroundColor: "rgb(150, 115, 66)",
+              height: "20px",
+              backgroundImage: "linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)",
+              backgroundSize: "40px 40px",
+              overflow: "hidden",
+              width: "100%"
+            }}>
+              <div style={{
+                width: (props.compaign.cumulateAmount / props.compaign.objective) * 100 + "%",
+                backgroundColor: "rgb(239, 214, 146)",
+                textAlign: "right",
+                position: "relative",
+                height: "20px",
+              }}>
+                <span style={{
+                  color: " #ffffff",
+                  fontWeight: "300",
+                  position: "absolute",
+                  right: "5px",
+                  top: "-2px",
+                }}>
+                  <strong>{((props.compaign.cumulateAmount / props.compaign.objective) * 100).toFixed(0)}%</strong>
                 </span>
-              </h4>
-              {/* percentag */}
+              </div>
             </div>
-            <div style={{ paddingTop: 4, float: "right" }}>
-            {props.compaign.objective}
-            </div>
+
+
           </div>
-          <hr
-            style={{
-              width: "100%",
-              clear: "both",
-              border: "4px solid #34ca96",
-              borderRadius: "4px",
-            }}
-          /> 
-          <br/>
-          <div style={{ padding: "4px 6px 0px 20px", clear: "both" }}>
-            {}
-            <span style={{ fontSize: "12px", float: "right" }}>
-            <Link to={"/projects/add/" + props.compaign._id}> <a href="" class="btn btn-secondary"style={{ background : "#343a40" }}><strong>
-              <i class="fa fa-credit-card pull-left"></i> Show Project details</strong></a></Link>
-             
-            </span>
+          <div style={{ bottom: 0, float: "center" ,width:"100%",paddingTop:"30px",textAlign:"center"}}>
+
+          <Button label="Show Project details" className="p-button-text" style={{ 
+              border: "1px solid transparent",
+              backgroundColor: "rgb(150, 115, 66)!important",
+              color:"rgb(239, 214, 146)",
+              borderRadius: "1.9rem",
+              fontSize:"13px" }}/>
+
           </div>
+
+          
         </div>
-        <br/><br/><br/><br/>
 
-      </Card>
-      
-    
-  
+      </div>
 
+
+
+
+
+
+
+
+
+      <br /><br />
+
+    </Card>
+
+  </div>
 
 );
 
 class CampaignUser extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
 
-        this.state = { compaigns: [] };
-    }
+    this.state = { compaigns: [] };
+  }
 
-   
 
-    componentDidMount() {
-        axios
-            .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
-            .then((response) => {
-                this.setState({ compaigns: response.data });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
 
-    handleChange = ({ target: { value, name } }) => this.setState({ [name]: value });
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
+      .then((response) => {
+        this.setState({ compaigns: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-    
+  handleChange = ({ target: { value, name } }) => this.setState({ [name]: value });
 
-    comaignList() {
-        return this.state.compaigns.map((currentCompaign) => {
-            return <Compaign compaign={currentCompaign}  />;
-        });
-    }
-    
-    render() {
-      return (
-       
-        <div className="container-fluid m-5 text-left">
-           <div
-  className="container-fluid"
-  style={{
-    display: "inline-block",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: "10px",
-  }}
->
-        {this.comaignList()}
+
+
+  comaignList() {
+    return this.state.compaigns.map((currentCompaign) => {
+      return <Compaign compaign={currentCompaign} />;
+    });
+  }
+
+  render() {
+    return (
+
+      <div className="container-fluid m-5 text-left">
+        <div
+          className="container-fluid"
+          style={{
+            display: "inline-block",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            padding: "10px",
+          }}
+        >
+          {this.comaignList()}
         </div>
-        </div>
-       
-      );
-}
+      </div>
 
+    );
+  }
 }
 export {CampaignUser}

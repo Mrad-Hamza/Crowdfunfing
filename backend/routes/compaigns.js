@@ -59,12 +59,11 @@ router.route('/add').post((req, res) => {
   const Verified = 0;
   const Status = "EN COUR";
   const user = req.body.user;
-  const category = req.body.category;
   const cumulateAmount= 0;
   
   
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,user,category});
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,user});
 
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
@@ -93,7 +92,7 @@ router.route('/campaignUser/:key').get((req, res) => {
 
 router.route('/update/:id').put((req, res) => {
     Compaign.findById(req.params.id)
-    .then(compaign => {
+    .then((compaign )=> {
         compaign.nameCompaign= req.body.nameCompaign;
         compaign.typeCompaign = req.body.typeCompaign;
         compaign.objective = req.body.objective;
