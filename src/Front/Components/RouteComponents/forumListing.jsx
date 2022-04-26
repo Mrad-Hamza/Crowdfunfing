@@ -128,7 +128,7 @@ searchHandel = (event)=>{
       <div className="card">
   
       <div class="but">
-        <button class="btnn" ></button>
+        <button class="btnn" ><Link to={"/addforums"}>Add forum +</Link></button>
         </div>
       <div class="wrapper">
       <img class="search-icon"  src="data:image.svg" />

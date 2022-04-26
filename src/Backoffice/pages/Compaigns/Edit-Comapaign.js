@@ -23,7 +23,8 @@ export default class CompaignEdit extends Component {
         description: '',
         deadline: new Date(),
         Verified: '',
-        Status: ''
+        Status: '',
+        cumulateAmount:''
     }
   }
 
@@ -37,7 +38,8 @@ export default class CompaignEdit extends Component {
             description: response.data.description,
             deadline: new Date(response.data.deadline),
             Verified: response.data.Verified,
-            Status: response.data.Status
+            Status: response.data.Status,
+            cumulateAmount: response.data.cumulateAmount
         })   
       })
       .catch(function (error) {
@@ -99,7 +101,8 @@ export default class CompaignEdit extends Component {
             description: this.state.description,
             deadline: this.state.deadline,
             Verified: this.state.Verified,
-            Status: this.state.Status
+            Status: this.state.Status,
+            cumulateAmount: this.state.cumulateAmount
     }
 
     console.log(compaign);
