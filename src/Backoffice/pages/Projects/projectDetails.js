@@ -108,16 +108,14 @@ const ProjectDetails = () => {
 
     const isAddTaskNotValid = () => {
         if (tasksList.length > 0) {
-            return tasksList.some((task) => (task.taskType !== "validated" || task.taskType !== "refused") && project.projectCollectedAmount !== 0 && projectType == "in progress");
+            return tasksList.some((task) => {
+                return projectType !== "in progress" && (task.taskType !== "validated" || task.taskType !== "refused") && resteAmount === 0;
+            });
         }
     };
     console.log("🚀 ~ file: projectDetails.js ~ line 111 ~ isAddTaskNotValid ~ isAddTaskNotValid", isAddTaskNotValid());
 
-    const isAddInvoiceNotValid = () => {
-        // if (project) {
-        return projectType !== "in progress";
-        // }
-    };
+    const isAddInvoiceNotValid = () => projectType !== "in progress";
 
     return (
         <div>
@@ -127,7 +125,7 @@ const ProjectDetails = () => {
                 <div>
                     <div className="projectdisplay">
                         <div
-                            className="container col-8"
+                            className="container col-7"
                             style={{
                                 backgroundImage: "../../../assets/layout/images/" + image,
                             }}
@@ -148,7 +146,7 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                {!isAddTaskNotValid() && (
+                                {isAddTaskNotValid() && (
                                     <>
                                         <span>Add new task</span>
                                         <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
@@ -237,7 +235,7 @@ const ProjectDetails = () => {
                                 </div>
                             </List>
                         </div>
-                        <div className="container col-4">
+                        <div className="container col-5">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
                                 {!isAddInvoiceNotValid() && (
                                     <>
@@ -303,26 +301,58 @@ const ProjectDetails = () => {
                                                 ComplaintProjectService.delete(complaintProject._id);
                                                 window.location.reload(false);
                                             };
-                                            const labelId = `checkbox-list-label-${complaintProject._id}`;
 
-                                            return (
-                                                <ListItem
-                                                    key={complaintProject._id}
-                                                    secondaryAction={
-                                                        <div style={{ display: "flex" }}>
-                                                            <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                            <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
-                                                        </div>
-                                                    }
-                                                    disablePadding
-                                                >
-                                                    <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
-                                                        <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            );
+                                            const validateComplaint = () => {
+                                                ComplaintProjectService.validate(complaintProject._id);
+                                                window.location.reload(false);
+                                            };
+                                            const labelId = `checkbox-list-label-${complaintProject._id}`;
+                                            if (complaintProject && complaintProject.complaintType == "in progress") {
+                                                return (
+                                                    <div style={{ backgroundColor: "#FFFABE" }}>
+                                                        <ListItem
+                                                            key={complaintProject._id}
+                                                            secondaryAction={
+                                                                <div style={{ display: "flex" }}>
+                                                                    <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                    <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
+                                                                        <CheckCircleIcon />
+                                                                    </IconButton>
+                                                                    <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
+                                                                </div>
+                                                            }
+                                                            disablePadding
+                                                        >
+                                                            <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                                <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                            </ListItemButton>
+                                                        </ListItem>
+                                                    </div>
+                                                );
+                                            } else {
+                                                return (
+                                                    <div style={{ backgroundColor: "#E3FFCA" }}>
+                                                        <ListItem
+                                                            key={complaintProject._id}
+                                                            secondaryAction={
+                                                                <div style={{ display: "flex" }}>
+                                                                    <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                    <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
+                                                                </div>
+                                                            }
+                                                            disablePadding
+                                                        >
+                                                            <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                                <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                            </ListItemButton>
+                                                        </ListItem>
+                                                    </div>
+                                                );
+                                            }
                                         })}
                                     </List>
                                 </div>

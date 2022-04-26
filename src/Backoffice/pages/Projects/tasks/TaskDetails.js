@@ -3,10 +3,9 @@ import { Button } from "primereact/button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
-import CommentIcon from "@mui/icons-material/Comment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,9 +17,8 @@ import { InvoiceTaskService } from "../../User/_services/invoiceTask.service";
 import { ComplaintTaskService } from "../../User/_services/complaintTask.service";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
-import { selectedProject, selectedTask } from "../../../features/actions/projects.actions";
-import CustomDialog from "../CustomDialog";
-import { setTasks, setInvoiceTasks, setComplaintTasks } from "../../../features/actions/projects.actions";
+import { selectedTask } from "../../../features/actions/projects.actions";
+import { setInvoiceTasks, setComplaintTasks } from "../../../features/actions/projects.actions";
 import URL from "../../../features/constants/services.constants";
 import axios from "axios";
 import "../projects.css";
@@ -92,6 +90,8 @@ const TaskDetails = () => {
         }
     }, [_id]);
 
+    const isAddNotValid = () => taskType !== "in progress";
+
     return (
         <div>
             {Object.keys(task).length === 0 ? (
@@ -124,12 +124,16 @@ const TaskDetails = () => {
                             {/* <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll"> */}
                             <div className=" col-12" style={{ display: "flex", width: "950px", height: "300px" }}>
                                 <div style={{ height: "280px", width: "475px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
-                                    Add new invoice
-                                    <Link to={`/projects/task/invoice/add/${_id}`} style={{ width: "200px" }}>
-                                        <IconButton edge="end" aria-label="plus">
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Link>
+                                    {!isAddNotValid() && (
+                                        <>
+                                            <span>Add new invoice</span>
+                                            <Link to={`/projects/task/invoice/add/${_id}`} style={{ width: "200px" }}>
+                                                <IconButton edge="end" aria-label="plus">
+                                                    <AddIcon />
+                                                </IconButton>
+                                            </Link>
+                                        </>
+                                    )}
                                     <div style={{ maxHeight: "210px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {invoiceTaskList.map((invoiceTask) => {
@@ -167,12 +171,16 @@ const TaskDetails = () => {
                                     </div>
                                 </div>
                                 <div style={{ height: "280px", width: "470px" }} className="surface-card p-4 shadow-2 border-round">
-                                    Add new Complaint
-                                    <Link to={`/projects/task/complaint/add/${_id}`} style={{ width: "200px" }}>
-                                        <IconButton edge="end" aria-label="plus">
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Link>
+                                    {!isAddNotValid() && (
+                                        <>
+                                            <span>Add new Complaint</span>
+                                            <Link to={`/projects/task/complaint/add/${_id}`} style={{ width: "200px" }}>
+                                                <IconButton edge="end" aria-label="plus">
+                                                    <AddIcon />
+                                                </IconButton>
+                                            </Link>
+                                        </>
+                                    )}
                                     <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {complaintTaskList.map((complaintTask) => {
