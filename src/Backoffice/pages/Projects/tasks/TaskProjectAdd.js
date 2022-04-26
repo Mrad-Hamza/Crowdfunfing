@@ -45,7 +45,7 @@ function TaskProjectAdd(props) {
         <div>
             <div>
                 <div className="form-style-5 col-8" style={{ height: "450px" }}>
-                    <h3>Creat New Task</h3>
+                    <h3>Create New Task</h3>
                     <form className="mt-5">
                         <div className="form-group mt-3" style={{ height: "100px" }}>
                             <label>Task title: </label>

@@ -103,6 +103,13 @@ const ProjectDetails = () => {
         }
     }, [_id]);
 
+    const isAddTaskNotValid = () => {
+        if (tasksList.length > 0) {
+            return tasksList.some((task) => task.taskType !== "validated" || project.projectCollectedAmount == 0);
+        }
+    };
+    console.log("🚀 ~ file: projectDetails.js ~ line 111 ~ isAddTaskNotValid ~ isAddTaskNotValid", isAddTaskNotValid());
+
     return (
         <div>
             {Object.keys(project).length === 0 ? (
@@ -132,12 +139,16 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                Add new task
-                                <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
+                                {!isAddTaskNotValid() && (
+                                    <>
+                                        <span>Add new task</span>
+                                        <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
+                                            <IconButton edge="end" aria-label="plus">
+                                                <AddIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </>
+                                )}
                                 <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         if (task) {
