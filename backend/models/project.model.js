@@ -28,6 +28,9 @@ const projectSchema = new Schema(
             required: true,
             enum: Object.values(ProjectType),
         },
+        resteAmount: {
+            type: Number,
+        },
         projectCollectedAmount: {
             type: Number,
             required: true,

@@ -35,7 +35,7 @@ const ProjectDetails = () => {
     const tasksList = useSelector((state) => state.projects.tasksList);
     const invoiceProjectList = useSelector((state) => state.projects.invoiceProjectList);
     const complaintProjectList = useSelector((state) => state.projects.complaintProjectList);
-    const { projectName, projectDescription, projectCollectedAmount, image } = project;
+    const { projectName, projectDescription, projectCollectedAmount, image, resteAmount } = project;
     const { _id } = useParams();
     console.log(_id);
     console.log(project);
@@ -130,7 +130,7 @@ const ProjectDetails = () => {
                                 <div className="projectDetails">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {projectName} : {projectCollectedAmount} DT
+                                            {projectName} : {projectCollectedAmount} / {resteAmount}DT
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {projectDescription}
@@ -138,7 +138,7 @@ const ProjectDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
+                            <List sx={{ width: "100%", height: "310px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 {!isAddTaskNotValid() && (
                                     <>
                                         <span>Add new task</span>

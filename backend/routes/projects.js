@@ -53,12 +53,14 @@ router.route("/add").post(upload.single("image"), (req, res) => {
     const image = req.file.filename;
     const compaign = req.body.compaign;
     const user = req.body.user;
+    const resteAmount = req.body.projectCollectedAmount;
 
     const newProject = new Project({
         projectName,
         projectDescription,
         projectType,
         projectCollectedAmount,
+        resteAmount,
         image,
         status,
         compaign,
