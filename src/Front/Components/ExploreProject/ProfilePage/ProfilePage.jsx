@@ -8,8 +8,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
 import classNames from "classnames";
-import {userService} from "../../../../Backoffice/pages/User/_services/user.service"
-
+import { userService } from "../../../../Backoffice/pages/User/_services/user.service";
 
 const ProfilePage = () => {
     let emptyUser = {
@@ -163,31 +162,27 @@ const ProfilePage = () => {
     return (
         <div>
             <Toast ref={toast} />
-            <br></br>
             <BlackBar>
                 <img src={EyeIcon} height="35px" alt={"eeaaa"} onClick={openNewPwdDialog} />
                 Change password
                 <img src={Edit} style={{ marginTop: "-3px", marginLeft: "24px" }} alt={"ee"} onClick={openNew}></img>
             </BlackBar>
-            <br></br>
             <div className="container col-12">
                 <div className="row ml-2">
                     <NameHeader>{user.username}</NameHeader>
                 </div>
-                <div className="row ml-2">
-                    <div className="col-5">
+                <div className="row ml-2" style={{ display: "flex" }}>
+                    <div className="col-3">
                         <imgStyled>
                             <img src={require("../../../../assets/layout/images/" + user.img.imgName)} alt={"a"} className="shadow-2 fluid" style={{ width: 250, height: 300, borderRadius: 400 / 2 }} onClick={setImg} />
                         </imgStyled>
                     </div>
-                    <div className="col-1"></div>
                     <div className="col-4">
                         <div className="row">
                             <TextHeader>Campaings : 0 </TextHeader>
                             <TextHeader>Donations : 0</TextHeader>
                             <TextHeader>Comments : 0</TextHeader>
                         </div>
-                        <br></br>
                         <br></br>
                         <div className="row">
                             <TextHeader>Name : {user.firstname}</TextHeader>

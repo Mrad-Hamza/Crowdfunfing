@@ -1,31 +1,26 @@
 import React from "react";
-import data from "../../ExploreProject.json";
 import styled from "styled-components";
-import {
-  HeartOutlined,
-  LeftCircleOutlined,
-  RightCircleOutlined,
-} from "@ant-design/icons";
+import { HeartOutlined, LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 
 const Card = styled.div`
-  :hover {
-    box-shadow: 1px 8px 10px grey;
-    -webkit-transition: box-shadow 0.1s ease-in;
-  }
+    :hover {
+        box-shadow: 1px 8px 10px grey;
+        -webkit-transition: box-shadow 0.1s ease-in;
+    }
 `;
 const GridDisplay = styled.div`
-  display: grid;
-  grid-template-rows: auto auto auto;
-  grid-template-columns: auto auto auto;
-  grid-gap: 20px;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto auto;
+    grid-gap: 20px;
 `;
 
 class ProjectCard extends React.Component {
-  render() {
-    const { sortValue } = this.props;
-    return (
-      <GridDisplay>
-        {data.popular_projects
+    render() {
+        const { sortValue } = this.props;
+        return (
+            <GridDisplay>
+                {/* {data.popular_projects
           ?.sort((a, b) => {
             if (sortValue === null) {
               return 0;
@@ -81,7 +76,7 @@ class ProjectCard extends React.Component {
                 </div>
                 <br />
                 {/* categories */}
-                <div
+                {/* <div
                   className=" text-muted p-1"
                   style={{ position: "relative", top: "20px" }}
                 >
@@ -102,7 +97,7 @@ class ProjectCard extends React.Component {
                         </span>
                       </h4>
                       {/* percentag */}
-                    </div>
+                {/* </div>
                     <div style={{ paddingTop: 4, float: "right" }}>
                       {item.percentage}
                     </div>
@@ -121,13 +116,13 @@ class ProjectCard extends React.Component {
                       InDEMAND
                     </span>
                   </div>
-                </div>
-              </Card>
-            );
-          })}
-      </GridDisplay>
-    );
-  }
+                </div> */}
+                {/* </Card> */}
+                {/* );
+          })} */}
+            </GridDisplay>
+        );
+    }
 }
 //  console.log(data.popular_projects)
 

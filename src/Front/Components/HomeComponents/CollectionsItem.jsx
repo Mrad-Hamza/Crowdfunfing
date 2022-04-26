@@ -1,12 +1,11 @@
 import React from "react";
 import styles from "./CollectionsItem.module.css";
-import data from "../../data.json";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const CollectionsItem = () => {
-  return (
-    <div className={styles.collectionDiv}>
-      {data.collectionsItemData.map((item) => {
+    return (
+        <div className={styles.collectionDiv}>
+            {/* {data.collectionsItemData.map((item) => {
         return (
           <div key={item.name}>
             <div
@@ -19,8 +18,8 @@ const CollectionsItem = () => {
                 textAlign: "center",
                 opacity: "0.9",
               }}
-            >
-              <p
+            > */}
+            {/* <p
                 style={{
                   marginTop: "20%",
                   color: "white",
@@ -31,8 +30,8 @@ const CollectionsItem = () => {
                 {item.heading}
               </p>
             </div>
-            <div>
-              <h6 style={{ float: "left" }}>{item.description}</h6>
+            <div> */}
+            {/* <h6 style={{ float: "left" }}>{item.description}</h6>
               <p
                 style={{ float: "right", fontWeight: "600", fontSize: "small" }}
               >
@@ -50,11 +49,11 @@ const CollectionsItem = () => {
                 />
               </p>
             </div>
-          </div>
-        );
-      })}
-    </div>
-  );
+          </div> */}
+            {/* );
+      })} */}
+        </div>
+    );
 };
 
 export { CollectionsItem };

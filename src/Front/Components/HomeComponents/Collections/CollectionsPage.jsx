@@ -1,12 +1,13 @@
-import React from "react"
-import CollectionCard from "./CollectionCard"
-import Styles from "./CollectionsPage.module.css"
-import {Button} from "react-bootstrap"
+import React from "react";
+import CollectionCard from "./CollectionCard";
+import Styles from "./CollectionsPage.module.css";
+import { Button } from "react-bootstrap";
 
 const CollectionsPage = () => {
     return (
-        <div className = {Styles.page}>
-            <div>
+        // <div className={Styles.page}>
+        {
+            /* <div>
                 <div className = {Styles.dummyDiv} ></div>
                 <div className = {Styles.heading} >10 Cool & Clever Finds</div>
                 <div className = {Styles.description}>Discover your next "a-ha" moment in our roundup of standout projects, from live crowdfunding & InDemand campaigns to innovative products shipping now.</div>
@@ -16,9 +17,10 @@ const CollectionsPage = () => {
                     <Button className = {Styles.loveButton}> <img className = {Styles.iconTwitter} src="https://w1.pngwing.com/pngs/777/933/png-transparent-chart-icon-favorites-icon-favourite-icon-heart-icon-rating-icon-top-icon-love-symbol.png" /> FOLLOW</Button>
                 </div>
             </div>
-            <CollectionCard />
-        </div>
-    )
-}
+            <CollectionCard /> */
+        }
+        // </div>
+    );
+};
 
-export default CollectionsPage
+export default CollectionsPage;
