@@ -24,10 +24,7 @@ const Forum = props => (
                                </p>
                                 <p class="text-muted"> <i class="pi pi-clock" ></i> <span class="text-secondary font-weight-bold">{props.forum.createdAt}</span></p>
                             </div>
-                            {/* <div class="text-muted small text-center align-self-center">
-                                <span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> 19</span>
-                                <span><i class="far fa-comment ml-2"></i> 3</span>
-                            </div> */}
+                           
                             
                          
                         </div>
@@ -96,22 +93,11 @@ export default class forumList extends Component {
 
   
   }
-//   showComment(_id) {
-//     axios.get('http://localhost:5000/comment/')
-//     .then(response => {
-//       this.setState({ comments: response.data })
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     })
-// }
+
 
 showComment(id) {
   axios.get('http://localhost:5000/forums/com/'+id)
   .then(res => console.log(res.data));
-
-    
-
 
 }
 
@@ -131,7 +117,7 @@ searchHandel = (event)=>{
 
   forumList() {
     return this.state.forums.map(currentForum => {
-      return  <Forum forum={currentForum} showComment={this.showComment} key={currentForum._id}/>;
+      return  <Forum forum={currentForum} deleteForum={this.deleteForum} key={currentForum._id}/>;
     })
   }
   
