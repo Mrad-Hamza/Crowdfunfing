@@ -6,6 +6,7 @@ import { WhatWeDo } from "./RouteComponents/WhatWeDo";
 import { Search } from "./RouteComponents/Search";
 import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
 import { Campaign } from "./RouteComponents/Campaign";
+import { CampaignUser } from "./RouteComponents/CampaignUser";
 import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage"
 import { Footer } from "./Footer";
 import CollectionsPage from "./HomeComponents/Collections/CollectionsPage"
@@ -42,6 +43,11 @@ const Routes = () => {
         <Route
           path="/campaign"
           component={(props) => <Campaign {...props} />}
+        />
+
+<Route
+          path="/CampaignUser/:_id"
+          component={(props) => <CampaignUser {...props} />}
         />
         {/* <Route path = "/popularPage" render = {(props) => <PopularProductsPage {...props} />} /> */}
         <Route path="/" exact render ={(props) => <Home {...props} />} />

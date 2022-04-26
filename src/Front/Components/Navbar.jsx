@@ -86,8 +86,8 @@ const Navbar = () => {
 
     const rightLinks = [
         {
-            to: "/entrepreneurs",
-            title: "For Entrepreneurs",
+            to: "/campaignUser/"+localStorage.getItem('currentUserId'),
+            title: "Campaign",
         },
         {
             to: "/campaign",
