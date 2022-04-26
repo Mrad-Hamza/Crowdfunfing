@@ -1,11 +1,10 @@
-import React from "react"
-import {Card, Button} from "react-bootstrap"
-import data from "../../../data.json"
-import Styles from "./CollectionCard.module.css"
+import React from "react";
+import { Card, Button } from "react-bootstrap";
+import Styles from "./CollectionCard.module.css";
 const CollectionCard = () => {
     return (
-        <div className = {Styles.cards}>
-            {data.collectionsPageData.map ( item => {
+        <div className={Styles.cards}>
+            {/* {data.collectionsPageData.map ( item => {
                 return <Card style={{ width: "100%" , height: "600px"}}>
                             <Card.Img variant="top" src={item.avatar} />
                             <Card.Body>
@@ -32,13 +31,10 @@ const CollectionCard = () => {
                                         <div className  = {Styles.horizontalbar} ></div>
                                 </div>
                             </Card.Footer>
-                        </Card>
-            })}
-            
-            
+                        </Card> */}
+            {/* })} */}
         </div>
-        
-    )
-}
+    );
+};
 
-export default CollectionCard
+export default CollectionCard;

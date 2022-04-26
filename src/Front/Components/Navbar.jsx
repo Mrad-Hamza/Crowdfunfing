@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
-import logo from "../Images/IndiegogoLogo.png";
+import logo from "../Images/logo-1.PNG";
 import search from "../Images/search.png";
 import LoginPopUpModal from "./RouteComponents/LoginPopUpModal";
 import SignUp from "./RouteComponents/SignUpModal/SignUp";
@@ -14,7 +14,6 @@ import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import Explore from "./Explore/Explore";
 import Avatar from "@mui/material/Avatar";
 import { userService } from "../../Backoffice/pages/User/_services/user.service";
-
 
 const Navbar = () => {
     let emptyUser = {
@@ -86,10 +85,12 @@ const Navbar = () => {
 
     const rightLinks = [
         {
+
             to: "/campaignUser/"+localStorage.getItem('currentUserId'),
             title: "Campaign",
         },
         {
+
             to: "/campaign",
             title: "Start a Campaign",
         },
@@ -130,11 +131,13 @@ const Navbar = () => {
                 </div>
             ) : (
                 <NavbarStyle>
-                    <div>
-                        <NavLink to="/">
-                            <img src={logo} alt="IndiegogoLogo" height="20px" />
+                    <div style={{ width: "700px", display: "flex" }}>
+                        <NavLink to="/" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <img src={logo} alt="Fundise" height="20px" /> <span>FUNDISE</span>
                         </NavLink>
-                        <Button onClick={() => this.setExploreModalVisible(true)}>Explore</Button>
+                        <Button className="ml-2" onClick={() => this.setExploreModalVisible(true)}>
+                            Explore
+                        </Button>
 
                         <Modal width={1300} centered visible={exploreModalVisible} onCancel={() => this.setExploreModalVisible(false)} footer={null}>
                             <Explore />
@@ -155,7 +158,7 @@ const Navbar = () => {
                                 {item.title}
                             </NavLink>
                         ))}
-                        <NavLink to="/search">
+                        <NavLink to="/search" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                             <img src={search} alt="searchIcon" height="15px" width="15px" onClick={handleShowSearchBar} />
                         </NavLink>
                     </div>

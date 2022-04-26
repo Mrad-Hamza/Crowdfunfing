@@ -10,7 +10,7 @@ function ProjectAdd(props) {
     const { _id } = useParams();
     let history = useHistory();
 
-    const [state, setState] = useState({ projectName: "", projectDescription: "", projectCollectedAmount: "", compaign: _id, image: "bg.png", user: localStorage.getItem("currentUserId") });
+    const [state, setState] = useState({ projectName: "", projectDescription: "", projectCollectedAmount: "", compaign: _id, image: "bg.png", user: localStorage.getItem("currentUserId"), userMail: localStorage.getItem("currentMailAddress") });
     state.compaign = _id;
     const showResponse = (response) => {
         console.log(response);
@@ -44,7 +44,7 @@ function ProjectAdd(props) {
         console.log(state);
         if (state.projectName && state.projectDescription && state.projectCollectedAmount && state.compaign) {
             projectService.addProject(state);
-            history.push("/projects");
+            // history.push("/projects");
         }
     };
 

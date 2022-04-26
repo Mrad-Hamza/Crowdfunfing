@@ -236,6 +236,7 @@ export function LoginForm(props) {
 
     if (!redirect) {
         return (
+            // <div style={{ backgroundImage: "url('../../../../../assets/layout/images/background.jpg')" }} className="test">
             <BoxContainer>
                 <Toast ref={toast} />
                 <FormContainer>
@@ -312,6 +313,7 @@ export function LoginForm(props) {
                     </div>
                 </Dialog> */}
             </BoxContainer>
+            // </div>
         );
     }
 }
