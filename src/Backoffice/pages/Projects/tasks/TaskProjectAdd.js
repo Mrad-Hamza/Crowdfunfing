@@ -10,7 +10,7 @@ function TaskProjectAdd(props) {
     const { _id } = useParams();
     let history = useHistory();
 
-    const [state, setState] = useState({ taskName: "", taskDescription: "", project: _id, user: localStorage.getItem("currentUserId") });
+    const [state, setState] = useState({ taskName: "", taskDescription: "", taskAmount: "", project: _id, user: localStorage.getItem("currentUserId") });
     state.project = _id;
     console.log(state);
     const handleChange = (e) => {
@@ -24,6 +24,10 @@ function TaskProjectAdd(props) {
             setState((prevState) => {
                 return { ...prevState, taskDescription: value };
             });
+        } else if (name === "taskAmount") {
+            setState((prevState) => {
+                return { ...prevState, taskAmount: value };
+            });
         }
     };
 
@@ -31,7 +35,7 @@ function TaskProjectAdd(props) {
         e.preventDefault();
         console.log(_id);
         console.log(state);
-        if (state.taskName && state.taskDescription && state.project && state.user) {
+        if (state.taskName && state.taskDescription && state.taskAmount && state.project && state.user) {
             TaskProjectService.addTask(state);
             history.push(`/projects/${_id}`);
         }
@@ -50,6 +54,10 @@ function TaskProjectAdd(props) {
                         <div className="form-group mt-2">
                             <label>Description </label>
                             <Textarea id="taskDescription" name="taskDescription" placeholder="Task description " onChange={handleChange} className="mb-2" />
+                        </div>
+                        <div className="form-group">
+                            <label>Collected amount: </label>
+                            <Input id="taskAmount" name="taskAmount" type="number" placeholder="task amount" onChange={handleChange} />
                         </div>
                         <div className="form-group mt-3">
                             <Marginer direction="vertical" margin={10} />
