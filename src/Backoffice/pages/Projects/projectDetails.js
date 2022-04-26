@@ -7,6 +7,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
+import InfoIcon from "@mui/icons-material/Info";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
@@ -35,7 +38,7 @@ const ProjectDetails = () => {
     const tasksList = useSelector((state) => state.projects.tasksList);
     const invoiceProjectList = useSelector((state) => state.projects.invoiceProjectList);
     const complaintProjectList = useSelector((state) => state.projects.complaintProjectList);
-    const { projectName, projectDescription, projectCollectedAmount, image, resteAmount } = project;
+    const { projectName, projectDescription, projectCollectedAmount, image, resteAmount, projectType } = project;
     const { _id } = useParams();
     console.log(_id);
     console.log(project);
@@ -105,10 +108,16 @@ const ProjectDetails = () => {
 
     const isAddTaskNotValid = () => {
         if (tasksList.length > 0) {
-            return tasksList.some((task) => task.taskType !== "validated" || project.projectCollectedAmount == 0);
+            return tasksList.some((task) => (task.taskType !== "validated" || task.taskType !== "refused") && project.projectCollectedAmount !== 0);
         }
     };
     console.log("🚀 ~ file: projectDetails.js ~ line 111 ~ isAddTaskNotValid ~ isAddTaskNotValid", isAddTaskNotValid());
+
+    const isAddInvoiceNotValid = () => {
+        // if (project) {
+        return project.some(projectType !== "in progress");
+        // }
+    };
 
     return (
         <div>
@@ -149,53 +158,80 @@ const ProjectDetails = () => {
                                         </Link>
                                     </>
                                 )}
-                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
+                                <div style={{ maxHeight: "260px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
-                                        if (task) {
+                                        if (task && task.taskType == "in progress") {
                                             return (
-                                                <div key={task._id}>
+                                                <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
                                                     <ListItemButton style={{ display: "flex" }}>
                                                         <ListItemText primary={task.taskName} />
-                                                        <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
+                                                        {/* <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
                                                             <IconButton edge="end" aria-label="plus">
                                                                 <AddIcon />
                                                                 <ListItemText primary="Complaint" />
                                                             </IconButton>
-                                                        </Link>
-                                                        <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
+                                                        </Link> */}
+                                                        {/* <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
                                                             <IconButton edge="end" aria-label="plus">
                                                                 <AddIcon />
                                                                 <ListItemText primary="Invoice" />
                                                             </IconButton>
-                                                        </Link>
+                                                        </Link> */}
+                                                        <div className="ml-5">
+                                                            <span>Status : In progress</span>
+                                                            <IconButton edge="end" aria-label="check">
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                            <IconButton edge="end" aria-label="off">
+                                                                <HighlightOffIcon />
+                                                            </IconButton>
+                                                        </div>
                                                         <Link to={`/projects/task/${task._id}`}>
-                                                            <IconButton edge="end" aria-label="comment">
-                                                                <CommentIcon />
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
                                                             </IconButton>
                                                         </Link>
-                                                        {/* <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} /> */}
-
-                                                        {/* {open ? <ExpandLess /> : <ExpandMore />} */}
                                                     </ListItemButton>
-                                                    {/* <Collapse in={open} timeout="auto" unmountOnExit>
-                                                        <List component="div" disablePadding>
-                                                            <ListItemButton sx={{ pl: 4 }}>
-                                                                <ListItemIcon>
-                                                                    <StarBorder />
-                                                                </ListItemIcon>
-                                                                <ListItemText primary={task.taskDescription} />
-                                                                <Link to={`/projects/tasks/${task._id}`}>
-                                                                    <Button icon="pi pi-info-circle" className="button col-5" label="Show more" style={{ width: "120px", height: "30px", textAlign: "left" }} />
-                                                                </Link>
-                                                                <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} />
-                                                                {/* <CustomDialog /> */}
-                                                    {/* </ListItemButton> */}
-                                                    {/* </List> */}
-                                                    {/* </Collapse> */}
+                                                </div>
+                                            );
+                                        } else if (task && task.taskType == "validated") {
+                                            return (
+                                                <div key={task._id} style={{ backgroundColor: "#E3FFCA" }}>
+                                                    <ListItemButton style={{ display: "flex" }}>
+                                                        <ListItemText primary={task.taskName} />
+                                                        <div className="ml-5">
+                                                            <span>Status : Valid</span>
+                                                            <IconButton edge="end" aria-label="check" disabled>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </div>
+                                                        <Link to={`/projects/task/${task._id}`}>
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
+                                                            </IconButton>
+                                                        </Link>
+                                                    </ListItemButton>
                                                 </div>
                                             );
                                         } else {
-                                            return <ListItemText primary="No task for this project" />;
+                                            return (
+                                                <div key={task._id} style={{ backgroundColor: "#FFCECE" }}>
+                                                    <ListItemButton style={{ display: "flex" }}>
+                                                        <ListItemText primary={task.taskName} />
+                                                        <div className="ml-5">
+                                                            <span>Status : Refused</span>
+                                                            <IconButton edge="end" aria-label="off" disabled>
+                                                                <HighlightOffIcon />
+                                                            </IconButton>
+                                                        </div>
+                                                        <Link to={`/projects/task/${task._id}`}>
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
+                                                            </IconButton>
+                                                        </Link>
+                                                    </ListItemButton>
+                                                </div>
+                                            );
                                         }
                                     })}
                                 </div>
@@ -203,12 +239,16 @@ const ProjectDetails = () => {
                         </div>
                         <div className="container col-4">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
-                                Add new invoice
-                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
+                                {/* {isAddInvoiceNotValid() && ( */}
+                                <>
+                                    <span>Add new invoice</span>
+                                    <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
+                                        <IconButton edge="end" aria-label="plus">
+                                            <AddIcon />
+                                        </IconButton>
+                                    </Link>
+                                </>
+                                {/* )} */}
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
