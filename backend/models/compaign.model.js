@@ -38,6 +38,11 @@ Status: {
   type: String,
   required: true,
 },
+cumulateAmount: {
+  type: Number,
+  required: true,
+ 
+},
 
   user: 
     {

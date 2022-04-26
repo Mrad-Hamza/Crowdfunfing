@@ -94,6 +94,11 @@ const Navbar = () => {
             to: "/campaign",
             title: "Start a Campaign",
         },
+        {
+
+            to: "/forum",
+            title: "Forum",
+        },
     ];
 
     const logout = (e) => {

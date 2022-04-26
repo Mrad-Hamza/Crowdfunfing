@@ -7,6 +7,7 @@ import { Search } from "./RouteComponents/Search";
 import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
 import { Campaign } from "./RouteComponents/Campaign";
 import { CampaignUser } from "./RouteComponents/CampaignUser";
+import { ForumList } from "./RouteComponents/forumListing";
 import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage"
 import { Footer } from "./Footer";
 import CollectionsPage from "./HomeComponents/Collections/CollectionsPage"
@@ -40,6 +41,11 @@ const Routes = () => {
         path="/entrepreneurs"
         component={(props) => <ForEntrepreneurs {...props} />}
       /> */}
+
+<Route
+          path="/forum"
+          component={(props) => <ForumList {...props} />}
+        />
         <Route
           path="/campaign"
           component={(props) => <Campaign {...props} />}

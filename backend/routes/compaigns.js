@@ -56,14 +56,15 @@ router.route('/add').post((req, res) => {
   const objective = req.body.objective;
   const description = req.body.description;
   const deadline = req.body.deadline;
-  const Verified = 1;
+  const Verified = 0;
   const Status = "EN COUR";
   const user = req.body.user;
   const category = req.body.category;
+  const cumulateAmount= 0;
   
   
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,user,category});
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,user,category});
 
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
@@ -100,6 +101,7 @@ router.route('/update/:id').put((req, res) => {
         compaign.deadline = req.body.deadline;
         compaign.Verified = req.body.Verified;
         compaign.Status = req.body.Status;
+        compaign.cumulateAmount = req.body.cumulateAmount;
       
       compaign.save()
         .then(() => res.json('Compaign updated!'))
