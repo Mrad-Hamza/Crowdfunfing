@@ -85,8 +85,19 @@ const Navbar = () => {
 
     const rightLinks = [
         {
+
+            to: "/campaignUser/"+localStorage.getItem('currentUserId'),
+            title: "Campaign",
+        },
+        {
+
             to: "/campaign",
             title: "Start a Campaign",
+        },
+        {
+
+            to: "/forum",
+            title: "Forum",
         },
     ];
 

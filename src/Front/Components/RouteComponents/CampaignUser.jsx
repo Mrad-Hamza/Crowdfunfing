@@ -97,8 +97,8 @@ const Compaign = (props) => (
           <div style={{ padding: "4px 6px 0px 20px", clear: "both" }}>
             {}
             <span style={{ fontSize: "12px", float: "right" }}>
-            <a href="" class="btn btn-secondary"style={{ background : "#343a40" }}><strong>
-              <i class="fa fa-credit-card pull-left"></i> Make a donation</strong></a>
+            <Link to={"/projects/add/" + props.compaign._id}> <a href="" class="btn btn-secondary"style={{ background : "#343a40" }}><strong>
+              <i class="fa fa-credit-card pull-left"></i> Show Project details</strong></a></Link>
              
             </span>
           </div>
@@ -113,7 +113,7 @@ const Compaign = (props) => (
 
 );
 
-export default class ProjectCard extends Component {
+class CampaignUser extends Component {
     constructor(props) {
         super(props);
 
@@ -125,7 +125,7 @@ export default class ProjectCard extends Component {
 
     componentDidMount() {
         axios
-            .get("http://localhost:5000/compaigns/front")
+            .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
             .then((response) => {
                 this.setState({ compaigns: response.data });
             })
@@ -163,4 +163,6 @@ export default class ProjectCard extends Component {
        
       );
 }
+
 }
+export {CampaignUser}
