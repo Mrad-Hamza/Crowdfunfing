@@ -30,7 +30,6 @@ const projectSchema = new Schema(
         },
         resteAmount: {
             type: Number,
-            required: true,
         },
         projectCollectedAmount: {
             type: Number,

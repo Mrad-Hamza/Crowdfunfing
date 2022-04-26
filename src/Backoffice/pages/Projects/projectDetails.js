@@ -108,14 +108,14 @@ const ProjectDetails = () => {
 
     const isAddTaskNotValid = () => {
         if (tasksList.length > 0) {
-            return tasksList.some((task) => (task.taskType !== "validated" || task.taskType !== "refused") && project.projectCollectedAmount !== 0);
+            return tasksList.some((task) => (task.taskType !== "validated" || task.taskType !== "refused") && project.projectCollectedAmount !== 0 && projectType == "in progress");
         }
     };
     console.log("🚀 ~ file: projectDetails.js ~ line 111 ~ isAddTaskNotValid ~ isAddTaskNotValid", isAddTaskNotValid());
 
     const isAddInvoiceNotValid = () => {
         // if (project) {
-        return project.some(projectType !== "in progress");
+        return projectType !== "in progress";
         // }
     };
 
@@ -147,7 +147,7 @@ const ProjectDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            <List sx={{ width: "100%", height: "310px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
+                            <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 {!isAddTaskNotValid() && (
                                     <>
                                         <span>Add new task</span>
@@ -158,7 +158,7 @@ const ProjectDetails = () => {
                                         </Link>
                                     </>
                                 )}
-                                <div style={{ maxHeight: "260px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
+                                <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         if (task && task.taskType == "in progress") {
                                             return (
@@ -239,16 +239,16 @@ const ProjectDetails = () => {
                         </div>
                         <div className="container col-4">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
-                                {/* {isAddInvoiceNotValid() && ( */}
-                                <>
-                                    <span>Add new invoice</span>
-                                    <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
-                                        <IconButton edge="end" aria-label="plus">
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Link>
-                                </>
-                                {/* )} */}
+                                {!isAddInvoiceNotValid() && (
+                                    <>
+                                        <span>Add new invoice</span>
+                                        <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
+                                            <IconButton edge="end" aria-label="plus">
+                                                <AddIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </>
+                                )}
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
@@ -285,14 +285,18 @@ const ProjectDetails = () => {
                                     </List>
                                 </div>
                             </div>
-                            <div style={{ height: "310px" }} className="surface-card p-4 shadow-2 border-round my-2">
-                                Add new Complaint
-                                <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
-                                <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
+                            <div style={{ height: "350px" }} className="surface-card p-4 shadow-2 border-round my-2">
+                                {!isAddInvoiceNotValid() && (
+                                    <>
+                                        Add new Complaint
+                                        <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
+                                            <IconButton edge="end" aria-label="plus">
+                                                <AddIcon />
+                                            </IconButton>
+                                        </Link>
+                                    </>
+                                )}
+                                <div style={{ maxHeight: "250px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
                                             const deleteComplaint = () => {
