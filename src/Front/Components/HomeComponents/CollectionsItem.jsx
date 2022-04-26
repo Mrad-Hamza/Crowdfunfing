@@ -8,13 +8,13 @@ const CollectionsItem = () => {
     <div className={styles.collectionDiv}>
       {data.collectionsItemData.map((item) => {
         return (
-          <div key={item.name}>
+          <div style={{paddingBlockEnd: "30px"}} key={item.name}>
             <div
               style={{
                 backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url(${item.avatar})`,
                 backgroundSize: "cover",
                 height: "320px",
-                width: "620px",
+                width: "100%",
                 padding: "1%",
                 textAlign: "center",
                 opacity: "0.9",

@@ -13,7 +13,7 @@ const Forum = props => (
   <div>
      <div class="card mb-2">
                     <div class="card-body p-2 p-sm-3">
-                    <p>{props.forum.title}</p>    
+                    <h4>{props.forum.title}</h4>    
                     <div  class="p-toolbar ">  
                                
      <div class="media forum-item">

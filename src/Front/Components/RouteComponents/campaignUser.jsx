@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import moment from "moment";
 import data from "../../data.json";
 import img from "../../Images/EditIcon.PNG";
-import image from "../../Images/EditIcon.PNG";
+import image from "../../Images/crowdfunding.jpg";
 import {
   HeartOutlined,
   LeftCircleOutlined,
@@ -113,7 +113,7 @@ const Compaign = (props) => (
 
 );
 
-export default class ProjectCard extends Component {
+class CampaignUser extends Component {
     constructor(props) {
         super(props);
 
@@ -125,7 +125,7 @@ export default class ProjectCard extends Component {
 
     componentDidMount() {
         axios
-            .get("http://localhost:5000/compaigns/front")
+            .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
             .then((response) => {
                 this.setState({ compaigns: response.data });
             })
@@ -163,4 +163,6 @@ export default class ProjectCard extends Component {
        
       );
 }
+
 }
+export {CampaignUser}
