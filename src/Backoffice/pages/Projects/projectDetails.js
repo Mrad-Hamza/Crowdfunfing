@@ -146,16 +146,6 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                {isAddTaskNotValid() && (
-                                    <>
-                                        <span>Add new task</span>
-                                        <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
-                                            <IconButton edge="end" aria-label="plus">
-                                                <AddIcon />
-                                            </IconButton>
-                                        </Link>
-                                    </>
-                                )}
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         if (task && task.taskType === "in progress") {
@@ -163,18 +153,6 @@ const ProjectDetails = () => {
                                                 <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
                                                     <ListItemButton style={{ display: "flex" }}>
                                                         <ListItemText primary={task.taskName} />
-                                                        {/* <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Complaint" />
-                                                            </IconButton>
-                                                        </Link> */}
-                                                        {/* <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Invoice" />
-                                                            </IconButton>
-                                                        </Link> */}
                                                         <div className="ml-5">
                                                             <span>Status : In progress</span>
                                                             <IconButton edge="end" aria-label="check">
@@ -237,23 +215,9 @@ const ProjectDetails = () => {
                         </div>
                         <div className="container col-5">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
-                                {!isAddInvoiceNotValid() && (
-                                    <>
-                                        <span>Add new invoice</span>
-                                        <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
-                                            <IconButton edge="end" aria-label="plus">
-                                                <AddIcon />
-                                            </IconButton>
-                                        </Link>
-                                    </>
-                                )}
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
-                                            const deleteInvoice = () => {
-                                                InvoiceProjectService.delete(invoiceProject._id);
-                                                window.location.reload(false);
-                                            };
                                             const labelId = `checkbox-list-label-${invoiceProject._id}`;
                                             if (invoiceProject)
                                                 return (
@@ -261,9 +225,6 @@ const ProjectDetails = () => {
                                                         key={invoiceProject._id}
                                                         secondaryAction={
                                                             <div>
-                                                                <IconButton edge="end" aria-label="delete" onClick={deleteInvoice}>
-                                                                    <DeleteIcon />
-                                                                </IconButton>
                                                                 <IconButton edge="end" aria-label="download">
                                                                     <DownloadIcon />
                                                                 </IconButton>
@@ -284,16 +245,6 @@ const ProjectDetails = () => {
                                 </div>
                             </div>
                             <div style={{ height: "350px" }} className="surface-card p-4 shadow-2 border-round my-2">
-                                {!isAddInvoiceNotValid() && (
-                                    <>
-                                        Add new Complaint
-                                        <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
-                                            <IconButton edge="end" aria-label="plus">
-                                                <AddIcon />
-                                            </IconButton>
-                                        </Link>
-                                    </>
-                                )}
                                 <div style={{ maxHeight: "250px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
@@ -314,9 +265,6 @@ const ProjectDetails = () => {
                                                             key={complaintProject._id}
                                                             secondaryAction={
                                                                 <div style={{ display: "flex" }}>
-                                                                    <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                        <DeleteIcon />
-                                                                    </IconButton>
                                                                     <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
                                                                         <CheckCircleIcon />
                                                                     </IconButton>
@@ -338,9 +286,6 @@ const ProjectDetails = () => {
                                                             key={complaintProject._id}
                                                             secondaryAction={
                                                                 <div style={{ display: "flex" }}>
-                                                                    <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                        <DeleteIcon />
-                                                                    </IconButton>
                                                                     <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
                                                                 </div>
                                                             }

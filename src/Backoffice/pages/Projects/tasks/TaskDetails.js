@@ -124,23 +124,9 @@ const TaskDetails = () => {
                             {/* <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll"> */}
                             <div className=" col-12" style={{ display: "flex", width: "950px", height: "300px" }}>
                                 <div style={{ height: "280px", width: "475px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
-                                    {!isAddNotValid() && (
-                                        <>
-                                            <span>Add new invoice</span>
-                                            <Link to={`/projects/task/invoice/add/${_id}`} style={{ width: "200px" }}>
-                                                <IconButton edge="end" aria-label="plus">
-                                                    <AddIcon />
-                                                </IconButton>
-                                            </Link>
-                                        </>
-                                    )}
                                     <div style={{ maxHeight: "210px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {invoiceTaskList.map((invoiceTask) => {
-                                                const deleteInvoice = () => {
-                                                    InvoiceTaskService.delete(invoiceTask._id);
-                                                    window.location.reload(false);
-                                                };
                                                 const labelId = `checkbox-list-label-${invoiceTask._id}`;
                                                 if (invoiceTask)
                                                     return (
@@ -148,9 +134,6 @@ const TaskDetails = () => {
                                                             key={invoiceTask._id}
                                                             secondaryAction={
                                                                 <div>
-                                                                    <IconButton edge="end" aria-label="delete" onClick={deleteInvoice}>
-                                                                        <DeleteIcon />
-                                                                    </IconButton>
                                                                     <IconButton edge="end" aria-label="download">
                                                                         <DownloadIcon />
                                                                     </IconButton>
@@ -171,26 +154,11 @@ const TaskDetails = () => {
                                     </div>
                                 </div>
                                 <div style={{ height: "280px", width: "470px" }} className="surface-card p-4 shadow-2 border-round">
-                                    {!isAddNotValid() && (
-                                        <>
-                                            <span>Add new Complaint</span>
-                                            <Link to={`/projects/task/complaint/add/${_id}`} style={{ width: "200px" }}>
-                                                <IconButton edge="end" aria-label="plus">
-                                                    <AddIcon />
-                                                </IconButton>
-                                            </Link>
-                                        </>
-                                    )}
                                     <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                             {complaintTaskList.map((complaintTask) => {
-                                                const deleteComplaint = () => {
-                                                    ComplaintTaskService.delete(complaintTaskList._id);
-                                                    window.location.reload(false);
-                                                };
-
                                                 const validateComplaint = () => {
-                                                    ComplaintTaskService.validate(complaintTaskList._id);
+                                                    ComplaintTaskService.validate(complaintTask._id);
                                                     window.location.reload(false);
                                                 };
                                                 const labelId = `checkbox-list-label-${complaintTask._id}`;
@@ -201,9 +169,6 @@ const TaskDetails = () => {
                                                                 key={complaintTask._id}
                                                                 secondaryAction={
                                                                     <div style={{ display: "flex" }}>
-                                                                        <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                            <DeleteIcon />
-                                                                        </IconButton>
                                                                         <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
                                                                             <CheckCircleIcon />
                                                                         </IconButton>
