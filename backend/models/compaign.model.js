@@ -43,6 +43,11 @@ cumulateAmount: {
   required: true,
   minlength: [1, 'Objective Compaign Minimum 1 charachters.'],
 },
+img: {
+  contentType: String,
+  imgName:String
+},
+
 
   user: 
     {

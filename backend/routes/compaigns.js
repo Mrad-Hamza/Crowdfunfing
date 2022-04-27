@@ -1,6 +1,7 @@
 const router = require('express').Router();
 let Compaign = require('../models/compaign.model');
 const XLSX = require('xlsx')
+const multer = require("multer");
 
 router.route('/').get((req, res) => {
   Compaign.find()
@@ -50,7 +51,7 @@ router.route('/pdf').get((req, res) => {
 
  
 
-router.route('/add').post((req, res) => {
+router.route('/add').post((req, res)=> {
   const nameCompaign = req.body.nameCompaign;
   const typeCompaign = req.body.typeCompaign;
   const objective = req.body.objective;
@@ -60,11 +61,15 @@ router.route('/add').post((req, res) => {
   const Status = "EN COUR";
   const user = req.body.user;
   const cumulateAmount= 0;
+  const img = {
+    contentType: "image/png",
+    imgName: "NoPic.png",
+};
   
   
 
-  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,user});
-
+  const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,img,user});
+  
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -88,6 +93,28 @@ router.route('/campaignUser/:key').get((req, res) => {
   CompaignUser.find({deadline: {  $lte: '2022-04-27'} })
   .then(Compaign => res.json(Compaign))
   .catch(err => res.status(400).json('Error: ' + err));
+});
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, "../src/assets/layout/images");
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.originalname);
+  },
+});
+var upload = multer({ storage: storage });
+router.route("/addCampaignImage").put(upload.single("image"), (req, res) => {
+  const image = {
+      contentType: "image/*",
+      imgName: req.file.filename,
+  };
+  Compaign.findByIdAndUpdate(req.body.data).then((Compaign) => {
+    Compaign.img = image;
+    Compaign.save()
+          .then(() => res.json("Image added to campaign haha"))
+          .catch((err) => res.status(400).json("Error: " + err));
+  });
 });
 
 router.route('/update/:id').put((req, res) => {

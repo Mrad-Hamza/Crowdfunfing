@@ -42,7 +42,7 @@ const Compaign = (props) => (
 
       <div style={{}}>
         <img style={{ width: "100%", height: "225px" }}
-          src={image}
+          src={require("../../../assets/layout/images/"+props.compaign.img.imgName)}
           className="card-img-top"
 
         />
