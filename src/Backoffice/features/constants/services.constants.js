@@ -3,6 +3,7 @@ const URL = {
 
     projects: {
         fetchProjects: `/projects/active`,
+        fetchProjectByCompaignId: `/projects`,
         fectchDeletedProjects: `/projects/deleted`,
         addProject: `/projects/add`,
     },

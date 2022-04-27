@@ -43,6 +43,13 @@ router.route("/active/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/:id").get((req, res) => {
+    // const compaignById = Compaign.findById(req.params.id);
+    Project.findOne({ compaign: req.params.id })
+        .then((project) => res.json(project))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add
 router.route("/add").post(upload.single("image"), (req, res) => {
     console.log(req.body);

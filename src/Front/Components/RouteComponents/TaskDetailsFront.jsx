@@ -11,16 +11,16 @@ import AddIcon from "@mui/icons-material/Add";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import CustomizedDialogs from "../CustomizedDialogs";
-import { InvoiceTaskService } from "../../User/_services/invoiceTask.service";
-import { ComplaintTaskService } from "../../User/_services/complaintTask.service";
+import CustomizedDialogs from "../../../Backoffice/pages/Projects/CustomizedDialogs";
+import { InvoiceTaskService } from "../../../Backoffice/pages/User/_services/invoiceTask.service";
+import { ComplaintTaskService } from "../../../Backoffice/pages/User/_services/complaintTask.service";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, Link } from "react-router-dom";
-import { selectedTask } from "../../../features/actions/projects.actions";
-import { setInvoiceTasks, setComplaintTasks } from "../../../features/actions/projects.actions";
-import URL from "../../../features/constants/services.constants";
+import { selectedTask } from "../../../Backoffice/features/actions/projects.actions";
+import { setInvoiceTasks, setComplaintTasks } from "../../../Backoffice/features/actions/projects.actions";
+import URL from "../../../Backoffice/features/constants/services.constants";
 import axios from "axios";
-import "../projects.css";
+import "../../../Backoffice/pages/Projects/projects.css";
 
 const TaskDetails = () => {
     const dispatch = useDispatch();
@@ -98,32 +98,29 @@ const TaskDetails = () => {
                 <div>...Loading</div>
             ) : (
                 <div>
-                    <div className="container col-12 projectdisplay">
-                        <div
-                            className="row col-12"
-                            style={{
-                                backgroundImage: "../../../../assets/layout/images/task.jpg",
-                            }}
-                        >
-                            <div style={{ height: "180px", width: "950px" }} className="surface-card p-4 shadow-2 border-round ">
-                                <div className="font-medium text-500 mb-1">
-                                    <CardMedia component="img" height="80" image={require("../../../../assets/layout/images/task.jpg")} alt="logo" />
-                                </div>
-                                <div className="projectDetails">
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            {taskName} : {taskType} : {taskAmount} DT
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {taskDescription}
-                                        </Typography>
-                                    </CardContent>
+                    <div className="container projectdisplay">
+                        <div className="row">
+                            <div className="col-12">
+                                <div style={{ height: "180px", width: "1470px" }} className="surface-card p-4 shadow-2 border-round ">
+                                    <div className="font-medium text-500 mb-1">
+                                        <CardMedia component="img" height="80" image={require("../../../assets/layout/images/task.jpg")} alt="logo" />
+                                    </div>
+                                    <div className="projectDetails">
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                {taskName} : {taskType} : {taskAmount} DT
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {taskDescription}
+                                            </Typography>
+                                        </CardContent>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll"> */}
-                            <div className=" col-12" style={{ display: "flex", width: "950px", height: "300px" }}>
-                                <div style={{ height: "280px", width: "475px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
+                            <div className=" col-12" style={{ display: "flex", width: "1475px", height: "300px" }}>
+                                <div style={{ height: "280px", width: "1435px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
                                     {!isAddNotValid() && (
                                         <>
                                             <span>Add new invoice</span>
@@ -151,9 +148,6 @@ const TaskDetails = () => {
                                                                     <IconButton edge="end" aria-label="delete" onClick={deleteInvoice}>
                                                                         <DeleteIcon />
                                                                     </IconButton>
-                                                                    <IconButton edge="end" aria-label="download">
-                                                                        <DownloadIcon />
-                                                                    </IconButton>
                                                                 </div>
                                                             }
                                                             disablePadding
@@ -170,7 +164,7 @@ const TaskDetails = () => {
                                         </List>
                                     </div>
                                 </div>
-                                <div style={{ height: "280px", width: "470px" }} className="surface-card p-4 shadow-2 border-round">
+                                <div style={{ height: "280px", width: "1435px" }} className="surface-card p-4 shadow-2 border-round">
                                     {!isAddNotValid() && (
                                         <>
                                             <span>Add new Complaint</span>
@@ -188,11 +182,6 @@ const TaskDetails = () => {
                                                     ComplaintTaskService.delete(complaintTaskList._id);
                                                     window.location.reload(false);
                                                 };
-
-                                                const validateComplaint = () => {
-                                                    ComplaintTaskService.validate(complaintTaskList._id);
-                                                    window.location.reload(false);
-                                                };
                                                 const labelId = `checkbox-list-label-${complaintTask._id}`;
                                                 if (complaintTask && complaintTask.complaintType === "in progress" && taskType === "in progress") {
                                                     return (
@@ -203,9 +192,6 @@ const TaskDetails = () => {
                                                                     <div style={{ display: "flex" }}>
                                                                         <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
                                                                             <DeleteIcon />
-                                                                        </IconButton>
-                                                                        <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
-                                                                            <CheckCircleIcon />
                                                                         </IconButton>
                                                                         <CustomizedDialogs title={complaintTask.complaintTaskTitle} description={complaintTask.complaintDescription} state={complaintTaskList.complaintType} />
                                                                     </div>
