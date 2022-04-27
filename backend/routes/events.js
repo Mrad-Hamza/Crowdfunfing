@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
+
 let Event = require("../models/event.model");
 const moment = require("moment");
 const multer = require ("multer");
@@ -21,10 +23,16 @@ router.route("/").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+//getFavoriteList method
+router.route("/favorite").get((req, res) => {
+   Event.find({ status: "Interested" })
+        .then((events) => res.json(events))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add events
 
 router.route("/createEvent").post(upload.single("eventImage"),(req, res) => {
-
 
     const nameEvent = req.body.nameEvent;
     const startDateEvent = req.body.startDateEvent;
@@ -43,6 +51,7 @@ router.route("/createEvent").post(upload.single("eventImage"),(req, res) => {
 
     // const eventImage = req.file.eventImage
     const eventType = req.body.eventType;
+    const status = "NotInterested";
 
     const newEvent = new Event({
         nameEvent,
@@ -53,7 +62,8 @@ router.route("/createEvent").post(upload.single("eventImage"),(req, res) => {
         location,
         urlEvent,
         eventImage,
-        eventType
+        eventType,
+        status
     });
     newEvent
         .save()
@@ -146,6 +156,59 @@ router.route("/commentEvent/:id/").post(async (req, res) => {
     const updatedEvent = await Event.findByIdAndUpdate(id, event, { new: true });
 
     res.json(updatedEvent);
+});
+
+
+router.route("/:id/likeEvent").patch(async (req, res) => {
+    const { id } = req.params;
+
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    const event = await Event.findById(id);
+
+    const index = event.likes.findIndex((id) => id === String(req.userId));
+
+    if (index === -1) {
+        event.likes.push(req.userId);
+    } else {
+        event.likes = event.likes.filter((id) => id !== String(req.userId));
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(id, event, { new: true });
+
+    res.status(200).json(updatedEvent);
+});
+
+
+//InterestedMethod
+router.route("/interested/:id").put((req, res) => {
+    Event.findById(req.params.id)
+        .then((event) => {
+            event.status = "Interested";
+            event
+                .save()
+                .then(() => res.json("event in favorite List!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+
+//InterestedMethod
+router.route("/notInterested/:id").put((req, res) => {
+    Event.findById(req.params.id)
+        .then((event) => {
+            event.status = "NotInterested";
+            event
+                .save()
+                .then(() => res.json("event Not interested In!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
 });
 
 

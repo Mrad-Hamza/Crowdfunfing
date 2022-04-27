@@ -35,7 +35,7 @@ newCommentEvent
   //retrieve the comment by id 
 router.route('/:id').get((req, res) => {
     CommentEvent.findById(req.params.id)
-    .then(comment => res.json(comment))
+    .then(c => res.json(c))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -60,7 +60,6 @@ router.route('/update/:id').put((req, res) => {
 
 //getByIdEvent method
 router.route("/all/:id").get((req, res) => {
-    //const project = Project.findById(req.params.id);
     CommentEvent.find({ event: req.params.id })
         .then((events) => res.json(events))
         .catch((err) => res.status(400).json("Error: " + err));

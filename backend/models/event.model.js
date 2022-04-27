@@ -6,6 +6,11 @@ const EventType = Object.freeze({
     Real: "real",
 });
 
+const status = Object.freeze({
+    Interested: "Interested",
+    NotInterested: "NotInterested",
+});
+
 const eventSchema = new Schema(
     {
         nameEvent: {
@@ -47,7 +52,15 @@ const eventSchema = new Schema(
             //required: true,
             // enum: Object.values(EventType),
         },
+
+        status: {
+            type: String,
+            enum: Object.values(status),
+        },
+
         comments: { type: [String], default: [] },
+        likes: { type: [String], default: [] },
+
         commentEvents: [
             {
                 type: Schema.Types.ObjectId,

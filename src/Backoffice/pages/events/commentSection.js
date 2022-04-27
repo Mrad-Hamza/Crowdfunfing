@@ -15,7 +15,6 @@ import React, { useState, useRef, useEffect } from "react";
  import { Chip} from "primereact/chip";
  import Grid from "@mui/material/Grid";
  import Tooltip from "@mui/material/Tooltip";
- import { Container,Row,Col } from "@mui/material";
 
 
 
@@ -41,6 +40,7 @@ const CommentSection = () => {
         const dispatch = useDispatch();
         const commentsEventList = useSelector((state) => state.allEvents.commentsEventList);
 
+
         const [state, setState] = useState({ comment: "", event: _id, user: localStorage.getItem("currentUserId") });
 
         const fetchCommentsEvent = async () => {
@@ -52,11 +52,7 @@ const CommentSection = () => {
         console.log(commentsEventList);
         const classes = useStyles();
         const user = JSON.parse(localStorage.getItem('user'));
-        //console.log(user);
-          const [comments, setComments] = useState([1,2,3,4]);
-        //const dispatch = useDispatch();
-    //  console.log(_id);
-    //     console.log(state);
+       
 
     useEffect(() => {
         if (_id && _id !== "") {

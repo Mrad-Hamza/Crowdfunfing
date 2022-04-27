@@ -1,34 +1,19 @@
-import React , {useState} from "react";
+import React from 'react'
+import { Button } from "primereact/button";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button } from "primereact/button";
- import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-  import IconButton from "@mui/material/IconButton";
-  import ShareIcon from "@mui/icons-material/Share";
+
 import { eventService } from "./eventService";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-
-
-const EventComponent = () => {
+const FavoritesComponent = () => {
     const events = useSelector((state) => state.allEvents.events);
-    const [statut, setStatut] = useState();
-
-
     const renderList = events.map((event) => {
         console.log(event.eventImage.imgName);
         console.log(`../../assets/layout/images/${event.eventImage.imgName}`);
         const { _id, nameEvent, descriptionEvent, startDateEvent, endDateEvent, location, eventImage ,eventType,status} = event;
-        const isAddNotValid =  status === "NotInterested";
-
-         const interested = () => {
-        eventService.interested(event._id)
-        window.location.reload(false);
- };
-  const notInterestd = () => {
-      eventService.notInterested(event._id);
-      window.location.reload(false);
-  };
+   const notInterestd = () => {
+       eventService.notInterested(event._id)
+       window.location.reload(false);
+   };
         return (
             <div className="col-12 md:col-4" key={_id}>
                 <div className="card m-3 border-1 surface-border">
@@ -52,16 +37,12 @@ const EventComponent = () => {
                             <span className="font-semibold">{location}</span>
                         </div>
                         <br />
+                        {/* <Rating value={data.rating} readonly cancel={false} /> */}
                     </div>
 
                     <div className="flex align-items-center justify-content-between">
-                        {isAddNotValid ? <FavoriteBorderIcon fontSize="large"  label={status} onClick={interested} /> : <FavoriteIcon label={status} fontSize="large" onClick={notInterestd} />}
-
-                        <IconButton aria-label="share">
-                            <ShareIcon fontSize="large" />
-                        </IconButton>
+                        <Button label={status} icon="pi pi-bookmark" className="mr-2 mb-2" onClick={notInterestd}></Button>
                     </div>
-                    {/* <Button label={status} icon="pi pi-bookmark" className="mr-2 mb-2" onClick={notInterestd}></Button> */}
                 </div>
             </div>
         );
@@ -69,4 +50,5 @@ const EventComponent = () => {
     return renderList;
 };
 
-export default EventComponent;
+
+export default FavoritesComponent

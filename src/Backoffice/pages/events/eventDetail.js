@@ -66,14 +66,17 @@ const EventDetail = ({ history }) => {
                         </div>
                         <br />
                         <div>
-                            <span>Location: </span>
-                            {location}
+                            <div className="flex align-items-center">
+                                <i className="pi pi-home mr-2" />
+                                <span className="font-semibold">{location}</span>
+                            </div>
+                            
                         </div>
                         <br />
                         <Divider />
                         <div className=" p-fluid">
                             <div className="formgrid grid">
-                                <CommentSection  />
+                                <CommentSection />
                             </div>
                         </div>
                         <span className="p-buttonset ">

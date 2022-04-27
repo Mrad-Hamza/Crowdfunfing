@@ -17,6 +17,14 @@ export const selectedEvent = (event) => {
 };
 
 
+export const selectedComment = (task) => {
+    return {
+        type: eventActionsTypes.SELECTED_COMMENT,
+        payload: task,
+    };
+};
+
+
 export const RemoveSelectedEvent = () => {
     return {
         type: eventActionsTypes.REMOVE_SELECTED_EVENT,
@@ -214,6 +222,17 @@ export const updateCommentAction = (id, comment) => async (dispatch, getState) =
             type: eventActionsTypes.COMMENT_UPDATE_FAIL,
             payload: message,
         });
+    }
+};
+
+export const likeEvent = (id) => async (dispatch) => {
+    const user = JSON.parse(localStorage.getItem("currentUsername"));
+    try {
+        const { data } = await axios.patch(`http://localhost:5000/events/${id}/likeEvent`, );
+
+        dispatch({ type: eventActionsTypes.LIKE, payload: data });
+    } catch (error) {
+        console.log(error);
     }
 };
 

@@ -11,12 +11,13 @@ switch (type) {
         return { ...state, events: payload };
     case eventActionsTypes.SET_COMMENTSEVENT:
         return { ...state, commentsEventList: payload };
-    
+    case eventActionsTypes.LIKE:
+        return { ...state, events: state.events.map((event) => (event._id === payload._id ? payload : event)) };
+
     default:
         return state;
 }
 };
-
 
 export const selectedEventReducer = (state = {}, { type, payload }) => {
     switch (type) {
@@ -34,6 +35,8 @@ export const selectedEventReducer = (state = {}, { type, payload }) => {
                 //     return event;
                 // }),
             };
+        case eventActionsTypes.SELECTED_COMMENT:
+            return { ...state, ...payload };
         default:
             return state;
     }

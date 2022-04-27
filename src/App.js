@@ -72,6 +72,7 @@ import TaskDetails from "./Backoffice/pages/Projects/tasks/TaskDetails";
 import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
 import SignleEvent from "./Backoffice/pages/events/SingleEvent";
 import EditCommentEvent from "./Backoffice/pages/events/editCommentEvent";
+import favoriteList from "./Backoffice/pages/events/favoriteList";
 
 const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
@@ -249,8 +250,8 @@ const App = () => {
                     icon: "pi pi-fw pi-calendar",
                     items: [
                         { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
-                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
-                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Favorites", icon: "pi pi-fw pi-clone", to: "/favoriteList" },
+                        { label: "Events", icon: "pi pi-fw pi-book", to: "/showEvents" },
                         { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },
@@ -343,8 +344,10 @@ const App = () => {
                             <Route path="/statistcs" component={statisticsEvent} />
                             <Route path="/showEvents" component={eventListing} />
                             <Route path="/updateEvent/:idEvent" component={SignleEvent} />
-                            <Route path="/updateCommentEvent/:_id" component={EditCommentEvent} />
+                            <Route path="/updateCommentEvent/:idComment" component={EditCommentEvent} />
                             <Route path="/events/:_id" component={EventDetail} />
+                            <Route path="/favoriteList" component={favoriteList} />
+
                             <Route path="/projects" exact component={ProjectListing} />
                             <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
                             <Route path="/projects/:_id" exact component={ProjectDetails} />
