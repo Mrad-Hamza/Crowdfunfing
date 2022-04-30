@@ -21,6 +21,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CustomizedDialogs from "./CustomizedDialogs";
+import { TaskProjectService } from "../User/_services/taskProject.service";
 import { InvoiceProjectService } from "../User/_services/invoiceProject.service";
 import { ComplaintProjectService } from "../User/_services/complaintProject.service";
 import { useSelector, useDispatch } from "react-redux";
@@ -148,6 +149,14 @@ const ProjectDetails = () => {
                             <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
+                                        const validateTask = () => {
+                                            TaskProjectService.validate(task._id);
+                                            window.location.reload(false);
+                                        };
+                                        const RefuseTask = () => {
+                                            TaskProjectService.refuse(task._id);
+                                            window.location.reload(false);
+                                        };
                                         if (task && task.taskType === "in progress") {
                                             return (
                                                 <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
@@ -155,10 +164,10 @@ const ProjectDetails = () => {
                                                         <ListItemText primary={task.taskName} />
                                                         <div className="ml-5">
                                                             <span>Status : In progress</span>
-                                                            <IconButton edge="end" aria-label="check">
+                                                            <IconButton edge="end" aria-label="check" onClick={validateTask}>
                                                                 <CheckCircleIcon />
                                                             </IconButton>
-                                                            <IconButton edge="end" aria-label="off">
+                                                            <IconButton edge="end" aria-label="off" onClick={RefuseTask}>
                                                                 <HighlightOffIcon />
                                                             </IconButton>
                                                         </div>
@@ -248,11 +257,6 @@ const ProjectDetails = () => {
                                 <div style={{ maxHeight: "250px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
-                                            const deleteComplaint = () => {
-                                                ComplaintProjectService.delete(complaintProject._id);
-                                                window.location.reload(false);
-                                            };
-
                                             const validateComplaint = () => {
                                                 ComplaintProjectService.validate(complaintProject._id);
                                                 window.location.reload(false);

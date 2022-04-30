@@ -11,7 +11,7 @@ const URL = {
         fetchForums: `/forum/`,
     },
     tasks: {
-        fetchTasks: `/tasks/`,
+        fetchTasks: `/tasks`,
         getTaskByProjectId: `/tasks/all`,
     },
     invoiceProjects: {

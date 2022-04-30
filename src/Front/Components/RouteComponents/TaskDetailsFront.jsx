@@ -22,7 +22,7 @@ import URL from "../../../Backoffice/features/constants/services.constants";
 import axios from "axios";
 import "../../../Backoffice/pages/Projects/projects.css";
 
-const TaskDetails = () => {
+const TaskDetailsFront = () => {
     const dispatch = useDispatch();
     const task = useSelector((state) => state.project);
     console.log(task);
@@ -237,4 +237,4 @@ const TaskDetails = () => {
     );
 };
 
-export default TaskDetails;
+export default TaskDetailsFront;

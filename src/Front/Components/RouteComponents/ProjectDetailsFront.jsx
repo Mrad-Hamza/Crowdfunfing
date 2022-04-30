@@ -29,6 +29,7 @@ import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../../Bac
 import URL from "../../../Backoffice/features/constants/services.constants";
 import axios from "axios";
 import "../../../Backoffice/pages/Projects/projects.css";
+import { TaskProjectService } from "../../../Backoffice/pages/User/_services/taskProject.service";
 
 const ProjectDetailsFront = () => {
     const dispatch = useDispatch();
@@ -152,10 +153,10 @@ const ProjectDetailsFront = () => {
                                 </div>
                             </div>
                             <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                {isAddTaskNotValid() && (
+                                {!isAddTaskNotValid() && (
                                     <>
                                         <span>Add new task</span>
-                                        <Link to={`/projects/task/add/${project._id}`} style={{ width: "200px" }}>
+                                        <Link to={`/projects/taskProject/add/${project._id}`} style={{ width: "200px" }}>
                                             <IconButton edge="end" aria-label="plus">
                                                 <AddIcon />
                                             </IconButton>
@@ -164,6 +165,10 @@ const ProjectDetailsFront = () => {
                                 )}
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
+                                        const deleteTask = () => {
+                                            TaskProjectService.delete(task._id);
+                                            window.location.reload(false);
+                                        };
                                         if (task && task.taskType === "in progress") {
                                             return (
                                                 <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
@@ -184,12 +189,16 @@ const ProjectDetailsFront = () => {
                                                                     <ListItemText primary="Invoice" />
                                                                 </IconButton>
                                                             </Link>
-                                                        </div>
-                                                        <Link to={`/projects/task/${task._id}`}>
-                                                            <IconButton edge="end" aria-label="info">
-                                                                <InfoIcon />
+                                                            <Link to={`/projects/taskById/${task._id}`}>
+                                                                <IconButton edge="end" aria-label="info">
+                                                                    <InfoIcon />
+                                                                </IconButton>
+                                                            </Link>
+
+                                                            <IconButton edge="end" aria-label="delete" onClick={deleteTask}>
+                                                                <DeleteIcon />
                                                             </IconButton>
-                                                        </Link>
+                                                        </div>
                                                     </ListItemButton>
                                                 </div>
                                             );

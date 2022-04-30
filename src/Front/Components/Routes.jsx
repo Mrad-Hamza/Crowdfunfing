@@ -50,10 +50,10 @@ const Routes = () => {
 
                 <Route path="/projects/:_id" exact component={(props) => <ProjectDetailsFront {...props} />} />
                 {/* <Route path="/projects/task/:_id" exact component={TaskDetails} /> */}
-                <Route path="/projects/task/:_id" component={(props) => <TaskDetailsFront {...props} />} />
+                <Route path="/projects/taskById/:_id" component={(props) => <TaskDetailsFront {...props} />} />
                 <Route path="/projects/invoiceProject/add/:_id" component={(props) => <InvoiceProjectAdd {...props} />} />
                 <Route path="/projects/complaintProject/add/:_id" component={(props) => <ComplaintProjectAdd {...props} />} />
-                <Route path="/projects/task/add/:_id" component={(props) => <TaskProjectAdd {...props} />} />
+                <Route path="/projects/taskProject/add/:_id" exact component={(props) => <TaskProjectAdd {...props} />} />
                 <Route path="/projects/task/invoice/add/:_id" component={(props) => <InvoiceTaskAdd {...props} />} />
                 <Route path="/projects/task/complaint/add/:_id" component={(props) => <ComplaintTaskAdd {...props} />} />
 
