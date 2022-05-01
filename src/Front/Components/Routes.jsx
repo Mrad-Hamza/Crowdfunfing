@@ -1,5 +1,10 @@
 import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
+import Chatbot from "react-chatbot-kit";
+import MessageParser from "../../chatbot/MessageParser";
+import Config from "../../chatbot/config";
+import ActionProvider from "../../chatbot/ActionProvider";
+import "react-chatbot-kit/build/main.css";
 import Navbar from "./Navbar";
 import { Home } from "./RouteComponents/Home";
 import { WhatWeDo } from "./RouteComponents/WhatWeDo";
@@ -72,6 +77,7 @@ const Routes = () => {
         <Route path = "/popularPage/story" render = {(props) => <Story {...props} /> } />
         <Route path = "/popularPage/faq" render = {(props) => <Faq {...props} /> } />
       </Switch> */}
+            <Chatbot config={Config} messageParser={MessageParser} actionProvider={ActionProvider} />
             <Footer />
         </>
     );
