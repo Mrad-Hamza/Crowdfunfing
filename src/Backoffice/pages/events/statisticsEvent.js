@@ -1,186 +1,81 @@
-import React, { useEffect, useState } from "react";
-import { Chart } from "primereact/chart";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { options } from "preact";
-
-
 
 const StatisticsEvent = () => {
-    const [chart, setChart] = useState({});
-
-    // labels: ["A", "B", "C"],
-    // datasets: [
-    //     {
-    //         data: [300, 50, 100],
-    //         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-    //         hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-    //     },
-    // ],
+    const [numberResult, setNumber] = useState([]);
+    const [number, setnumber] = useState([]);
+    const [online, setOnline] = useState([]);
+    useEffect(() => {
+        axios.get("http://localhost:5000/statis/getAll").then((result) => {
+            console.log(result.data);
+            setNumber(result.data);
+        });
+    }, []);
 
     useEffect(() => {
-        const fetchEventsByType = async () => {
-
-           const response = await axios
-               .get(`http://localhost:5000/statis/getAll`)
-               .then((response) => {
-                   console.log("hh");
-                   if (response.ok) {
-                       response.json().then((json) => {
-                           console.log(json.data);
-                           setChart(json.data);
-                       });
-                   }
-                   console.log("helllooooo");
-               })
-               .catch((error) => {
-                   console.log(error);
-               });
-               
-        };
-        fetchEventsByType();
+        axios.get("http://localhost:5000/statis/inPersonEvent").then((result) => {
+            console.log(result.data);
+            setnumber(result.data);
+        });
     }, []);
-    console.log("chart", chart);
 
-    const data = {
-        labels: chart?.events?.map((x) => x.eventType),
-        datasets: [
-            {
-                label: `${chart?.events?.length} Coins Available`,
-                data: chart?.events?.map((x) => x.eventType),
-                backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)", "rgba(255, 206, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(255, 159, 64, 0.2)"],
-                borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 206, 86, 1)", "rgba(75, 192, 192, 1)", "rgba(153, 102, 255, 1)", "rgba(255, 159, 64, 1)"],
-                borderWidth: 1,
-            },
-        ],
-    };
+    useEffect(() => {
+        axios.get("http://localhost:5000/statis/onlineEvent").then((result) => {
+            console.log(result.data);
+            setOnline(result.data);
+        });
+    }, []);
 
-    const options = {
-         plugins: {
-                legend: {
-                    labels: {
-                        color: "#ebedef",
-                    },
-                },
-            },
-    };
+
     return (
-        <div className="grid p-fluid">
-            <div className="col-12 lg:col-6">
-                <div className="card flex flex-column align-items-center">
-                    <h5>Pie Chart</h5>
-                    <Chart type="pie" data={data} options={options} style={{ width: "50%" }} />
+        <div className="grid">
+            <div className="col-12 lg:col-6 xl:col-3">
+                <div className="card mb-0">
+                    <div className="flex justify-content-between mb-3">
+                        <div>
+                            <span className="block text-500 font-medium mb-3">Events</span>
+                            <div className="text-900 font-medium text-xl">{numberResult}</div>
+                        </div>
+                        <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: "2.5rem", height: "2.5rem" }}>
+                            <i className="pi pi-calendar text-blue-500 text-xl" />
+                        </div>
+                    </div>
+                    <span className="text-green-500 font-medium">{numberResult} </span>
+                    <span className="text-500">Events</span>
                 </div>
             </div>
-            <div className="col-12 lg:col-6">
-                {/* <div className="card flex flex-column align-items-center">
-                    <h5>Doughnut Chart</h5>
-                    <Chart type="doughnut" data={doughnutData} options={pieOptions} style={{ width: "50%" }} />
-                </div> */}
+            <div className="col-12 lg:col-6 xl:col-3">
+                <div className="card mb-0">
+                    <div className="flex justify-content-between mb-3">
+                        <div>
+                            <span className="block text-500 font-medium mb-3">In Person Event</span>
+                            <div className="text-900 font-medium text-xl">{number}</div>
+                        </div>
+                        <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: "2.5rem", height: "2.5rem" }}>
+                            <i className="pi pi-map-marker text-orange-500 text-xl" />
+                        </div>
+                    </div>
+                    <span className="text-green-500 font-medium">{number} </span>
+                    <span className="text-500">events in person</span>
+                </div>
+            </div>
+            <div className="col-12 lg:col-6 xl:col-3">
+                <div className="card mb-0">
+                    <div className="flex justify-content-between mb-3">
+                        <div>
+                            <span className="block text-500 font-medium mb-3">Online Events</span>
+                            <div className="text-900 font-medium text-xl">{online}</div>
+                        </div>
+                        <div className="flex align-items-center justify-content-center bg-cyan-100 border-round" style={{ width: "2.5rem", height: "2.5rem" }}>
+                            <i className="pi pi-video text-cyan-500 text-xl" />
+                        </div>
+                    </div>
+                    <span className="text-green-500 font-medium">{online}</span>
+                    <span className="text-500"> events online</span>
+                </div>
             </div>
         </div>
     );
 };
 
-
-
-
-// const doughnutData = {
-//     labels: ["A", "B", "C"],
-//     datasets: [
-//         {
-//             data: [300, 50, 100],
-//             backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-//             hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-//         },
-//     ],
-// };
-
-    // const [lineOptions, setLineOptions] = useState(null);
-    // const [barOptions, setBarOptions] = useState(null);
-    // const [pieOptions, setPieOptions] = useState(null);
-    // const [polarOptions, setPolarOptions] = useState(null);
-    // const [radarOptions, setRadarOptions] = useState(null);
-
-    
-        
-
-       
-
-       
-        
-
-        // setLineOptions(lineOptions);
-        // setBarOptions(barOptions);
-        // setPieOptions(pieOptions);
-        // setPolarOptions(polarOptions);
-        // setRadarOptions(radarOptions);
-    
-
-    // const applyDarkTheme = () => {
-    //     const lineOptions = {
-    //         plugins: {
-    //             legend: {
-    //                 labels: {
-    //                     color: "#ebedef",
-    //                 },
-    //             },
-    //         },
-    //         scales: {
-    //             x: {
-    //                 ticks: {
-    //                     color: "#ebedef",
-    //                 },
-    //                 grid: {
-    //                     color: "rgba(160, 167, 181, .3)",
-    //                 },
-    //             },
-    //             y: {
-    //                 ticks: {
-    //                     color: "#ebedef",
-    //                 },
-    //                 grid: {
-    //                     color: "rgba(160, 167, 181, .3)",
-    //                 },
-    //             },
-    //         },
-    //     };
-
-       
-
-        // const pieOptions = {
-        //     plugins: {
-        //         legend: {
-        //             labels: {
-        //                 color: "#ebedef",
-        //             },
-        //         },
-        //     },
-        // };
-
-       
-
-       
-
-        // setLineOptions(lineOptions);
-        // setBarOptions(barOptions);
-        // setPieOptions(pieOptions);
-        // setPolarOptions(polarOptions);
-        // setRadarOptions(radarOptions);
-    
-
-    // useEffect(() => {
-    //     if (props.colorMode === "light") {
-    //         applyLightTheme();
-    //     } else {
-    //         applyDarkTheme();
-    //     }
-    // }, [props.colorMode]);
-
-    
-
-
-const comparisonFn = function (prevProps, nextProps) {
-    return prevProps.location.pathname === nextProps.location.pathname && prevProps.colorMode === nextProps.colorMode;
-};
-
-export default React.memo(StatisticsEvent, comparisonFn);
+export default StatisticsEvent;

@@ -1,38 +1,54 @@
-import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import URL from "../../../Backoffice/features/constants/service.constants";
 import { Link } from "react-router-dom";
-import { Button } from "primereact/button";
- import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-  import IconButton from "@mui/material/IconButton";
-  import ShareIcon from "@mui/icons-material/Share";
-import { eventService } from "./eventService";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import IconButton from "@mui/material/IconButton";
+import ShareIcon from "@mui/icons-material/Share";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { eventService } from "../../../Backoffice/pages/events/eventService";
 
-const EventComponent = () => {
+import { setEvents } from "../../../Backoffice/features/actions/eventActions";
+
+const Events = () => {
     const events = useSelector((state) => state.allEvents.events);
-    const [statut, setStatut] = useState();
+    const [event, setEvent] = useState();
 
+    const dispatch = useDispatch();
 
+    const fetchEvents = async () => {
+        const response = await axios.get(URL.baseApiUrl + URL.events.fetchEvents).catch((err) => {
+            console.log("Err", err);
+        });
+        console.log("ekhdem");
+        dispatch(setEvents(response.data));
+    };
+    useEffect(() => {
+        fetchEvents();
+    }, []);
+    console.log(events);
+
+    const interested = () => {
+        eventService.interested(event._id);
+        window.location.reload(false);
+    };
+    const notInterestd = () => {
+        eventService.notInterested(event._id);
+        window.location.reload(false);
+    };
     const renderList = events.map((event) => {
         console.log(event.eventImage.imgName);
         console.log(`../../assets/layout/images/${event.eventImage.imgName}`);
-        const { _id, nameEvent, descriptionEvent, startDateEvent, endDateEvent, location, eventImage ,eventType,status} = event;
-        const isAddNotValid =  status === "NotInterested";
+        const { _id, nameEvent, descriptionEvent, startDateEvent, endDateEvent, location, eventImage, eventType, status } = event;
+        const isAddNotValid = status === "NotInterested";
 
-         const interested = () => {
-        eventService.interested(event._id)
-        window.location.reload(false);
- };
-  const notInterestd = () => {
-      eventService.notInterested(event._id);
-      window.location.reload(false);
-  };
-
-  
         return (
-            <div className="col-12 md:col-4" key={_id} >
-                <div className="card m-3 border-1 surface-border">
+            // <div className="container">
+            //     <div className="row">
+            <div className="col-12 md:col-4" key={_id} style={{ display: "flex", alignItems: "flex-start" }}>
+                <div className="card m-3 border-1 surface-border" style={{ display: "flex" }}>
                     <div className="flex align-items-center justify-content-between"></div>
                     <div className="flex align-items-center justify-content-between">
                         <div className="flex align-items-center">
@@ -64,9 +80,11 @@ const EventComponent = () => {
                     </div>
                 </div>
             </div>
+            //     </div>
+            // </div>
         );
     });
     return renderList;
 };
 
-export default EventComponent;
+export default Events;

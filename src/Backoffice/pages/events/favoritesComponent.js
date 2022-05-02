@@ -2,6 +2,8 @@ import React from 'react'
 import { Button } from "primereact/button";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 
 import { eventService } from "./eventService";
 const FavoritesComponent = () => {
@@ -41,7 +43,7 @@ const FavoritesComponent = () => {
                     </div>
 
                     <div className="flex align-items-center justify-content-between">
-                        <Button label={status} icon="pi pi-bookmark" className="mr-2 mb-2" onClick={notInterestd}></Button>
+                        <FavoriteIcon label={status} fontSize="large" className="mr-2 mb-2" onClick={notInterestd}></FavoriteIcon>
                     </div>
                 </div>
             </div>

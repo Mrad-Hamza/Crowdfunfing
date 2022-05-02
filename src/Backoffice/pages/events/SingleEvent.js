@@ -18,7 +18,6 @@ import { RadioButton } from "primereact/radiobutton";
 
 function SignleEvent({ match, history }) {
     const toast = useRef();
-
     const [nameEvent, setnameEvent] = useState();
     const [startDateEvent, setstartDateEvent] = useState();
     const [endDateEvent, setendDateEvent] = useState();
@@ -42,7 +41,7 @@ function SignleEvent({ match, history }) {
           setlocation(data.location);
           seturlEvent(data.urlEvent);
           seteventType(data.eventType);
-          setFileName(data.eventImage);
+          //setFileName(data.eventImage);
           //setDate(data.updatedAt);
       };
       fetching();
@@ -68,10 +67,13 @@ function SignleEvent({ match, history }) {
         formData.append("location", location);
         formData.append("eventType", eventType);
 
-        formData.append("eventImage", fileName);
+        //formData.append("eventImage", fileName);
 
         axios.put(`http://localhost:5000/events/update/${idEvent}`, formData);
         history.push("/showEvents");
+     window.location.reload(false);
+
+
     };
   const updateHandler = (e) => {
     e.preventDefault();
@@ -150,17 +152,9 @@ function SignleEvent({ match, history }) {
                          <br />
                          <InputText id="url" type="text" required value={urlEvent} onChange={(e) => seturlEvent(e.target.value)} />
                      </div>
-                     {/* <label htmlFor="description">Type</label> */}
                      <br />
                      <br />
-                     <div>
-                         <label htmlFor="file">choose image</label>
-                         <br />
-                         <br />
-                         <input type="file" fileName="eventImage" className="form-control-file" onChange={onChangeFile} />
-                     </div>
-                     <br />
-                     <br />
+                    
                      <label htmlFor="type">Type:</label>
 
                      <RadioButton value="Virtual" name="Virtual" onChange={(e) => seteventType(e.target.value)} checked={eventType === "Virtual"} />

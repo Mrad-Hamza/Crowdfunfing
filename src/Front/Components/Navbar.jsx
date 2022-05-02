@@ -93,6 +93,10 @@ const Navbar = () => {
             to: "/campaign",
             title: "Start a Campaign",
         },
+        {
+            to:"/events",
+            title:"Events"
+        }
     ];
 
     const logout = (e) => {

@@ -96,11 +96,11 @@ router.route("/update/:id").put(upload.single("eventImage"),(req, res) => {
             //event.nbrplace = req.body.nbrplace;
             event.urlEvent = req.body.urlEvent;
             event.location = req.body.location;
-            event.eventImage = {
-                contentType: "image/png",
-                imgName: req.file.originalname,
-                // imgName:"logo.png"
-            };
+            // event.eventImage = {
+            //     contentType: "image/png",
+            //     imgName: req.file.originalname,
+            //     // imgName:"logo.png"
+            // };
             event.eventType = req.body.eventType;
             event
                 .save()
