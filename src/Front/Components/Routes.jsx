@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Chatbot from "react-chatbot-kit";
 import MessageParser from "../../chatbot/MessageParser";
-import Config from "../../chatbot/config";
+
 import ActionProvider from "../../chatbot/ActionProvider";
 import "react-chatbot-kit/build/main.css";
+import "../../chatbot/chatbot.scss";
 import Navbar from "./Navbar";
 import { Home } from "./RouteComponents/Home";
 import { WhatWeDo } from "./RouteComponents/WhatWeDo";
@@ -27,7 +28,28 @@ import ComplaintProjectAdd from "../../Backoffice/pages/Projects/ComplaintProjec
 import TaskProjectAdd from "../../Backoffice/pages/Projects/tasks/TaskProjectAdd";
 import InvoiceTaskAdd from "../../Backoffice/pages/Projects/tasks/InvoiceTasks/invoiceTaskAdd";
 import ComplaintTaskAdd from "../../Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
+import getConfig from "../../chatbot/config";
+import config from "../../chatbot/config";
 const Routes = () => {
+    const [show, toggleShow] = useState(true);
+    console.log("🚀 ~ file: Routes.jsx ~ line 35 ~ Routes ~ show", show);
+
+    useEffect(() => {
+        const handleOutsideClick = (e) => {
+            // simple implementation, should be made more robust.
+            if (!e.currentTarget.classList.includes("react-chatbot-kit")) {
+                toggleShow(false);
+            }
+        };
+
+        window.addEventListener("click", handleOutsideClick);
+
+        return () => {
+            window.removeEventListener("click", handleOutsideClick);
+        };
+    }, []);
+
+    const onClick = () => toggleShow(false);
     return (
         <>
             <Navbar />
@@ -77,7 +99,10 @@ const Routes = () => {
         <Route path = "/popularPage/story" render = {(props) => <Story {...props} /> } />
         <Route path = "/popularPage/faq" render = {(props) => <Faq {...props} /> } />
       </Switch> */}
-            <Chatbot config={Config} messageParser={MessageParser} actionProvider={ActionProvider} />
+            <div style={{ position: "fixed", bottom: "0", zIndex: "1000", width: "100%", height: "40px", backgroundColor: "white" }}></div>
+            <div style={{ position: "fixed", bottom: "0", zIndex: "1000", right: "0" }}>
+                <div>{show ? <Chatbot messageParser={MessageParser} actionProvider={ActionProvider} config={getConfig(onClick)} /> : null}</div>
+            </div>
             <Footer />
         </>
     );
