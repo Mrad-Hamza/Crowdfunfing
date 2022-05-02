@@ -41,16 +41,14 @@ const EventListing = () => {
     
 
     return (
-                
-
         <div className="card">
             <React.Fragment>
-                <div className="col-12 md:col-6 my-2">
+                <div className="col-12 md:col-6 my-2" >
                     <Link to="/create-event">
                         <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" />
                     </Link>
                 </div>
-               
+
                 <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                     <h5 className="m-0">All Events</h5>
                     <span className="block mt-2 md:mt-0 p-input-icon-left">
@@ -60,7 +58,7 @@ const EventListing = () => {
                 </div>
             </React.Fragment>
 
-            <div className=" grid"  >
+            <div className=" grid">
                 <EventComponent />
             </div>
         </div>

@@ -85,25 +85,21 @@ const Navbar = () => {
 
     const rightLinks = [
         {
-
-            to: "/campaignUser/"+localStorage.getItem('currentUserId'),
+            to: "/campaignUser/" + localStorage.getItem("currentUserId"),
             title: "Campaign",
         },
         {
-
             to: "/campaign",
             title: "Start a Campaign",
         },
         {
-            to:"/events",
-            title:"Events"
-        },{
-             to: "/forum",
+            to: "/showEvents",
+            title: "Events",
+        },
+        {
+            to: "/forum",
             title: "Forum",
-        }
-
-
-   
+        },
     ];
 
     const logout = (e) => {

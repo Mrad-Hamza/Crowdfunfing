@@ -1,5 +1,3 @@
-
-
 import React, { useState, useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
 import axios from "axios";
@@ -28,18 +26,17 @@ function FormLayoutDemo({ history }) {
     const [location, setlocation] = useState("");
     const [eventType, seteventType] = useState("");
 
-
     const dispatch = useDispatch();
     const toast = useRef();
     const message = useRef();
     //const [value, onChange] = useState(new Date());
     const [value, setValue] = React.useState(new Date("2018-01-01T00:00:00.000Z"));
 
-    const [fileName,setFileName] = useState("");
+    const [fileName, setFileName] = useState("");
 
-    const onChangeFile = e => {
+    const onChangeFile = (e) => {
         setFileName(e.target.files[0]);
-    }
+    };
 
     const changeOnclick = (e) => {
         e.preventDefault();
@@ -50,7 +47,7 @@ function FormLayoutDemo({ history }) {
         formData.append("descriptionEvent", descriptionEvent);
         formData.append("urlEvent", urlEvent);
         formData.append("location", location);
-        formData.append("eventType",eventType)
+        formData.append("eventType", eventType);
 
         formData.append("eventImage", fileName);
         console.log(formData);
@@ -78,10 +75,8 @@ function FormLayoutDemo({ history }) {
 
     useEffect(() => {}, []);
 
-    
-
     return (
-        <div className="grid" style={{ width: "1100px", display:"flex", justifyContent:"center" }}>
+        <div className="grid" style={{ width: "1500px", display: "flex", justifyContent: "center" }}>
             <div className="col-12 md:col-6">
                 <div className="card p-fluid">
                     <h5>Create an event </h5>
