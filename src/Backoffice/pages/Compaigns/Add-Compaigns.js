@@ -15,6 +15,7 @@ export default class AddCompaign extends Component {
     this.onChangeDeadline = this.onChangeDeadline.bind(this);
     this.onChangeVerified = this.onChangeVerified.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onChangecumulateAmount= this.onChangecumulateAmount.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
@@ -71,6 +72,12 @@ export default class AddCompaign extends Component {
         Status: e.target.value
     })
   }
+  onChangecumulateAmount
+  (e) {
+    this.setState({
+      cumulateAmount: e.target.value
+    })
+  }
 
 
 
@@ -86,7 +93,8 @@ export default class AddCompaign extends Component {
       deadline: this.state.deadline,
       Verified: this.state.Verified,
       Status: this.state.Status,
-      //user:localStorage.getItem('currentUserId')
+      cumulateAmount: this.state.cumulateAmount,
+      user:localStorage.getItem('currentUserId')
 }
 
 console.log(compaign);

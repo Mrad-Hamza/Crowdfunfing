@@ -1,6 +1,9 @@
 const router = require("express").Router();
 let Project = require("../models/project.model");
+let Compaign = require("../models/compaign.model");
+let User = require("../models/user.model");
 const multer = require("multer");
+const nodemailer = require("nodemailer");
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -40,6 +43,13 @@ router.route("/active/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/:id").get((req, res) => {
+    // const compaignById = Compaign.findById(req.params.id);
+    Project.findOne({ compaign: req.params.id })
+        .then((project) => res.json(project))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add
 router.route("/add").post(upload.single("image"), (req, res) => {
     console.log(req.body);
@@ -51,26 +61,53 @@ router.route("/add").post(upload.single("image"), (req, res) => {
     const image = req.file.filename;
     const compaign = req.body.compaign;
     const user = req.body.user;
-
+    const resteAmount = req.body.projectCollectedAmount;
+    Compaign.findById(compaign)
+        .then((compaign) => {
+            compaign.Verified = 1;
+            compaign
+                .save()
+                .then(() => res.json("compaign updated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
     const newProject = new Project({
         projectName,
         projectDescription,
         projectType,
         projectCollectedAmount,
+        resteAmount,
         image,
         status,
         compaign,
         user,
     });
-    // if (req.file) {
-    //     newProject.image = req.file.filename;
-    // }
     console.log(newProject);
     console.log(req);
     newProject
         .save()
-        .then(() => res.json("Project added!"))
+        .then(() => {
+            res.json("Project added!");
+        })
         .catch((err) => res.status(400).json("Error: " + err));
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: "fundise.noreply@gmail.com",
+            pass: "HzJxDKrxS2LNwa9",
+        },
+    });
+    let details = {
+        from: "fundise.noreply@gmail.com",
+        to: req.body.userMail,
+        subject: "Project added succesfully.",
+        text: " Dear admin the project " + projectName + "is created succesfully",
+    };
+    mailTransporter.sendMail(details);
 });
 
 //update method
@@ -121,6 +158,13 @@ router.route("/:id").delete((req, res) => {
     Project.findByIdAndDelete(req.params.id)
         .then(() => res.json("Project deleted."))
         .catch((err) => res.status(400).json("Error: " + err));
+});
+
+router.get("/search/:key", async (req, res) => {
+    let data = await Project.find({
+        $or: [{ projectName: { $regex: req.params.key } }],
+    });
+    res.send(data);
 });
 
 module.exports = router;

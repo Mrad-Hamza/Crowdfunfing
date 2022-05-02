@@ -3,6 +3,7 @@ const URL = {
 
     projects: {
         fetchProjects: `/projects/active`,
+        fetchProjectByCompaignId: `/projects`,
         fectchDeletedProjects: `/projects/deleted`,
         addProject: `/projects/add`,
     },
@@ -10,7 +11,7 @@ const URL = {
         fetchForums: `/forum/`,
     },
     tasks: {
-        fetchTasks: `/tasks/`,
+        fetchTasks: `/tasks`,
         getTaskByProjectId: `/tasks/all`,
     },
     invoiceProjects: {

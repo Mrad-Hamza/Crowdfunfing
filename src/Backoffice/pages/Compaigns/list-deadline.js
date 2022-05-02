@@ -16,11 +16,13 @@ const Compaign = (props) => (
         <td>{props.compaign.Verified}</td>
         <td>{props.compaign.Status}</td>
         <td>
+        {props.compaign.Verified == 0 ?
             <div className="actions">
                 <Link to={"/projects/add/" + props.compaign._id}>
                     <Button label="Project" icon="pi pi-plus" className="p-button-success mr-2" />
                 </Link>
-            </div>
+            </div>:null
+            }
         </td>
     </tr>
 );

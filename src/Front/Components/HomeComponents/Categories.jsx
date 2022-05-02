@@ -3,7 +3,7 @@ import categoriesImg from "../../Images/categoriesImg.png"
 const Categories = () => {
   return (
     <div>
-      <p style={{ fontSize: "30px" }}>Which categories interest you? </p>
+      {/* <p style={{ fontSize: "30px" }}>Which categories interest you? </p>
       <p style={{ fontSize: "16px" }}>
         Discover projects just for you and get great recommendations when you
         select your interests.{" "}
@@ -12,7 +12,7 @@ const Categories = () => {
         SIGN UP AND SELECT INTERESTS
       </button>
       <p style={{ fontSize: "16px" }}>Or explore our top categories </p>
-      <img src={categoriesImg} alt="categoriesImg" />
+      <img src={categoriesImg} alt="categoriesImg" /> */}
     </div>
   );
 };

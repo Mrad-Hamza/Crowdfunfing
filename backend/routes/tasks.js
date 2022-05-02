@@ -29,7 +29,7 @@ router.route("/").get((req, res) => {
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
     //const project = Project.findById(req.params.id);
-    Task.find({ project: req.params.id })
+    Task.find({ project: req.params.id, status: "ON" })
         .then((tasks) => res.json(tasks))
         .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -64,11 +64,13 @@ router.route("/add").post(upload.single(""), (req, res) => {
     const project = req.body.project;
     const user = req.body.user;
     const status = "ON";
+    const taskAmount = req.body.taskAmount;
 
     const newTask = new Task({
         taskName,
         taskDescription,
         taskType,
+        taskAmount,
         project,
         status,
         user,
@@ -113,6 +115,29 @@ router.route("/activate/:id").put((req, res) => {
             task.status = "ON";
             task.save()
                 .then(() => res.json("project activated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Validate method
+router.route("/validate/:id").put((req, res) => {
+    const task = Task.findById(req.params.id);
+    Project.findById(task.project)
+        .then((project) => {
+            project.resteAmount = project.resteAmount - task.taskAmount;
+            project
+                .save()
+                .then(() => res.json("project updated amount!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+    Task.findById(req.params.id)
+        .then((taskById) => {
+            taskById.taskType = "validated";
+            taskById
+                .save()
+                .then(() => res.json("task validated!"))
                 .catch((err) => res.status(400).json("Error: " + err));
         })
         .catch((err) => res.status(400).json("Error: " + err));

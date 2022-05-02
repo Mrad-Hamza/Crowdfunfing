@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+
+// import Chatbot from "react-chatbot-kit";
+// import MessageParser from "./chatbot/MessageParser";
+// import Config from "./chatbot/config";
+// import ActionProvider from "./chatbot/ActionProvider";
 import classNames from "classnames";
 import { Route, useLocation, useHistory } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
@@ -40,14 +45,6 @@ import Compaigns from "./Backoffice/pages/Compaigns/Compaigns";
 import CompaignsList from "./Backoffice/pages/Compaigns/list-Compaigns";
 import upadateCompaign from "./Backoffice/pages/Compaigns/Edit-Comapaign";
 import addCompaign from "./Backoffice/pages/Compaigns/Add-Compaigns";
-import "primereact/resources/primereact.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
-import "prismjs/themes/prism-coy.css";
-import "./assets/demo/flags/flags.css";
-import "./assets/demo/Demos.scss";
-import "./assets/layout/layout.scss";
-import "./App.scss";
 import createEventForm from "./Backoffice/pages/events/createEventForm";
 import statisticsEvent from "./Backoffice/pages/events/statisticsEvent";
 import eventListing from "./Backoffice/pages/events/eventListing";
@@ -232,18 +229,12 @@ const App = () => {
                 {
                     label: "Users",
                     icon: "pi pi-fw pi-users",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" },
-                        { label: "Dashboad", icon: "pi pi-fw pi-chart-line", to: "/" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" }],
                 },
                 {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line", to: "/compaignsList" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" }],
                 },
                 {
                     label: "Events",
@@ -262,7 +253,6 @@ const App = () => {
                         { label: "List", icon: "pi pi-fw pi-list", to: "/projects" },
                         { label: "Deleted list", icon: "pi pi-fw pi-times", to: "/deletedprojects" },
                         // { label: "Tasks", icon: "pi pi-fw pi-clone" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
@@ -272,16 +262,12 @@ const App = () => {
                         { label: "ListForums", icon: "pi pi-fw pi-list", to: "/forums" },
                         { label: "ListComments", icon: "pi pi-fw pi-list", to: "/comment" },
                         { label: "AddForum", icon: "pi pi-fw pi-list", to: "/add" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
                     label: "Transactions",
                     icon: "pi pi-fw pi-dollar",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list" }],
                 },
             ],
         },
@@ -310,7 +296,8 @@ const App = () => {
     if (token) {
         if (localStorage.getItem("currentRoles") === "Simple User") {
             return <Routes />;
-        } else if (token) {
+
+        } else if (localStorage.getItem("currentRoles") === "Admin") {
             return (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
@@ -343,10 +330,12 @@ const App = () => {
                             <Route path="/create-event" component={createEventForm} />
                             <Route path="/statistcs" component={statisticsEvent} />
                             <Route path="/showEvents" component={eventListing} />
+
                             <Route path="/updateEvent/:idEvent" component={SignleEvent} />
                             <Route path="/updateCommentEvent/:idComment" component={EditCommentEvent} />
                             <Route path="/events/:_id" component={EventDetail} />
                             <Route path="/favoriteList" component={favoriteList} />
+
 
                             <Route path="/projects" exact component={ProjectListing} />
                             <Route path="/deletedprojects" exact component={ProjectDeletedListing} />

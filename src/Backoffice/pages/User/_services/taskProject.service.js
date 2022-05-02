@@ -2,6 +2,9 @@ import axios from "axios";
 
 export const TaskProjectService = {
     addTask,
+    validate: _validate,
+    refuse: _refuse,
+    delete: _delete,
 };
 
 async function addTask(task) {
@@ -9,6 +12,7 @@ async function addTask(task) {
     formData.append("taskName", task.taskName);
     formData.append("project", task.project);
     formData.append("taskDescription", task.taskDescription);
+    formData.append("taskAmount", task.taskAmount);
     formData.append("user", task.user);
     console.log(formData);
     return await axios
@@ -19,4 +23,25 @@ async function addTask(task) {
         .catch((err) => {
             console.log(err);
         });
+}
+
+function _validate(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/tasks/validate/${id}`, requestOptions);
+}
+
+function _refuse(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/tasks/refuse/${id}`, requestOptions);
+}
+
+function _delete(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/tasks/archive/${id}`, requestOptions);
 }

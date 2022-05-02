@@ -7,6 +7,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import CommentIcon from "@mui/icons-material/Comment";
+import InfoIcon from "@mui/icons-material/Info";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,6 +21,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CustomizedDialogs from "./CustomizedDialogs";
+import { TaskProjectService } from "../User/_services/taskProject.service";
 import { InvoiceProjectService } from "../User/_services/invoiceProject.service";
 import { ComplaintProjectService } from "../User/_services/complaintProject.service";
 import { useSelector, useDispatch } from "react-redux";
@@ -35,7 +39,7 @@ const ProjectDetails = () => {
     const tasksList = useSelector((state) => state.projects.tasksList);
     const invoiceProjectList = useSelector((state) => state.projects.invoiceProjectList);
     const complaintProjectList = useSelector((state) => state.projects.complaintProjectList);
-    const { projectName, projectDescription, projectCollectedAmount, image } = project;
+    const { projectName, projectDescription, projectCollectedAmount, image, resteAmount, projectType } = project;
     const { _id } = useParams();
     console.log(_id);
     console.log(project);
@@ -103,6 +107,17 @@ const ProjectDetails = () => {
         }
     }, [_id]);
 
+    const isAddTaskNotValid = () => {
+        if (tasksList.length > 0) {
+            return tasksList.some((task) => {
+                return projectType !== "in progress" && (task.taskType !== "validated" || task.taskType !== "refused") && resteAmount === 0;
+            });
+        }
+    };
+    console.log("🚀 ~ file: projectDetails.js ~ line 111 ~ isAddTaskNotValid ~ isAddTaskNotValid", isAddTaskNotValid());
+
+    const isAddInvoiceNotValid = () => projectType !== "in progress";
+
     return (
         <div>
             {Object.keys(project).length === 0 ? (
@@ -111,7 +126,7 @@ const ProjectDetails = () => {
                 <div>
                     <div className="projectdisplay">
                         <div
-                            className="container col-8"
+                            className="container col-7"
                             style={{
                                 backgroundImage: "../../../assets/layout/images/" + image,
                             }}
@@ -123,7 +138,7 @@ const ProjectDetails = () => {
                                 <div className="projectDetails">
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">
-                                            {projectName} : {projectCollectedAmount} DT
+                                            {projectName} : {resteAmount} / {projectCollectedAmount} DT
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {projectDescription}
@@ -131,80 +146,87 @@ const ProjectDetails = () => {
                                     </CardContent>
                                 </div>
                             </div>
-                            <List sx={{ width: "100%", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
-                                Add new task
-                                <Link to={`/projects/task/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
-                                <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
+                            <List sx={{ width: "100%", height: "350px", bgcolor: "background.paper" }} component="nav" className="surface-card p-4 shadow-2 border-round my-2">
+                                <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
-                                        if (task) {
+                                        const validateTask = () => {
+                                            TaskProjectService.validate(task._id);
+                                            window.location.reload(false);
+                                        };
+                                        const RefuseTask = () => {
+                                            TaskProjectService.refuse(task._id);
+                                            window.location.reload(false);
+                                        };
+                                        if (task && task.taskType === "in progress") {
                                             return (
-                                                <div key={task._id}>
+                                                <div key={task._id} style={{ backgroundColor: "#FFFABE" }}>
                                                     <ListItemButton style={{ display: "flex" }}>
                                                         <ListItemText primary={task.taskName} />
-                                                        <Link to={`/projects/task/complaint/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Complaint" />
+                                                        <div className="ml-5">
+                                                            <span>Status : In progress</span>
+                                                            <IconButton edge="end" aria-label="check" onClick={validateTask}>
+                                                                <CheckCircleIcon />
                                                             </IconButton>
-                                                        </Link>
-                                                        <Link to={`/projects/task/invoice/add/${task._id}`} className="mr-1">
-                                                            <IconButton edge="end" aria-label="plus">
-                                                                <AddIcon />
-                                                                <ListItemText primary="Invoice" />
+                                                            <IconButton edge="end" aria-label="off" onClick={RefuseTask}>
+                                                                <HighlightOffIcon />
                                                             </IconButton>
-                                                        </Link>
+                                                        </div>
                                                         <Link to={`/projects/task/${task._id}`}>
-                                                            <IconButton edge="end" aria-label="comment">
-                                                                <CommentIcon />
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
                                                             </IconButton>
                                                         </Link>
-                                                        {/* <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} id={task._id} /> */}
-
-                                                        {/* {open ? <ExpandLess /> : <ExpandMore />} */}
                                                     </ListItemButton>
-                                                    {/* <Collapse in={open} timeout="auto" unmountOnExit>
-                                                        <List component="div" disablePadding>
-                                                            <ListItemButton sx={{ pl: 4 }}>
-                                                                <ListItemIcon>
-                                                                    <StarBorder />
-                                                                </ListItemIcon>
-                                                                <ListItemText primary={task.taskDescription} />
-                                                                <Link to={`/projects/tasks/${task._id}`}>
-                                                                    <Button icon="pi pi-info-circle" className="button col-5" label="Show more" style={{ width: "120px", height: "30px", textAlign: "left" }} />
-                                                                </Link>
-                                                                <CustomizedDialogs title={task.taskName} description={task.taskDescription} state={task.taskType} />
-                                                                {/* <CustomDialog /> */}
-                                                    {/* </ListItemButton> */}
-                                                    {/* </List> */}
-                                                    {/* </Collapse> */}
+                                                </div>
+                                            );
+                                        } else if (task && task.taskType === "validated") {
+                                            return (
+                                                <div key={task._id} style={{ backgroundColor: "#E3FFCA" }}>
+                                                    <ListItemButton style={{ display: "flex" }}>
+                                                        <ListItemText primary={task.taskName} />
+                                                        <div className="ml-5">
+                                                            <span>Status : Valid</span>
+                                                            <IconButton edge="end" aria-label="check" disabled>
+                                                                <CheckCircleIcon />
+                                                            </IconButton>
+                                                        </div>
+                                                        <Link to={`/projects/task/${task._id}`}>
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
+                                                            </IconButton>
+                                                        </Link>
+                                                    </ListItemButton>
                                                 </div>
                                             );
                                         } else {
-                                            return <ListItemText primary="No task for this project" />;
+                                            return (
+                                                <div key={task._id} style={{ backgroundColor: "#FFCECE" }}>
+                                                    <ListItemButton style={{ display: "flex" }}>
+                                                        <ListItemText primary={task.taskName} />
+                                                        <div className="ml-5">
+                                                            <span>Status : Refused</span>
+                                                            <IconButton edge="end" aria-label="off" disabled>
+                                                                <HighlightOffIcon />
+                                                            </IconButton>
+                                                        </div>
+                                                        <Link to={`/projects/task/${task._id}`}>
+                                                            <IconButton edge="end" aria-label="info">
+                                                                <InfoIcon />
+                                                            </IconButton>
+                                                        </Link>
+                                                    </ListItemButton>
+                                                </div>
+                                            );
                                         }
                                     })}
                                 </div>
                             </List>
                         </div>
-                        <div className="container col-4">
+                        <div className="container col-5">
                             <div style={{ height: "180px" }} className="surface-card p-3 shadow-2 border-round ">
-                                Add new invoice
-                                <Link to={`/projects/invoiceProject/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
                                 <div style={{ maxHeight: "110px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {invoiceProjectList.map((invoiceProject) => {
-                                            const deleteInvoice = () => {
-                                                InvoiceProjectService.delete(invoiceProject._id);
-                                                window.location.reload(false);
-                                            };
                                             const labelId = `checkbox-list-label-${invoiceProject._id}`;
                                             if (invoiceProject)
                                                 return (
@@ -212,9 +234,6 @@ const ProjectDetails = () => {
                                                         key={invoiceProject._id}
                                                         secondaryAction={
                                                             <div>
-                                                                <IconButton edge="end" aria-label="delete" onClick={deleteInvoice}>
-                                                                    <DeleteIcon />
-                                                                </IconButton>
                                                                 <IconButton edge="end" aria-label="download">
                                                                     <DownloadIcon />
                                                                 </IconButton>
@@ -234,40 +253,55 @@ const ProjectDetails = () => {
                                     </List>
                                 </div>
                             </div>
-                            <div style={{ height: "310px" }} className="surface-card p-4 shadow-2 border-round my-2">
-                                Add new Complaint
-                                <Link to={`/projects/complaintProject/add/${_id}`} style={{ width: "200px" }}>
-                                    <IconButton edge="end" aria-label="plus">
-                                        <AddIcon />
-                                    </IconButton>
-                                </Link>
-                                <div style={{ maxHeight: "200px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
+                            <div style={{ height: "350px" }} className="surface-card p-4 shadow-2 border-round my-2">
+                                <div style={{ maxHeight: "250px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                                     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
                                         {complaintProjectList.map((complaintProject) => {
-                                            const deleteComplaint = () => {
-                                                ComplaintProjectService.delete(complaintProject._id);
+                                            const validateComplaint = () => {
+                                                ComplaintProjectService.validate(complaintProject._id);
                                                 window.location.reload(false);
                                             };
                                             const labelId = `checkbox-list-label-${complaintProject._id}`;
-
-                                            return (
-                                                <ListItem
-                                                    key={complaintProject._id}
-                                                    secondaryAction={
-                                                        <div style={{ display: "flex" }}>
-                                                            <IconButton edge="end" aria-label="delete" onClick={deleteComplaint}>
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                            <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
-                                                        </div>
-                                                    }
-                                                    disablePadding
-                                                >
-                                                    <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
-                                                        <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            );
+                                            if (complaintProject && complaintProject.complaintType == "in progress") {
+                                                return (
+                                                    <div style={{ backgroundColor: "#FFFABE" }}>
+                                                        <ListItem
+                                                            key={complaintProject._id}
+                                                            secondaryAction={
+                                                                <div style={{ display: "flex" }}>
+                                                                    <IconButton edge="end" aria-label="validate" onClick={validateComplaint}>
+                                                                        <CheckCircleIcon />
+                                                                    </IconButton>
+                                                                    <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
+                                                                </div>
+                                                            }
+                                                            disablePadding
+                                                        >
+                                                            <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                                <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                            </ListItemButton>
+                                                        </ListItem>
+                                                    </div>
+                                                );
+                                            } else {
+                                                return (
+                                                    <div style={{ backgroundColor: "#E3FFCA" }}>
+                                                        <ListItem
+                                                            key={complaintProject._id}
+                                                            secondaryAction={
+                                                                <div style={{ display: "flex" }}>
+                                                                    <CustomizedDialogs title={complaintProject.complaintProjectTitle} description={complaintProject.complaintDescription} state={complaintProject.complaintType} />
+                                                                </div>
+                                                            }
+                                                            disablePadding
+                                                        >
+                                                            <ListItemButton role={undefined} onClick={handleToggle(complaintProject.complaintProjectTitle)} dense>
+                                                                <ListItemText id={labelId} primary={complaintProject.complaintProjectTitle} />
+                                                            </ListItemButton>
+                                                        </ListItem>
+                                                    </div>
+                                                );
+                                            }
                                         })}
                                     </List>
                                 </div>
