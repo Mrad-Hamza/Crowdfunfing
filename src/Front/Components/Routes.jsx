@@ -31,6 +31,14 @@ import TaskProjectAdd from "../../Backoffice/pages/Projects/tasks/TaskProjectAdd
 import InvoiceTaskAdd from "../../Backoffice/pages/Projects/tasks/InvoiceTasks/invoiceTaskAdd";
 import ComplaintTaskAdd from "../../Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
 import getConfig from "../../chatbot/config";
+import EventListing from "../../Backoffice/pages/events/eventListing";
+import CreateEventForm from "../../Backoffice/pages/events/createEventForm";
+import StatisticsEvent from "../../Backoffice/pages/events/statisticsEvent";
+import SignleEvent from "../../Backoffice/pages/events/SingleEvent";
+import EditCommentEvent from "../../Backoffice/pages/events/editCommentEvent";
+import EventDetail from "../../Backoffice/pages/events/eventDetail";
+import FavoriteList from "../../Backoffice/pages/events/favoriteList";
+import EventDetailFront from "./RouteComponents/EventDetailFront";
 const Routes = () => {
     const [show, toggleShow] = useState(true);
     console.log("🚀 ~ file: Routes.jsx ~ line 35 ~ Routes ~ show", show);
@@ -75,6 +83,13 @@ const Routes = () => {
                 <Route path="/forum" component={(props) => <ForumList {...props} />} />
                 <Route path="/comment" component={(props) => <ForumComment {...props} />} />
                 <Route path="/campaign" component={(props) => <Campaign {...props} />} />
+                <Route path="/showEvents" component={(props) => <EventListing {...props} />} />
+                <Route path="/create-event" component={(props) => <CreateEventForm {...props} />} />
+                <Route path="/statistcs" component={(props) => <StatisticsEvent{...props} />} />
+                <Route path="/updateEvent/:idEvent" component={(props) => <SignleEvent {...props} />} />
+                <Route path="/updateCommentEvent/:idComment" component={(props) => <EditCommentEvent {...props} />} />
+                <Route path="/events/:_id" component={(props) => <EventDetailFront {...props} />} />
+                <Route path="/favoriteList" component={(props) => <FavoriteList{...props} />} />
                 <Route path="/projects/:_id" exact component={(props) => <ProjectDetailsFront {...props} />} />
                 {/* <Route path="/projects/task/:_id" exact component={TaskDetails} /> */}
                 <Route path="/projects/taskById/:_id" component={(props) => <TaskDetailsFront {...props} />} />
