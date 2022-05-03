@@ -10,6 +10,7 @@ import { CampaignUser } from "./RouteComponents/CampaignUser";
 import { ForumList } from "./RouteComponents/forumListing";
 import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage"
 import { Footer } from "./Footer";
+import PaymentPage from "../../Backoffice/pages/Payment/PaymentPage"
 import CollectionsPage from "./HomeComponents/Collections/CollectionsPage"
 import DeatiledAdvertisementRoutes from "./HomeComponents/popularProductsPageExtended/deatiledAdvertisement/DeatiledAdvertisementRoutes"
 import Story from "./HomeComponents/popularProductsPageExtended/deatiledAdvertisement/deatiledAdvertisementComponents/Story"
@@ -50,11 +51,13 @@ const Routes = () => {
           path="/campaign"
           component={(props) => <Campaign {...props} />}
         />
-
 <Route
           path="/CampaignUser/:_id"
           component={(props) => <CampaignUser {...props} />}
         />
+
+        <Route path="/payment/:_id" component={(props) => <PaymentPage {...props} />}/>
+
         {/* <Route path = "/popularPage" render = {(props) => <PopularProductsPage {...props} />} /> */}
         <Route path="/" exact render ={(props) => <Home {...props} />} />
         <Route path = "/collections" render = {(props) => <CollectionsPage {...props} />} />

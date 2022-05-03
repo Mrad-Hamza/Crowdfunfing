@@ -22,7 +22,7 @@ router.route('/front').get((req, res) => {
   .then(Compaigns => res.json(Compaigns))
   .catch(err => res.status(400).json('Error: ' + err));
 });
-  
+
 
 
 
@@ -33,7 +33,7 @@ router.route('/pdf').get((req, res) => {
   router.route('/xslx').get((req, res) => {
     Compaign.find()
     Comp = res.json(Compaigns);
-    
+
     const workSheet = XLSX.utils.json_to_sheet(comp);
     const workBook = XLSX.utils.book_new();
 
@@ -47,9 +47,9 @@ router.route('/pdf').get((req, res) => {
     XLSX.writeFile(workBook, "Data.xlsx")
 
   });
-  
 
- 
+
+
 
 router.route('/add').post((req, res)=> {
   const nameCompaign = req.body.nameCompaign;
@@ -65,11 +65,11 @@ router.route('/add').post((req, res)=> {
     contentType: "image/png",
     imgName: "NoPic.png",
 };
-  
-  
+
+
 
   const newCompaign = new Compaign({nameCompaign,typeCompaign,objective,description,deadline,Verified,Status,cumulateAmount,img,user});
-  
+
   newCompaign.save()
     .then(() => res.json('Compaign added!'))
     .catch(err => res.status(400).json('Error: ' + err));
@@ -128,7 +128,7 @@ router.route('/update/:id').put((req, res) => {
         compaign.Verified = req.body.Verified;
         compaign.Status = req.body.Status;
         compaign.cumulateAmount = req.body.cumulateAmount;
-      
+
       compaign.save()
         .then(() => res.json('Compaign updated!'))
         .catch(err => res.status(400).json('Error: ' + err));
@@ -136,7 +136,20 @@ router.route('/update/:id').put((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-
+router.route('/updateAmount/:id/:number').put((req, res) => {
+    console.log(req.params.id)
+    Compaign.findById(req.params.id)
+        .then((compaign) => {
+            console.log(compaign)
+            const test = Number(req.params.number)
+            const test2 = Number(compaign.cumulateAmount)
+            compaign.cumulateAmount = test + test2;
+            compaign.save()
+                .then(() => res.json('Compaign updated!'))
+                .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 
 router.get("/search/:key",async (req,res)=>{
     let data =await Compaign.find(
@@ -171,7 +184,7 @@ const { dateFnsLocalizer } = require('react-big-calendar');
 
         res.send(Promise.resolve());
     });
-    
+
   });
 
 
