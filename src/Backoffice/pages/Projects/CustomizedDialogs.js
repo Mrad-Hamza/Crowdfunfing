@@ -69,12 +69,23 @@ export default function CustomizedDialogs({ title, description, state }) {
             </Button> */}
             <BootstrapDialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Task title : {title}
+                    <h2>
+                        <strong>Complaint title : </strong> {title}
+                    </h2>
                 </BootstrapDialogTitle>
-                <DialogContent dividers style={{ width: "600px", height: "400px" }}>
-                    <Typography gutterBottom>Description :{description}</Typography>
+                <DialogContent dividers style={{ width: "600px", height: "150px" }}>
+                    <Typography gutterBottom>
+                        <h4>
+                            <strong>Description : </strong>
+                            {description}
+                        </h4>
+                    </Typography>
                     {/* {/* <Typography gutterBottom>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</Typography> */}
-                    <Typography gutterBottom>State : {state}</Typography>
+                    <Typography gutterBottom>
+                        <h4>
+                            <strong>State : </strong> {state}
+                        </h4>
+                    </Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleClose}>

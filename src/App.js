@@ -1,9 +1,13 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import classNames from 'classnames';
-import { Route, useLocation, useHistory } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
+import React, { useState, useEffect, useRef } from "react";
 
+// import Chatbot from "react-chatbot-kit";
+// import MessageParser from "./chatbot/MessageParser";
+// import Config from "./chatbot/config";
+// import ActionProvider from "./chatbot/ActionProvider";
+import classNames from "classnames";
+import { Route, useLocation, useHistory } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
@@ -42,14 +46,6 @@ import Compaigns from "./Backoffice/pages/Compaigns/Compaigns";
 import CompaignsList from "./Backoffice/pages/Compaigns/list-Compaigns";
 import upadateCompaign from "./Backoffice/pages/Compaigns/Edit-Comapaign";
 import addCompaign from "./Backoffice/pages/Compaigns/Add-Compaigns";
-import "primereact/resources/primereact.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
-import "prismjs/themes/prism-coy.css";
-import "./assets/demo/flags/flags.css";
-import "./assets/demo/Demos.scss";
-import "./assets/layout/layout.scss";
-import "./App.scss";
 import createEventForm from "./Backoffice/pages/events/createEventForm";
 import statisticsEvent from "./Backoffice/pages/events/statisticsEvent";
 import eventListing from "./Backoffice/pages/events/eventListing";
@@ -73,6 +69,9 @@ import InvoiceTaskAdd from "./Backoffice/pages/Projects/tasks/InvoiceTasks/invoi
 import ComplaintTaskAdd from "./Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
 import TaskDetails from "./Backoffice/pages/Projects/tasks/TaskDetails";
 import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
+import SignleEvent from "./Backoffice/pages/events/SingleEvent";
+import EditCommentEvent from "./Backoffice/pages/events/editCommentEvent";
+import favoriteList from "./Backoffice/pages/events/favoriteList";
 
 const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
@@ -248,8 +247,8 @@ const App = () => {
                     icon: "pi pi-fw pi-calendar",
                     items: [
                         { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
-                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
-                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Favorites", icon: "pi pi-fw pi-clone", to: "/favoriteList" },
+                        { label: "Events", icon: "pi pi-fw pi-book", to: "/showEvents" },
                         { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },
@@ -304,12 +303,10 @@ const App = () => {
 
     if (token) {
         if (localStorage.getItem("currentRoles") === "Simple User") {
-            return (
-                <Routes />
-            );
-        }
-        else
-        if (token) {
+
+            return <Routes />;
+
+        } else if (localStorage.getItem("currentRoles") === "Admin") {
             return (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
@@ -344,7 +341,13 @@ const App = () => {
                             <Route path="/create-event" component={createEventForm} />
                             <Route path="/statistcs" component={statisticsEvent} />
                             <Route path="/showEvents" component={eventListing} />
+
+                            <Route path="/updateEvent/:idEvent" component={SignleEvent} />
+                            <Route path="/updateCommentEvent/:idComment" component={EditCommentEvent} />
                             <Route path="/events/:_id" component={EventDetail} />
+                            <Route path="/favoriteList" component={favoriteList} />
+
+
                             <Route path="/projects" exact component={ProjectListing} />
                             <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
                             <Route path="/projects/:_id" exact component={ProjectDetails} />

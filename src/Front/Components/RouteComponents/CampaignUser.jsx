@@ -7,18 +7,14 @@ import moment from "moment";
 import data from "../../data.json";
 import img from "../../Images/EditIcon.PNG";
 import image from "../../Images/123456.jpeg";
-import {
-  HeartOutlined,
-  LeftCircleOutlined,
-  RightCircleOutlined,
-} from "@ant-design/icons";
+import { HeartOutlined, LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 
 const Card = styled.div`
-  :hover {
-    box-shadow: 1px 8px 10px grey;
-    -webkit-transition: box-shadow 0.1s ease-in;
-  }
+    :hover {
+        box-shadow: 1px 8px 10px grey;
+        -webkit-transition: box-shadow 0.1s ease-in;
+    }
 `;
 
 const Compaign = (props) => (
@@ -41,7 +37,7 @@ const Compaign = (props) => (
             }}
         >
             <div style={{}}>
-                <img style={{ width: "100%", height: "225px" }} src={require("../../../assets/layout/images/" + props.compaign.img.imgName)} className="card-img-top" />
+                <img style={{ width: "100%", height: "225px" }} src={image} className="card-img-top" />
             </div>
 
             <div style={{ backgroundColor: "#ffffff" }}>
@@ -145,6 +141,8 @@ const Compaign = (props) => (
                         </div>
                     </div>
                     <div style={{ bottom: 0, float: "center", width: "100%", paddingTop: "30px", textAlign: "center" }}>
+
+                        <Link to={"/projects/" + props.compaign._id}>
                             <Button
                                 label="Show Project details"
                                 className="p-button-text"
@@ -155,7 +153,9 @@ const Compaign = (props) => (
                                     borderRadius: "1.9rem",
                                     fontSize: "13px",
                                 }}
-                            />{" "}
+
+                            />
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -167,54 +167,48 @@ const Compaign = (props) => (
 );
 
 class CampaignUser extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
+        this.state = { compaigns: [] };
+    }
 
-    this.state = { compaigns: [] };
-  }
+    componentDidMount() {
+        axios
+            .get("http://localhost:5000/compaigns/campaignUser/" + localStorage.getItem("currentUserId"))
+            .then((response) => {
+                this.setState({ compaigns: response.data });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
+    handleChange = ({ target: { value, name } }) => this.setState({ [name]: value });
 
+    comaignList() {
+        return this.state.compaigns.map((currentCompaign) => {
+            return <Compaign compaign={currentCompaign} />;
+        });
+    }
 
-  componentDidMount() {
-    axios
-      .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
-      .then((response) => {
-        this.setState({ compaigns: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  handleChange = ({ target: { value, name } }) => this.setState({ [name]: value });
-
-
-
-  comaignList() {
-    return this.state.compaigns.map((currentCompaign) => {
-      return <Compaign compaign={currentCompaign} />;
-    });
-  }
-
-  render() {
-    return (
-
-      <div className="container-fluid m-5 text-left">
-        <div
-          className="container-fluid"
-          style={{
-            display: "inline-block",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            padding: "10px",
-          }}
-        >
-          {this.comaignList()}
-        </div>
-      </div>
-
-    );
-  }
+    render() {
+        return (
+            <div className="container-fluid m-5 text-left">
+                <div
+                    className="container-fluid"
+                    style={{
+                        display: "inline-block",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        padding: "10px",
+                    }}
+                >
+                    {this.comaignList()}
+                </div>
+            </div>
+        );
+    }
 }
-export {CampaignUser}
+
+export { CampaignUser };

@@ -88,20 +88,21 @@ router.post('/facebooklogin', (req, res) => {
                 } else {
                     if (user) {
                         const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET, {
-                            expiresIn: '540000',
-                        })
+
+                            expiresIn: "180000",
+                        });
                         return res.json({
                             accessToken: accessToken,
                             userId: user.id,
                             userName: user.username,
                             mail: user.mailAddress,
-                            role: user.roles
-                        })
-                    }
-                    else {
-                        let password = email + process.env.ACCES_TOKEN_SECRET
-                        const username = name
-                        const firstname = name
+
+                            role: user.roles,
+                        });
+                    } else {
+                        let password = email + process.env.ACCES_TOKEN_SECRET;
+                        const username = name;
+                        const firstname = name;
                         const img = {
                             contentType: 'image/png',
                             imgName: "NoPic.png"
@@ -163,25 +164,18 @@ router.post('/googlelogin', (req, res) => {
         })
 })
 
-router.get('/profile/:search', protect, (req, res) => {
-    User.findOne({
-        $or: [
-            { 'username': req.params.search },
-            { 'mailAddress': req.params.search }
-        ]
-    })
-        .then(user => res.json(user))
-})
 
-router.get('/search/:search', (req, res) => {
+router.get("/profile/:search", protect, (req, res) => {
     User.findOne({
-        $or: [
-            { 'username': req.params.search },
-            { 'mailAddress': req.params.search }
-        ]
-    })
-        .then(user => res.json(user))
-})
+        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
+    }).then((user) => res.json(user));
+});
+
+router.get("/search/:search", (req, res) => {
+    User.findOne({
+        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
+    }).then((user) => res.json(user));
+});
 
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)
@@ -385,7 +379,8 @@ router.route('/login').post((req, res) => {
      res.status(500).send()
    }
    })*/
-})
+
+});
 
 function authenticateToken(req, res, nex) {
     const authHeader = req.headers['authorization']

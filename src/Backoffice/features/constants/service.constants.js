@@ -4,6 +4,7 @@ const URL = {
     events: {
         fetchEvents: `/events/`,
         //fetchProductDetail:`/:id`
+       
     },
 };
 

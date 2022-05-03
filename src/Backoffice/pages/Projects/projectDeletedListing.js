@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import Pagination from "@mui/material/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import DeletedProjectComponent from "./deletedprojectComponent";
 import { setProjects } from "../../features/actions/projects.actions";
@@ -29,10 +28,11 @@ const ProjectDeletedListing = () => {
 
     return (
         <div>
-            <Grid container className="projects-list-container" columns={{ xs: 4, md: 12 }}>
-                <DeletedProjectComponent />
-            </Grid>
-            {/* <Pagination count={10} variant="outlined" color="primary" /> */}
+            <div style={{ maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
+                <Grid container className="projects-list-container" columns={{ xs: 4, md: 12 }}>
+                    <DeletedProjectComponent />
+                </Grid>
+            </div>
         </div>
     );
 };
