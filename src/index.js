@@ -7,7 +7,6 @@ import { HashRouter } from "react-router-dom";
 import ScrollToTop from "./Backoffice/helper/ScrollToTop";
 import store from "./Backoffice/features/store";
 import {Provider } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.css';
 
 
 ReactDOM.render(

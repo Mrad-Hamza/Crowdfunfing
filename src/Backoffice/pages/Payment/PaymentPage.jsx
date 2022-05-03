@@ -1,6 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import axios from "axios";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { Toast } from "primereact/toast";
+import { InputSwitch } from "primereact/inputswitch";
+import { InputNumber } from "primereact/inputnumber";
+
+
+
 
 const PaymentPage = () => {
 
@@ -19,11 +27,29 @@ const PaymentPage = () => {
         donation: 5,
         username: localStorage.getItem("currentUsername"),
         _id: localStorage.getItem("currentUserId"),
+        anonym: false
     };
 
     const [campaign, setCampaign] = useState(emptyCampaign);
-
+    const [montant, setMontant] = useState(5)
+    const [anonym, setAnonym] = useState(false)
     const [data, setData] = useState(initialData);
+
+    useEffect(() => {
+      setData((prevState)=>({
+          ...prevState,donation:(montant)
+      }))
+      console.log(data)
+    }, [montant])
+
+    useEffect(() => {
+        setData((prevState) => ({
+            ...prevState,
+            anonym: !anonym,
+        }));
+        console.log(data);
+    }, [anonym]);
+
 
     const makePayment = token => {
         axios({
@@ -49,8 +75,29 @@ const PaymentPage = () => {
             console.log(res);
         });
      };
+     const onInputChange = (e) => {
+        //  setData((prevState)=>({
+        //      ...prevState,
+        //      donatioen:e.value,
+        //  }));
+        //  console.log(data)
+     };
 
-  return <StripeCheckout stripeKey="pk_test_51Ks1exLyE3hWd2jo361ebaWXgcu8HR6zgQ7ZqpAmq8cxMR6gF9cclTN6LFNg702oPEonjLGRvIAlEKudpt2j4bJq00CoX5HQO2" token={makePayment}></StripeCheckout>;
+
+  return (
+      <div>
+          <div className="field">
+              <h5>How much do you want to donate ?</h5>
+              <InputNumber value={montant} onValueChange={(e) => setMontant(e.value)} showButtons mode="decimal"></InputNumber>
+          </div>
+          <div className="field">
+              <h5>Do you want this transaction to be annonym?</h5>
+              <InputSwitch checked={anonym} onChange={(e) => setAnonym(e.value)} />{" "}
+          </div>
+
+          <StripeCheckout stripeKey="pk_test_51Ks1exLyE3hWd2jo361ebaWXgcu8HR6zgQ7ZqpAmq8cxMR6gF9cclTN6LFNg702oPEonjLGRvIAlEKudpt2j4bJq00CoX5HQO2" token={makePayment}></StripeCheckout>
+      </div>
+  );
 }
 
 export default PaymentPage

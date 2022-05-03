@@ -38,7 +38,7 @@ const ProjectListing = () => {
             <div>
 
             </div> */}
-            <div style={{ maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }}>
+            <div style={{ maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                 <Grid container className="projects-list-container " columns={{ xs: 8, md: 8, lg: 12 }}>
                     <ProjectComponent />
                 </Grid>

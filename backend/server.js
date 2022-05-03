@@ -56,7 +56,7 @@ app.use("/comment", commentsRouter);
 const imageRouter = require("./routes/image");
 app.use("/image", imageRouter);
 
-const paymentRouter = require("./routes/payment");
+const paymentRouter = require("./routes/payments");
 app.use("/payment",paymentRouter);
 
 const compaignRouter = require("./routes/compaigns");
@@ -64,6 +64,7 @@ app.use("/compaigns", compaignRouter);
 
 const categoryRouter = require("./routes/category");
 app.use("/category", categoryRouter);
+
 const statisticsEventRouter = require("./routes/statisticsEvent");
 app.use("/statis", statisticsEventRouter);
 

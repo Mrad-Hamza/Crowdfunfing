@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { Route, useLocation,useHistory } from 'react-router-dom';
+import { Route, useLocation, useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
@@ -140,16 +140,16 @@ const App = () => {
     };
 
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
-    console.log("Current User Id = "+localStorage.getItem('currentUserId'))
-    console.log("Current UserName = "+localStorage.getItem('currentUsername'))
-    console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
-    console.log("Current Role = "+localStorage.getItem('currentRoles'))
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+    // KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
+    console.log("Current User Id = " + localStorage.getItem('currentUserId'))
+    console.log("Current UserName = " + localStorage.getItem('currentUsername'))
+    console.log("Current MailAddress = " + localStorage.getItem('currentMailAddress'))
+    console.log("Current Role = " + localStorage.getItem('currentRoles'))
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -313,79 +313,79 @@ const App = () => {
 
 
 
-if (token) {
-    if(localStorage.getItem("currentRoles")==="Simple User") {
-        return (
-            <Routes/>
-        );
-    }
-    else if (localStorage.getItem("currentRoles")==="Admin") {
-        return (
-         <div className={wrapperClass} onClick={onWrapperClick}>
-            <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
+    if (token) {
+        if (localStorage.getItem("currentRoles") === "Simple User") {
+            return (
+                <Routes />
+            );
+        }
+        else if (localStorage.getItem("currentRoles") === "Admin") {
+            return (
+                <div className={wrapperClass} onClick={onWrapperClick}>
+                    <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
-            <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+                    <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
 
-            <div className="layout-sidebar" onClick={onSidebarClick}>
-                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
-            </div>
-
-                <div className="layout-main-container">
-                    <div className="layout-main">
-                        <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
-                        <Route path="/timeline" component={TimelineDemo} />
-                        <Route path="/empty" component={EmptyPage} />
-
-                        <Route path="/crud" component={Crud} />
-
-                        <Route path="/PaymentPage" component={PaymentPage} />
-
-                        {/* Route compaigns */}
-                        <Route path="/compaigns" component={Compaigns} />
-                        <Route path="/compaignsList" component={CompaignsList} />
-                        <Route path="/update/:id" component={upadateCompaign} />
-                        <Route path="/ADDCompaign" component={addCompaign} />
-                        <Route path="/ListDeadline" component={ListDeadline} />
-                        {/* <Route path="/add" component={forumCreate}/> */}
-                        <Route path="/UsersList" component={UsersList} />
-                        <Route path="/events" exact component={Events} />
-                        <Route path="/create-event" component={createEventForm} />
-                        <Route path="/statistcs" component={statisticsEvent} />
-                        <Route path="/showEvents" component={eventListing} />
-                        <Route path="/events/:_id" component={EventDetail} />
-                        <Route path="/projects" exact component={ProjectListing} />
-                        <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
-                        <Route path="/projects/:_id" exact component={ProjectDetails} />
-                        <Route path="/projects/task/:_id" exact component={TaskDetails} />
-                        <Route path="/projects/add/:_id" component={ProjectAdd} />
-                        <Route path="/projects/update/:_id" component={ProjectUpdate} />
-                        <Route path="/projects/invoiceProject/add/:_id" component={InvoiceProjectAdd} />
-                        <Route path="/projects/complaintProject/add/:_id" component={ComplaintProjectAdd} />
-                        <Route path="/projects/task/add/:_id" component={TaskProjectAdd} />
-                        <Route path="/projects/task/invoice/add/:_id" component={InvoiceTaskAdd} />
-                        <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
-                        <Route path="/forums" exact component={ForumListing} />
-                        <Route path="/comment" component={ForumsComment} />
-                        <Route path="/edit/:_id" component={updateForum} />
+                    <div className="layout-sidebar" onClick={onSidebarClick}>
+                        <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
                     </div>
-                    <AppFooter layoutColorMode={layoutColorMode} />
-                </div>
-                <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
 
-            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
-                <div className="layout-mask p-component-overlay"></div>
-            </CSSTransition>
-        </div>
-        );
+                    <div className="layout-main-container">
+                        <div className="layout-main">
+                            <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
+                            <Route path="/timeline" component={TimelineDemo} />
+                            <Route path="/empty" component={EmptyPage} />
+
+                            <Route path="/crud" component={Crud} />
+
+                            <Route path="/PaymentPage" component={PaymentPage} />
+
+                            {/* Route compaigns */}
+                            <Route path="/compaigns" component={Compaigns} />
+                            <Route path="/compaignsList" component={CompaignsList} />
+                            <Route path="/update/:id" component={upadateCompaign} />
+                            <Route path="/ADDCompaign" component={addCompaign} />
+                            <Route path="/ListDeadline" component={ListDeadline} />
+                            {/* <Route path="/add" component={forumCreate}/> */}
+                            <Route path="/UsersList" component={UsersList} />
+                            <Route path="/events" exact component={Events} />
+                            <Route path="/create-event" component={createEventForm} />
+                            <Route path="/statistcs" component={statisticsEvent} />
+                            <Route path="/showEvents" component={eventListing} />
+                            <Route path="/events/:_id" component={EventDetail} />
+                            <Route path="/projects" exact component={ProjectListing} />
+                            <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
+                            <Route path="/projects/:_id" exact component={ProjectDetails} />
+                            <Route path="/projects/task/:_id" exact component={TaskDetails} />
+                            <Route path="/projects/add/:_id" component={ProjectAdd} />
+                            <Route path="/projects/update/:_id" component={ProjectUpdate} />
+                            <Route path="/projects/invoiceProject/add/:_id" component={InvoiceProjectAdd} />
+                            <Route path="/projects/complaintProject/add/:_id" component={ComplaintProjectAdd} />
+                            <Route path="/projects/task/add/:_id" component={TaskProjectAdd} />
+                            <Route path="/projects/task/invoice/add/:_id" component={InvoiceTaskAdd} />
+                            <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
+                            <Route path="/forums" exact component={ForumListing} />
+                            <Route path="/comment" component={ForumsComment} />
+                            <Route path="/edit/:_id" component={updateForum} />
+                        </div>
+                        <AppFooter layoutColorMode={layoutColorMode} />
+                    </div>
+                    <AppConfig rippleEffect={ripple} onRippleEffect={onRipple} inputStyle={inputStyle} onInputStyleChange={onInputStyleChange} layoutMode={layoutMode} onLayoutModeChange={onLayoutModeChange} layoutColorMode={layoutColorMode} onColorModeChange={onColorModeChange} />
+
+                    <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                        <div className="layout-mask p-component-overlay"></div>
+                    </CSSTransition>
+                </div>
+            );
+        }
     }
-}
-else {
+    else {
         return (
             <AppContainer>
                 <AccountBox />
             </AppContainer>
         );
-}
+    }
 }
 
 export default App;

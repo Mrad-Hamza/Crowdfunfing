@@ -1,7 +1,5 @@
 import { authHeader } from '../_helpers';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
-
 
 export const userService = {
     login,
@@ -29,6 +27,13 @@ async function addUserImage(image){
     formData.append('data',idUser)
     console.log(formData)
     console.log(idUser)
+    const headers = {
+        method : 'PUT',
+        'Content-Type': 'multipart/form-data',
+        data : {
+            id: idUser
+        }
+    }
     return await axios.put('http://localhost:5000/users/addUserImage',formData)
 }
 
@@ -47,7 +52,7 @@ async function getUserByMailOrUsername(search) {
         method: 'GET',
         headers: authHeader()
     };
-    return await axios.get('http://localhost:5000/users/search/'+search,requestOptions)
+    return await axios.get('http://localhost:5000/users/'+search,requestOptions)
 }
 function googlelogin(tokenId){
     axios({
@@ -62,7 +67,6 @@ function googlelogin(tokenId){
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)
         localStorage.setItem('currentMailAddress',res.data.mail)
-        localStorage.setItem('currentRoles',res.data.role)
         authHeader();
     })
 }
@@ -79,7 +83,6 @@ function facebooklogin(accessToken,userID){
         localStorage.setItem('currentUserId',res.data.userId)
         localStorage.setItem('currentUsername',res.data.userName)
         localStorage.setItem('currentMailAddress',res.data.mail)
-        localStorage.setItem('currentRoles',res.data.role)
         authHeader();
     })
 }
@@ -106,7 +109,6 @@ async function login(username, password) {
             localStorage.setItem('currentUserId',res.data.userId)
             localStorage.setItem('currentUsername',res.data.userName)
             localStorage.setItem('currentMailAddress',res.data.mail)
-            localStorage.setItem('currentRoles',res.data.role)
             authHeader();
             return res.data
         }
@@ -122,8 +124,9 @@ function logout() {
     localStorage.removeItem('token');
 }
 function refreshPage() {
-    window.location.reload(false);
-}
+
+        window.location.reload(false);
+    }
 
 async function getUserImage(id) {
     const requestOptions = {
@@ -172,6 +175,7 @@ async function changePassword(mailAddress,password){
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+
     };
     return await axios.put('http://localhost:5000/users/PasswordUpdate/'+mailAddress+"/"+password,requestOptions)
 }
@@ -188,10 +192,8 @@ function checkToken(){
     const token = localStorage.getItem('token')
     const decodedJwt = JSON.parse(atob(token.split('.')[1]))
     if (Date.now()>(decodedJwt.exp * 1000)){
-        return true
-    }
-    else {
-        return false
+        logout()
+        refreshPage()
     }
 }
 

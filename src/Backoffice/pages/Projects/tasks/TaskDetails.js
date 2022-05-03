@@ -105,7 +105,7 @@ const TaskDetails = () => {
                                 backgroundImage: "../../../../assets/layout/images/task.jpg",
                             }}
                         >
-                            <div style={{ height: "180px" }} className="surface-card p-4 shadow-2 border-round ">
+                            <div style={{ height: "180px", width: "950px" }} className="surface-card p-4 shadow-2 border-round ">
                                 <div className="font-medium text-500 mb-1">
                                     <CardMedia component="img" height="80" image={require("../../../../assets/layout/images/task.jpg")} alt="logo" />
                                 </div>
@@ -122,7 +122,7 @@ const TaskDetails = () => {
                             </div>
 
                             {/* <div style={{ maxHeight: "230px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll"> */}
-                            <div className=" col-12" style={{ display: "flex", width: "950px", height: "350px" }}>
+                            <div className=" col-12" style={{ display: "flex", width: "950px", height: "300px" }}>
                                 <div style={{ height: "280px", width: "475px" }} className="surface-card p-3 shadow-2 border-round mr-1 ml-0">
                                     Add new invoice
                                     <Link to={`/projects/task/invoice/add/${_id}`} style={{ width: "200px" }}>
