@@ -1,11 +1,15 @@
 import { authHeader } from '../_helpers';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
+
 
 export const userService = {
     login,
     logout,
     register,
+    facialLogin,
     checkToken,
+    getUserDonations,
     facebooklogin,
     getUserImage,
     getAll,
@@ -17,32 +21,34 @@ export const userService = {
     changePassword,
     forgotpassword,
     addUserImage,
+    getCampaignById,
     delete: _delete
 };
 
-async function addUserImage(image){
+async function getUserDonations() {
+    return await axios.get("http://localhost:5000/payment/getUserDonations/" + localStorage.getItem('currentUserId'))
+}
+
+async function getCampaignById(id) {
+    return await axios.get("http://localhost:5000/compaigns/"+id)
+}
+
+async function addUserImage(image) {
     let formData = new FormData()
-        let idUser = localStorage.getItem("currentUserId")
-    formData.append('image',image)
-    formData.append('data',idUser)
+    let idUser = localStorage.getItem("currentUserId")
+    formData.append('image', image)
+    formData.append('data', idUser)
     console.log(formData)
     console.log(idUser)
-    const headers = {
-        method : 'PUT',
-        'Content-Type': 'multipart/form-data',
-        data : {
-            id: idUser
-        }
-    }
-    return await axios.put('http://localhost:5000/users/addUserImage',formData)
+    return await axios.put('http://localhost:5000/users/addUserImage', formData)
 }
 
 async function addUser(user) {
-        return await axios.post('http://localhost:5000/users/add',user)
-            .then(res =>{
+    return await axios.post('http://localhost:5000/users/add', user)
+        .then(res => {
             console.log("User added!")
         })
-        .catch(err=>{
+        .catch(err => {
             console.log(err)
         })
 }
@@ -52,88 +58,112 @@ async function getUserByMailOrUsername(search) {
         method: 'GET',
         headers: authHeader()
     };
-    return await axios.get('http://localhost:5000/users/'+search,requestOptions)
+    return await axios.get('http://localhost:5000/users/search/' + search, requestOptions)
 }
-function googlelogin(tokenId){
+function facialLogin(email) {
     axios({
-        method:"POST",
-        url:"http://localhost:5000/users/googlelogin",
+        method :"POST",
+        url : "http://localhost:5000/users/facialLogin",
         data: {
-            tokenId : tokenId
+            email: email
         }
     }).then(res => {
         console.log(res.data)
-        localStorage.setItem('token',res.data.accessToken)
-        localStorage.setItem('currentUserId',res.data.userId)
-        localStorage.setItem('currentUsername',res.data.userName)
-        localStorage.setItem('currentMailAddress',res.data.mail)
+        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('currentUserId', res.data.userId)
+        localStorage.setItem('currentUsername', res.data.userName)
+        localStorage.setItem('currentMailAddress', res.data.mail)
+        localStorage.setItem('currentRoles', res.data.role)
         authHeader();
     })
 }
-function facebooklogin(accessToken,userID){
+
+function googlelogin(tokenId) {
     axios({
-        method:"POST",
-        url:"http://localhost:5000/users/facebooklogin",
+        method: "POST",
+        url: "http://localhost:5000/users/googlelogin",
         data: {
-            accessToken : accessToken, userID : userID
+            tokenId: tokenId
+        }
+    }).then(res => {
+        console.log(res.data)
+        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('currentUserId', res.data.userId)
+        localStorage.setItem('currentUsername', res.data.userName)
+        localStorage.setItem('currentMailAddress', res.data.mail)
+        localStorage.setItem('currentRoles', res.data.role)
+        authHeader();
+    })
+}
+function facebooklogin(accessToken, userID) {
+    axios({
+        method: "POST",
+        url: "http://localhost:5000/users/facebooklogin",
+        data: {
+            accessToken: accessToken, userID: userID
         }
     }).then(res => {
         console.log(res)
-        localStorage.setItem('token',res.data.accessToken)
-        localStorage.setItem('currentUserId',res.data.userId)
-        localStorage.setItem('currentUsername',res.data.userName)
-        localStorage.setItem('currentMailAddress',res.data.mail)
+        localStorage.setItem('token', res.data.accessToken)
+        localStorage.setItem('currentUserId', res.data.userId)
+        localStorage.setItem('currentUsername', res.data.userName)
+        localStorage.setItem('currentMailAddress', res.data.mail)
+        localStorage.setItem('currentRoles', res.data.role)
         authHeader();
     })
 }
 async function login(username, password) {
     const data = {
-        username : username,
-        mailAddress : username,
-        password : password
+        username: username,
+        mailAddress: username,
+        password: password
     }
-    return await axios.post(`http://localhost:5000/users/login`,data)
-    .then(res=> {
-        if(res.data==="Invalid details"){
-            return res.data
-        }
-        else if (res.data==="You failed too many times.") {
-            return res.data
-        }
-        else if (res.data ==="No User Found!") {
-            return res.data
-        }
-        else {
-            console.log(res)
-            localStorage.setItem('token',res.data.accessToken)
-            localStorage.setItem('currentUserId',res.data.userId)
-            localStorage.setItem('currentUsername',res.data.userName)
-            localStorage.setItem('currentMailAddress',res.data.mail)
-            authHeader();
-            return res.data
-        }
+    return await axios.post(`http://localhost:5000/users/login`, data)
+        .then(res => {
+            if (res.data === "Invalid details") {
+                return res.data
+            }
+            else if (res.data === "You failed too many times.") {
+                return res.data
+            }
+            else if (res.data === "No User Found!") {
+                return res.data
+            }
+            else {
+                console.log(res)
+                localStorage.setItem('token', res.data.accessToken)
+                localStorage.setItem('currentUserId', res.data.userId)
+                localStorage.setItem('currentUsername', res.data.userName)
+                localStorage.setItem('currentMailAddress', res.data.mail)
+                localStorage.setItem('currentRoles', res.data.role)
+                authHeader();
+                return res.data
+            }
 
-    })
-    .catch(err=>{
-        console.log(err+"err")
-    })
+        })
+        .catch(err => {
+            console.log(err + "err")
+        })
 }
 
 function logout() {
     // remove user from local storage to log user out
+    localStorage.removeItem('currentUserId')
+    localStorage.removeItem('currentUsername')
+    localStorage.removeItem('currentMailAddress')
+    localStorage.removeItem('currentRoles')
     localStorage.removeItem('token');
 }
 function refreshPage() {
-
-        window.location.reload(false);
-    }
+    window.location.reload(false);
+}
 
 async function getUserImage(id) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
-    return await axios.get('http://localhost:5000/image/'+id,requestOptions)
+    return await axios.get('http://localhost:5000/image/' + id, requestOptions)
 }
 
 async function getAll() {
@@ -149,9 +179,9 @@ async function getProfile() {
         method: 'GET',
         headers: authHeader(),
     };
-        const result =  await axios.get(`http://localhost:5000/users/profile/`+localStorage.getItem('currentMailAddress'),requestOptions)
-        .then((res) =>  res.data)
-        return result
+    const result = await axios.get(`http://localhost:5000/users/profile/` + localStorage.getItem('currentMailAddress'), requestOptions)
+        .then((res) => res.data)
+    return result
 }
 
 function register(user) {
@@ -164,20 +194,19 @@ function register(user) {
     return fetch(`http://localhost:5000/users/add`, requestOptions).then(handleResponse);
 }
 
-async function forgotpassword(mailAddress){
+async function forgotpassword(mailAddress) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     };
-    return await axios.post(`http://localhost:5000/users/ForgotPassword/`+mailAddress, requestOptions)
+    return await axios.post(`http://localhost:5000/users/ForgotPassword/` + mailAddress, requestOptions)
 }
-async function changePassword(mailAddress,password){
+async function changePassword(mailAddress, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-
     };
-    return await axios.put('http://localhost:5000/users/PasswordUpdate/'+mailAddress+"/"+password,requestOptions)
+    return await axios.put('http://localhost:5000/users/PasswordUpdate/' + mailAddress + "/" + password, requestOptions)
 }
 
 async function update(user) {
@@ -188,12 +217,14 @@ async function update(user) {
     };
     return axios.put(`http://localhost:5000/users/update/${user._id}`, requestOptions)
 }
-function checkToken(){
+function checkToken() {
     const token = localStorage.getItem('token')
     const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
-        logout()
-        refreshPage()
+    if (Date.now() > (decodedJwt.exp * 1000)) {
+        return true
+    }
+    else {
+        return false
     }
 }
 
@@ -207,7 +238,7 @@ function _delete(id) {
     };
     const token = localStorage.getItem('token')
     const decodedJwt = JSON.parse(atob(token.split('.')[1]))
-    if (Date.now()>(decodedJwt.exp * 1000)){
+    if (Date.now() > (decodedJwt.exp * 1000)) {
         logout()
         refreshPage()
     } else {

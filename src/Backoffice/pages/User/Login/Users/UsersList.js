@@ -33,7 +33,6 @@ const UsersList = () => {
     const [selectedUsers, setSelectedUsers] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
-    const [isVisible, setIsVisible] = useState(true);
     const [dropdownValue, setDropdownValue] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
@@ -61,7 +60,6 @@ const UsersList = () => {
             })
             setUsers(users)
         }, 100);
-
     },[users])*/
 
     const getListFunction = () =>{
@@ -105,6 +103,7 @@ const UsersList = () => {
             userService.addUser(_user)
             _users.push(_user);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
+            window.location.reload(false);
         }
         setUsers(_users);
         setUserDialog(false);

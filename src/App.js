@@ -319,7 +319,8 @@ const App = () => {
                 <Routes />
             );
         }
-        else if (localStorage.getItem("currentRoles") === "Admin") {
+        else
+        if (token) {
             return (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
