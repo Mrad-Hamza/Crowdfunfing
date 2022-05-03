@@ -28,15 +28,15 @@ router.route('/add').post((req, res) => {
   .save()
     .then(() => res.json('Comment added!'))
     .catch(err => res.status(400).json('Error: ' + err));
-    Forum.findById(forum)
-    .then((forumt) => {
-      forumt.comments.push(newComment);
-      forumt
-        .save()
-        .then(() => res.json("comment added to forum"))
-        .catch((err) => res.status(400).json("Error: " + err));
-    })
-    .catch((err) => res.status(400).json("Error: " + err));
+    // Forum.findById(forum)
+    // .then((forumt) => {
+    //   forumt.comments.push(newComment);
+    //   forumt
+    //     .save()
+    //     .then(() => res.json("comment added to forum"))
+    //     .catch((err) => res.status(400).json("Error: " + err));
+    // })
+    // .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route('/:id').get((req, res) => {

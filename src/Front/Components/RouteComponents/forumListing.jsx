@@ -52,9 +52,9 @@ const Forum = props => (
         
      </Button>  
     </Link> */}
-    <div class="text-muted small text-center align-self-center">
+    {/* <div class="text-muted small text-center align-self-center">
                                <span><i class="pi pi-comments" ></i>  {props.forum.__v}</span>
-                            </div> 
+                            </div>  */}
     <Link to={"/comment/"+props.forum._id}> 
     <Button icon="pi pi-comments" className="p-button-rounded p-button-success mt-2"  onClick={() => { props.showComment(props.forum._id) }}></Button>
     </Link>
