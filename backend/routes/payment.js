@@ -18,7 +18,6 @@ router.route('/getCampaignDonations/:id').get((req, res) => {
 
 router.route('/').post((req, res) => {
     const { campaign, data,token } = req.body
-    console.log(token)
     return stripe.customers.create({
         email: token.email,
         source: token.id
@@ -38,7 +37,7 @@ router.route('/').post((req, res) => {
 
 router.route('/addToDatabase').post((req, res) => {
     const { campaign, data } = req.body
-    const transaction = new Transaction({ user: data.id, campaign: campaign._id, amount: data.donation })
+    const transaction = new Transaction({ user: data.id, campaign: campaign, amount: data.donation,anonym:data.anonym })
     transaction.save()
         .then(() => {
             let mailTransporter = nodemailer.createTransport({
@@ -63,7 +62,5 @@ router.route('/addToDatabase').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 
 })
-
-
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Forum = require('../models/forum.model');
+let Comment = require('../models/comment.model');
 
 
 router.route('/').get((req, res) => {
@@ -58,6 +59,21 @@ router.get("/search/:key",async (req,res)=>{
 
 });
 
+router.get("/:id/comments",async (req, res) =>{
+    Comment.findAll({ where: { forum: req.params.id } }).then(
+      (comment) => {
+        res.render("post-template.ejs", {
+          comment: comment,
+        });
+      }
+    );
+  });
 
+  router.route("/com/:id").get((req, res) => {
+    //const project = Project.findById(req.params.id);
+    Comment.find({ forum: req.params.id })
+        .then((forums) => res.json(forums))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
 
 module.exports = router;

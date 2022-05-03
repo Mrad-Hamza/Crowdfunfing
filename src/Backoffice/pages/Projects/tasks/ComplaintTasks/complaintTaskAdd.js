@@ -32,7 +32,7 @@ function ComplaintTaskAdd(props) {
         console.log(state);
         if (state.complaintTaskTitle && state.complaintDescription && state.task && state.user) {
             ComplaintTaskService.addComplaint(state);
-            history.push(`/projects/${_id}`);
+            history.push(`/projects/task/${_id}`);
         }
     };
 

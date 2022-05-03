@@ -41,7 +41,7 @@ const ProjectListing = () => {
 
     return (
         <div>
-            <TextField id="standard-basic" label="Search" variant="standard" style={{ width: "1070px" }} className="ml-5" name="searchedName" onChange={handleChange} />
+            <TextField id="standard-basic" label="Search" variant="standard" style={{ width: "900px" }} className="ml-5" name="searchedName" onChange={handleChange} />
             <div style={{ maxHeight: "500px", overflowY: "auto", overflowX: "hidden" }} className="global-scroll">
                 <Grid container className="projects-list-container " columns={{ xs: 8, md: 8, lg: 12 }}>
                     <ProjectComponent projects={searchHandel()} />

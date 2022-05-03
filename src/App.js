@@ -1,7 +1,14 @@
+
 import React, { useState, useEffect, useRef } from "react";
+
+// import Chatbot from "react-chatbot-kit";
+// import MessageParser from "./chatbot/MessageParser";
+// import Config from "./chatbot/config";
+// import ActionProvider from "./chatbot/ActionProvider";
 import classNames from "classnames";
 import { Route, useLocation, useHistory } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+
 
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
@@ -40,21 +47,14 @@ import Compaigns from "./Backoffice/pages/Compaigns/Compaigns";
 import CompaignsList from "./Backoffice/pages/Compaigns/list-Compaigns";
 import upadateCompaign from "./Backoffice/pages/Compaigns/Edit-Comapaign";
 import addCompaign from "./Backoffice/pages/Compaigns/Add-Compaigns";
-import "primereact/resources/primereact.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
-import "prismjs/themes/prism-coy.css";
-import "./assets/demo/flags/flags.css";
-import "./assets/demo/Demos.scss";
-import "./assets/layout/layout.scss";
-import "./App.scss";
 import createEventForm from "./Backoffice/pages/events/createEventForm";
 import statisticsEvent from "./Backoffice/pages/events/statisticsEvent";
 import eventListing from "./Backoffice/pages/events/eventListing";
 // import showEvents from "./pages/events/showEvents";
+
 import EventDetail from "./Backoffice/pages/events/eventDetail";
 import { userService } from "./Backoffice/pages/User/_services/user.service";
-
+import forumCreate from "./Backoffice/pages/Forums/forumCreate";
 import ForumListing from "./Backoffice/pages/Forums/forumListing";
 import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
 import updateForum from "./Backoffice/pages/Forums/updateForum";
@@ -70,10 +70,14 @@ import InvoiceTaskAdd from "./Backoffice/pages/Projects/tasks/InvoiceTasks/invoi
 import ComplaintTaskAdd from "./Backoffice/pages/Projects/tasks/ComplaintTasks/complaintTaskAdd";
 import TaskDetails from "./Backoffice/pages/Projects/tasks/TaskDetails";
 import ProjectUpdate from "./Backoffice/pages/Projects/projectUpdate";
+import SignleEvent from "./Backoffice/pages/events/SingleEvent";
+import EditCommentEvent from "./Backoffice/pages/events/editCommentEvent";
+import favoriteList from "./Backoffice/pages/events/favoriteList";
 
 const EmptyPage = React.lazy(() => import("./Backoffice/pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./Backoffice/pages/TimelineDemo"));
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState("static");
@@ -135,16 +139,20 @@ const App = () => {
         setLayoutColorMode(mode);
     };
 
+
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
     // KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
-    console.log("Current User Id = " + localStorage.getItem("currentUserId"));
-    console.log("Current UserName = " + localStorage.getItem("currentUsername"));
-    console.log("Current MailAddress = " + localStorage.getItem("currentMailAddress"));
-    console.log("Current Role = " + localStorage.getItem("currentRoles"));
+    console.log("Current User Id = " + localStorage.getItem('currentUserId'))
+    console.log("Current UserName = " + localStorage.getItem('currentUsername'))
+    console.log("Current MailAddress = " + localStorage.getItem('currentMailAddress'))
+    console.log("Current Role = " + localStorage.getItem('currentRoles'))
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -241,8 +249,8 @@ const App = () => {
                     icon: "pi pi-fw pi-calendar",
                     items: [
                         { label: "Calendar", icon: "pi pi-fw pi-calendar", to: "/events" },
-                        { label: "Event", icon: "pi pi-fw pi-clone", to: "/create-event" },
-                        { label: "ShowEvents", icon: "pi pi-fw pi-book", to: "/showEvents" },
+                        { label: "Favorites", icon: "pi pi-fw pi-clone", to: "/favoriteList" },
+                        { label: "Events", icon: "pi pi-fw pi-book", to: "/showEvents" },
                         { label: "Statistics", icon: "pi pi-fw pi-chart-line", to: "/statistcs" },
                     ],
                 },
@@ -293,15 +301,21 @@ const App = () => {
         "layout-theme-light": layoutColorMode === "light",
     });
 
+
+
     if (token) {
         if (localStorage.getItem("currentRoles") === "Simple User") {
+
             return <Routes />;
+
         } else if (localStorage.getItem("currentRoles") === "Admin") {
+
             return (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
                     <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+
 
                     <div className="layout-sidebar" onClick={onSidebarClick}>
                         <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
@@ -313,7 +327,9 @@ const App = () => {
                             <Route path="/timeline" component={TimelineDemo} />
                             <Route path="/empty" component={EmptyPage} />
 
-                            <Route path="/crud" component={Crud} />
+
+                    <Route path="/crud" component={Crud} />
+
 
                             <Route path="/PaymentPage" component={PaymentPage} />
 
@@ -323,13 +339,23 @@ const App = () => {
                             <Route path="/update/:id" component={upadateCompaign} />
                             <Route path="/ADDCompaign" component={addCompaign} />
                             <Route path="/ListDeadline" component={ListDeadline} />
+
+                            <Route path="/addforums" component={forumCreate}/>
+
                             {/* <Route path="/add" component={forumCreate}/> */}
+
                             <Route path="/UsersList" component={UsersList} />
                             <Route path="/events" exact component={Events} />
                             <Route path="/create-event" component={createEventForm} />
                             <Route path="/statistcs" component={statisticsEvent} />
                             <Route path="/showEvents" component={eventListing} />
+
+                            <Route path="/updateEvent/:idEvent" component={SignleEvent} />
+                            <Route path="/updateCommentEvent/:idComment" component={EditCommentEvent} />
                             <Route path="/events/:_id" component={EventDetail} />
+                            <Route path="/favoriteList" component={favoriteList} />
+
+
                             <Route path="/projects" exact component={ProjectListing} />
                             <Route path="/deletedprojects" exact component={ProjectDeletedListing} />
                             <Route path="/projects/:_id" exact component={ProjectDetails} />
@@ -343,7 +369,7 @@ const App = () => {
                             <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
                             <Route path="/forums" exact component={ForumListing} />
                             <Route path="/comment" component={ForumsComment} />
-                            <Route path="/edit/:_id" component={updateForum} />
+                          <Route path="/edit/:_id" component={updateForum} />
                         </div>
                         <AppFooter layoutColorMode={layoutColorMode} />
                     </div>
@@ -355,13 +381,19 @@ const App = () => {
                 </div>
             );
         }
+
+
+
     } else {
+
         return (
             <AppContainer>
                 <AccountBox />
             </AppContainer>
         );
     }
+
+
 };
 
 export default App;

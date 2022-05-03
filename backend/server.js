@@ -64,10 +64,10 @@ app.use("/compaigns", compaignRouter);
 
 const categoryRouter = require("./routes/category");
 app.use("/category", categoryRouter);
+
 const statisticsEventRouter = require("./routes/statisticsEvent");
 app.use("/statis", statisticsEventRouter);
 
 app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-    console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });

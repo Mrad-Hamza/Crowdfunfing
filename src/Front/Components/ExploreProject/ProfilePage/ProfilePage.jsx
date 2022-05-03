@@ -7,8 +7,12 @@ import { FileUpload } from "primereact/fileupload";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
+import { Link } from "react-router-dom";
+
 import classNames from "classnames";
 import { userService } from "../../../../Backoffice/pages/User/_services/user.service";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const ProfilePage = () => {
     let emptyUser = {
@@ -24,7 +28,23 @@ const ProfilePage = () => {
         loginAttempts: 0,
         roles: "",
     };
+    const emptyTransaction = {
+        amount: 0,
+        user: "",
+        campaign: {
+            _id: "",
+            nameCompaign: "Campaign Name",
+            typeCompaign: "",
+            objective: "",
+            description: "",
+            deadline: new Date(),
+            Status: "",
+        },
+        anonym: false,
+    };
+    const emptyTransactions = [];
 
+    const [transaction, setTransaction] = useState(emptyTransaction);
     const [pwd, setPwd] = useState("");
     const [confirmPwd, setConfirmPwd] = useState("");
     const [userDialog, setUserDialog] = useState(false);
@@ -33,6 +53,9 @@ const ProfilePage = () => {
     const [imgDialog, setImgDialog] = useState(false);
     const [pwdDialog, setPwdDialog] = useState(false);
     const [PwdSubmitted, setPwdSubmitted] = useState(false);
+    const [transactions, setTransactions] = useState(emptyTransactions);
+    const [loading1, setLoading1] = useState(true);
+
     const toast = useRef(null);
 
     const BlackBar = styled.div`
@@ -67,8 +90,16 @@ const ProfilePage = () => {
             Promise.resolve(userService.getProfile()).then((value) => {
                 setUser(value);
             });
-        }, 2000);
+            Promise.resolve(userService.getUserDonations()).then((value) => {
+                setTransactions(value.data);
+                setLoading1(false);
+            });
+        }, 200);
     }, []);
+
+    useEffect(() => {
+        console.log(transactions[0]);
+    }, [loading1]);
 
     const saveUser = () => {
         setSubmitted(true);
@@ -180,8 +211,11 @@ const ProfilePage = () => {
                     <div className="col-4">
                         <div className="row">
                             <TextHeader>Campaings : 0 </TextHeader>
-                            <TextHeader>Donations : 0</TextHeader>
+                            <TextHeader>Donations : {transactions.length}</TextHeader>
                             <TextHeader>Comments : 0</TextHeader>
+                            <Link to={`/favoriteList`}>
+                                <TextHeader>List of favorites</TextHeader>
+                            </Link>
                         </div>
                         <br></br>
                         <div className="row">
@@ -189,6 +223,15 @@ const ProfilePage = () => {
                             <TextHeader>Last Name : {user.lastname}</TextHeader>
                             <TextHeader>Mail : {user.mailAddress}</TextHeader>
                         </div>
+                    </div>
+                    <div className="col-5">
+                        <h5>Donations</h5>
+                        <DataTable value={transactions} paginator className="p-datatable-gridlines" showGridlines rows={5} dataKey="id" filterDisplay="menu" loading={loading1} responsiveLayout="scroll" emptyMessage="No dontions found.">
+                            {/* <Column field="campaign" header="Campaign" filterMenuStyle={{ width: "6rem" }} style={{ minWidth: "12rem" }} body={JSON.stringify(transaction.createdAt)} /> */}
+                            <Column field="campaign" header="Campaign" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.campaign.nameCompaign} />
+                            <Column field="amount" header="Amount" style={{ minWidth: "4rem" }} body={transaction.amount} />
+                            <Column field="anonymity" header="Anonymity" dataType="boolean" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.anonym ? "Yes" : "No"} />
+                        </DataTable>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,12 @@ const forumSchema = new Schema({
     required: true,
     
   },
-
+  comments: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: "comment",
+    },
+],
 
 
 },

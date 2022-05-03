@@ -1,5 +1,6 @@
 const router = require("express").Router();
 let Project = require("../models/project.model");
+let Compaign = require("../models/compaign.model");
 let User = require("../models/user.model");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
@@ -42,6 +43,13 @@ router.route("/active/:id").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/:id").get((req, res) => {
+    // const compaignById = Compaign.findById(req.params.id);
+    Project.findOne({ compaign: req.params.id })
+        .then((project) => res.json(project))
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //add
 router.route("/add").post(upload.single("image"), (req, res) => {
     console.log(req.body);
@@ -53,12 +61,22 @@ router.route("/add").post(upload.single("image"), (req, res) => {
     const image = req.file.filename;
     const compaign = req.body.compaign;
     const user = req.body.user;
-
+    const resteAmount = req.body.projectCollectedAmount;
+    Compaign.findById(compaign)
+        .then((compaign) => {
+            compaign.Verified = 1;
+            compaign
+                .save()
+                .then(() => res.json("compaign updated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
     const newProject = new Project({
         projectName,
         projectDescription,
         projectType,
         projectCollectedAmount,
+        resteAmount,
         image,
         status,
         compaign,
