@@ -9,6 +9,7 @@ async function addTask(task) {
     formData.append("taskName", task.taskName);
     formData.append("project", task.project);
     formData.append("taskDescription", task.taskDescription);
+    formData.append("taskAmount", task.taskAmount);
     formData.append("user", task.user);
     console.log(formData);
     return await axios

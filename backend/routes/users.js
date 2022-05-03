@@ -13,13 +13,14 @@ var fs = require('fs');
 var path = require('path');
 require('dotenv/config');
 
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, '../src/assets/layout/images')
+        cb(null, "../src/assets/layout/images");
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
+        cb(null, file.originalname);
+    },
 });
 
 var upload = multer({ storage: storage });
@@ -263,6 +264,34 @@ router.route('/PasswordUpdate/:mail/:password').put((req, res) => {
     mailTransporter.sendMail(details)
 })
 
+router.route("/PasswordUpdate/:mail/:password").put((req, res) => {
+    User.findOne({ mailAddress: req.params.mail })
+        .then((user) => {
+            user.password = req.params.password;
+            user.save()
+                .then(() => res.json("User updated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: "fundise.noreply@gmail.com",
+            pass: "HzJxDKrxS2LNwa9",
+        },
+    });
+    let details = {
+        from: "fundise.noreply@gmail.com",
+        to: req.params.mail,
+        subject: "Password Changed Succesfully.",
+        text: "Your new password is " + req.params.password,
+    };
+    mailTransporter.sendMail(details);
+});
 
 router.route('/ForgotPassword/:mail').post((req, res) => {
     let mailTransporter = nodemailer.createTransport({
@@ -369,7 +398,5 @@ function authenticateToken(req, res, nex) {
             .next()
     })
 }
-
-
 
 module.exports = router;

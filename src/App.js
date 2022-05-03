@@ -4,11 +4,11 @@ import classNames from 'classnames';
 import { Route, useLocation, useHistory } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 
+
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
 import { AppMenu } from "./Backoffice/components/layout/AppMenu";
 import { AppConfig } from "./AppConfig";
-
 
 import styled from "styled-components";
 
@@ -61,9 +61,8 @@ import ForumListing from "./Backoffice/pages/Forums/forumListing";
 import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
 import updateForum from "./Backoffice/pages/Forums/updateForum";
 
-
-import { Routes } from "./Front/Components/Routes"
-import Crud from "./Backoffice/pages/Crud"
+import { Routes } from "./Front/Components/Routes";
+import Crud from "./Backoffice/pages/Crud";
 import PaymentPage from "./Backoffice/pages/Payment/PaymentPage";
 
 import InvoiceProjectAdd from "./Backoffice/pages/Projects/InvoiceProjects/invoiceAdd";
@@ -104,7 +103,7 @@ const App = () => {
         setTimeout(() => {
             if (userService.checkToken()) {
                 history.push("/");
-                userService.logout()
+                userService.logout();
                 window.location.reload(false);
             }
         }, 1000);
@@ -236,18 +235,12 @@ const App = () => {
                 {
                     label: "Users",
                     icon: "pi pi-fw pi-users",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" },
-                        { label: "Dashboad", icon: "pi pi-fw pi-chart-line", to: "/" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/UsersList" }],
                 },
                 {
                     label: "Campaigns",
                     icon: "pi pi-fw pi-tablet",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line", to: "/compaignsList" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list", to: "/compaignsList" }],
                 },
                 {
                     label: "Events",
@@ -266,7 +259,6 @@ const App = () => {
                         { label: "List", icon: "pi pi-fw pi-list", to: "/projects" },
                         { label: "Deleted list", icon: "pi pi-fw pi-times", to: "/deletedprojects" },
                         // { label: "Tasks", icon: "pi pi-fw pi-clone" },
-                        { label: "Dashboard", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
@@ -276,16 +268,12 @@ const App = () => {
                         { label: "ListForums", icon: "pi pi-fw pi-list", to: "/forums" },
                         { label: "ListComments", icon: "pi pi-fw pi-list", to: "/comment" },
                         { label: "AddForum", icon: "pi pi-fw pi-list", to: "/add" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
                     ],
                 },
                 {
                     label: "Transactions",
                     icon: "pi pi-fw pi-dollar",
-                    items: [
-                        { label: "List", icon: "pi pi-fw pi-list" },
-                        { label: "Dashboards", icon: "pi pi-fw pi-chart-line" },
-                    ],
+                    items: [{ label: "List", icon: "pi pi-fw pi-list" }],
                 },
             ],
         },

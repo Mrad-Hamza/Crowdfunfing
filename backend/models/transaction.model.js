@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
     {
         user: {
-            type: String,
+            type : String
         },
         campaign: {
             // const emptyCampaign = {

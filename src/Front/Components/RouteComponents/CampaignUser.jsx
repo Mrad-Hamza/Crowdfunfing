@@ -7,7 +7,6 @@ import moment from "moment";
 import data from "../../data.json";
 import img from "../../Images/EditIcon.PNG";
 import image from "../../Images/123456.jpeg";
-
 import {
   HeartOutlined,
   LeftCircleOutlined,
@@ -43,8 +42,9 @@ const Compaign = (props) => (
 
       <div style={{}}>
         <img style={{ width: "100%", height: "225px" }}
-             src={require("../../../assets/layout/images/"+props.compaign.img.imgName)}
+          src={require("../../../assets/layout/images/"+props.compaign.img.imgName)}
           className="card-img-top"
+
         />
       </div>
 
@@ -141,7 +141,7 @@ const Compaign = (props) => (
           </div>
           <div style={{ bottom: 0, float: "center" ,width:"100%",paddingTop:"30px",textAlign:"center"}}>
 
-          <Button label="Make a donation" icon="pi pi-euro" className="p-button-text" style={{ 
+          <Button label="Show Project details" className="p-button-text" style={{ 
               border: "1px solid transparent",
               backgroundColor: "rgb(150, 115, 66)!important",
               color:"rgb(239, 214, 146)",
@@ -171,7 +171,7 @@ const Compaign = (props) => (
 
 );
 
-export default class ProjectCard extends Component {
+class CampaignUser extends Component {
   constructor(props) {
     super(props);
 
@@ -183,7 +183,7 @@ export default class ProjectCard extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/compaigns/front")
+      .get("http://localhost:5000/compaigns/campaignUser/"+localStorage.getItem('currentUserId'))
       .then((response) => {
         this.setState({ compaigns: response.data });
       })
@@ -222,3 +222,4 @@ export default class ProjectCard extends Component {
     );
   }
 }
+export {CampaignUser}

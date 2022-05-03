@@ -50,6 +50,7 @@ export function LoginForm(props) {
     const [img, setImg] = useState(emptyImg);
     const [verifUser, setVerifUser] = useState(emptyUser);
 
+    const location = useLocation();
     const toast = useRef(null);
     const canvas = useRef(null);
     const [modelsLoaded, setModelsLoaded] = React.useState(false);
@@ -231,10 +232,20 @@ export function LoginForm(props) {
                 };
 
                 faceapi.matchDimensions(canvasRef.current, displaySize);
+                const labeledDescriptor = await detect();
+                console.log(labeledDescriptor);
+                const faceMatcher = new faceapi.FaceMatcher(labeledDescriptor, 0.2);
+                faceapi.matchDimensions(canvasRef.current, displaySize);
+                canvasRef && canvasRef.current && canvasRef.current.getContext("2d").clearRect(0, 0, videoWidth, videoHeight);
 
-                const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-
+                const detections = await faceapi.detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+                console.log(detections);
                 const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                const labDescr = faceapi.LabeledFaceDescriptors("test", detections.descriptor);
+                const labels = faceMatcher.labDescr.map((ld) => ld.label);
+                console.log(labels);
+
+
 
                 canvasRef && canvasRef.current && canvasRef.current.getContext("2d").clearRect(0, 0, videoWidth, videoHeight);
                 // canvasRef && canvasRef.current && faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
@@ -395,6 +406,7 @@ export function LoginForm(props) {
 
     if (!redirect) {
         return (
+            // <div style={{ backgroundImage: "url('../../../../../assets/layout/images/background.jpg')" }} className="test">
             <BoxContainer>
                 <Toast ref={toast} />
                 <FormContainer>
@@ -531,6 +543,7 @@ export function LoginForm(props) {
                     </div> */}
                 </Dialog>
             </BoxContainer>
+            // </div>
         );
     }
 }

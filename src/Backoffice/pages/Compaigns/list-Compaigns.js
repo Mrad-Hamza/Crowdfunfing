@@ -16,7 +16,7 @@ const Compaign = props => (
     <td>{props.compaign.objective}</td>
     <td>{props.compaign.description}</td>
     <td>{moment(props.compaign.deadline).format('DD/MM/YYYY')}</td>
-    <td>{props.compaign.Verified}</td>
+    <td>{props.compaign.cumulateAmount}</td>
     <td>{props.compaign.Status}</td>
     <td>
     <div className="actions">
@@ -118,7 +118,7 @@ export default class CompaignList extends Component {
               <th>Objective</th>
               <th>Description</th>
               <th>Deadline</th>
-              <th>Verified</th>
+              <th>Cumulate Amount</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>

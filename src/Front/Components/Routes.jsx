@@ -6,6 +6,8 @@ import { WhatWeDo } from "./RouteComponents/WhatWeDo";
 import { Search } from "./RouteComponents/Search";
 import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
 import { Campaign } from "./RouteComponents/Campaign";
+import { CampaignUser } from "./RouteComponents/CampaignUser";
+import { ForumList } from "./RouteComponents/forumListing";
 import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage"
 import { Footer } from "./Footer";
 import CollectionsPage from "./HomeComponents/Collections/CollectionsPage"
@@ -25,7 +27,7 @@ const Routes = () => {
         style={{
           border: "1px solid lightgrey",
           marginLeft: "-8px",
-          width: "105%",
+          width: "100%",
           borderBottom: "none",
         }}
       />
@@ -39,9 +41,19 @@ const Routes = () => {
         path="/entrepreneurs"
         component={(props) => <ForEntrepreneurs {...props} />}
       /> */}
+
+<Route
+          path="/forum"
+          component={(props) => <ForumList {...props} />}
+        />
         <Route
           path="/campaign"
           component={(props) => <Campaign {...props} />}
+        />
+
+<Route
+          path="/CampaignUser/:_id"
+          component={(props) => <CampaignUser {...props} />}
         />
         {/* <Route path = "/popularPage" render = {(props) => <PopularProductsPage {...props} />} /> */}
         <Route path="/" exact render ={(props) => <Home {...props} />} />

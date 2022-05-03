@@ -64,11 +64,13 @@ router.route("/add").post(upload.single(""), (req, res) => {
     const project = req.body.project;
     const user = req.body.user;
     const status = "ON";
+    const taskAmount = req.body.taskAmount;
 
     const newTask = new Task({
         taskName,
         taskDescription,
         taskType,
+        taskAmount,
         project,
         status,
         user,

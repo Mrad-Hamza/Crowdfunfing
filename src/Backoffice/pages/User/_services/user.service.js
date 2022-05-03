@@ -13,10 +13,12 @@ export const userService = {
     facebooklogin,
     getUserImage,
     getAll,
+    getCampaign,
     addUser,
     googlelogin,
     getUserByMailOrUsername,
     getProfile,
+    updateCampaingAmount,
     update,
     changePassword,
     forgotpassword,
@@ -166,6 +168,14 @@ async function getUserImage(id) {
     return await axios.get('http://localhost:5000/image/' + id, requestOptions)
 }
 
+async function getCampaign(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return await axios.get('http://localhost:5000/compaigns/' + id, requestOptions)
+}
+
 async function getAll() {
     const requestOptions = {
         method: 'GET',
@@ -207,6 +217,24 @@ async function changePassword(mailAddress, password) {
         headers: { 'Content-Type': 'application/json' },
     };
     return await axios.put('http://localhost:5000/users/PasswordUpdate/' + mailAddress + "/" + password, requestOptions)
+}
+async function updateCampaingAmount(id,number) {
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     data: {
+    //         cumulateAmount: 20
+    //     }
+    // };
+    // return await axios.put('http://localhost:5000//compaigns/updateAmount/6268598f99cbd70117c071ee', requestOptions).then((res) => console.log(res.data))
+        return await axios
+            .put("http://localhost:5000/compaigns/updateAmount/"+id+"/"+number)
+        .then((res) => {
+            console.log("campaign  updated!");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 async function update(user) {

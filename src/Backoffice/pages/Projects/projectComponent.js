@@ -5,8 +5,8 @@ import { Button } from "primereact/button";
 import "./projects.css";
 import { projectService } from "./projectService";
 
-const ProjectComponent = () => {
-    const projects = useSelector((state) => state.projects.projects);
+const ProjectComponent = ({projects}) => {
+    // const projects = useSelector((state) => state.projects.projects);
 
     const renderList = projects.map((project) => {
         const deleteProject = () => {
