@@ -5,9 +5,12 @@ import { userService } from "../../pages/User/_services";
 
 
 export const AppTopbar = (props) => {
+
     const logout = (e) => {
         userService.logout()
-        console.log("bon")
+        setTimeout(function() { //Start the timer
+            window.location.reload(false);
+        }.bind(this), 1000)
     }
     return (
         <div className="layout-topbar">

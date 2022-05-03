@@ -14,10 +14,9 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { userService } from '../../_services';
 import { roleService } from '../../_services';
-import { users } from '../../_reducers/users.reducer';
 
 const UsersList = () => {
-    let emptyProduct = {
+    let emptyUser = {
         _id: null,
         username: null,
         firstname: null,
@@ -29,46 +28,48 @@ const UsersList = () => {
     };
 
     const [products, setProducts] = useState(null);
-    const [productDialog, setProductDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [product, setProduct] = useState(emptyProduct);
-    const [user,setUser] = useState(emptyProduct)
+    const [userDialog, setUserDialog] = useState(false);
+    const [deleteUserDialog, setDeleteUserDialog] = useState(false);
+    const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
+    const [product, setProduct] = useState(emptyUser);
+    const [user,setUser] = useState(emptyUser)
     const [users, setUsers] = useState(null);
-    const [selectedProducts, setSelectedProducts] = useState(null);
+    const [selectedUsers, setSelectedUsers] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
 
     useEffect(() => {
-    //    const productService = new ProductService();
-    //    productService.getProducts().then(data => setProducts(data));
-        userService.getAll().then(data => setUsers(data))
-        console.log(users)
+
     }, []);
+
+    const getListFunction = () =>{
+        const res = userService.getAll()
+        const result = Promise.resolve(res);
+        result.then((value)=>{
+            setUsers(value.data)
+            console.log(value.data)
+        })
+    }
 
     const formatCurrency = (value) => {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
 
     const openNew = () => {
-        setProduct(emptyProduct);
+        setProduct(emptyUser);
         setSubmitted(false);
-        setProductDialog(true);
+        setUserDialog(true);
     }
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProductDialog(false);
+        setUserDialog(false);
     }
 
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
-    }
-
-    const hideDeleteProductsDialog = () => {
-        setDeleteProductsDialog(false);
+    const hideDeleteUserDialog = () => {
+        setDeleteUserDialog(false);
     }
 
     const saveUser = () => {
@@ -78,39 +79,39 @@ const UsersList = () => {
             let _users = [...users];
             let _user = { ...user };
             if (user.id) {
-                const index = findIndexById(product.id);
+                const index = findIndexById(user.id);
 
                 _users[index] = _user;
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
             }
             else {
                 _user.id = createId();
                 _users.push(_user);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Created', life: 3000 });
             }
 
-            setProducts(_users);
-            setProductDialog(false);
-            setProduct(emptyProduct);
+            setUsers(_users);
+            setUserDialog(false);
+            setUser(emptyUser);
         }
     }
 
-    const editProduct = (user) => {
+    const editUser = (user) => {
         setUser({ ...user });
-        setProductDialog(true);
+        setUserDialog(true);
     }
 
-    const confirmDeleteProduct = (user) => {
+    const confirmDeleteUser = (user) => {
         setUser(user);
-        setDeleteProductDialog(true);
+        setDeleteUserDialog(true);
     }
 
-    const deleteProduct = () => {
+    const deleteUser = () => {
         let _users = users.filter(val => val.id !== user.id);
         setUsers(_users);
-        setDeleteProductDialog(false);
-        setUser(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        setDeleteUserDialog(false);
+        setUser(emptyUser);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
     }
 
     const findIndexById = (id) => {
@@ -139,21 +140,21 @@ const UsersList = () => {
     }
 
     const confirmDeleteSelected = () => {
-        setDeleteProductsDialog(true);
+        setDeleteUsersDialog(true);
     }
 
-    const deleteSelectedProducts = () => {
-        let _users = users.filter(val => !selectedProducts.includes(val));
+    const deleteSelectedUsers = () => {
+        let _users = users.filter(val => !selectedUsers.includes(val));
         setUsers(_users);
-        setDeleteProductsDialog(false);
-        setSelectedProducts(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+        setDeleteUsersDialog(false);
+        setSelectedUsers(null);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
     }
 
     const onCategoryChange = (e) => {
         let _user = { ...user };
         _user['category'] = e.value;
-        setProduct(_user);
+        setUser(_user);
     }
 
     const onInputChange = (e, username) => {
@@ -166,18 +167,19 @@ const UsersList = () => {
 
     const onInputNumberChange = (e, name) => {
         const val = e.value || 0;
-        let _product = { ...product };
-        _product[`${name}`] = val;
+        let _user = { ...user };
+        _user[`${name}`] = val;
 
-        setProduct(_product);
+        setUser(_user);
     }
 
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
+                    <Button label="List" icon="pi pi-plus" className="p-button-success mr-2" onClick={getListFunction} />
                     <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={openNew} />
-                    <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
+                    <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedUsers || !selectedUsers.length} />
                 </div>
             </React.Fragment>
         )
@@ -188,6 +190,14 @@ const UsersList = () => {
             <React.Fragment>
                 <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
                 <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />
+            </React.Fragment>
+        )
+    }
+
+    const getList = () => {
+        return (
+            <React.Fragment>
+                <Button label="Users List" icon="pi pi-upload" className="p-button-help" onClick={getListFunction} />
             </React.Fragment>
         )
     }
@@ -258,15 +268,15 @@ const UsersList = () => {
     const actionBodyTemplate = (rowData) => {
         return (
             <div className="actions">
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteProduct(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editUser(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning mt-2" onClick={() => confirmDeleteUser(rowData)} />
             </div>
         );
     }
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Manage Products</h5>
+            <h5 className="m-0">Manage Users</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
@@ -282,14 +292,14 @@ const UsersList = () => {
     );
     const deleteProductDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteProduct} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUserDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteUser} />
         </>
     );
     const deleteProductsDialogFooter = (
         <>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteProductsDialog} />
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedProducts} />
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUserDialog} />
+            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedUsers} />
         </>
     );
 
@@ -299,20 +309,21 @@ const UsersList = () => {
                 <div className="card">
                     <Toast ref={toast} />
                     <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-
-                    <DataTable ref={dt} value={users} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
+                    {users && <h1>existttt</h1>}
+                    <DataTable ref={dt} value={users} selection={selectedUsers} onSelectionChange={(e) => setSelectedUsers(e.value)}
+                        dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                        globalFilter={globalFilter} emptyMessage="No products found." header={header} responsiveLayout="scroll">
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
+                        globalFilter={globalFilter} emptyMessage="No users found." header={header} responsiveLayout="scroll">
                         <Column selectionMode="multiple" headerStyle={{ width: '3rem'}}></Column>
-                        <Column field="username" header="User Name" sortable body={codeBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="mailAddres" header="Mail Address" sortable body={nameBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
-                        <Column field="role" header="Role" body={imageBodyTemplate} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="username" header="User Name" sortable body={user.username} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="mailAddress" header="Mail Address" sortable body={user.mailAddress} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
+                        <Column field="roles" header="Role" body={user.roles} headerStyle={{ width: '14%', minWidth: '10rem' }}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
 
-                    <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+
+                    <Dialog visible={userDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                         {product.image && <img src={`assets/demo/images/product/${product.image}`} alt={product.image} width="150" className="mt-0 mx-auto mb-5 block shadow-2" />}
                         <div className="field">
                             <label htmlFor="name">Name</label>
@@ -358,14 +369,14 @@ const UsersList = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                    <Dialog visible={deleteUserDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteUserDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && <span>Are you sure you want to delete <b>{product.name}</b>?</span>}
                         </div>
                     </Dialog>
 
-                    <Dialog visible={deleteProductsDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
+                    <Dialog visible={deleteUsersDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteUserDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                             {product && <span>Are you sure you want to delete the selected products?</span>}

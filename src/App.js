@@ -56,8 +56,9 @@ import ForumListing from "./pages/Forums/forumListing";
 import ForumsComment from "./pages/Forums/ForumsComment";
 import updateForum from "./pages/Forums/updateForum";
 import forumCreate from "./pages/Forums/forumCreate";
+import { userService } from "./pages/User/_services/user.service"
 
-const Crud = React.lazy(() => import("./pages/Crud"));
+import Crud from "./pages/Crud"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
 //const Projects = React.lazy(() => import("./pages/Projects"));
 const TimelineDemo = React.lazy(() => import("./pages/TimelineDemo"));
@@ -80,8 +81,14 @@ const App = () => {
     let menuClick = false;
     let mobileTopbarMenuClick = false;
 
-
     const token = localStorage.getItem('token')
+
+    useEffect(() => {
+        setTimeout(() => {
+            userService.checkToken()
+            console.log("token test")
+        }, 180000);
+    })
 
     useEffect(() => {
         if (mobileMenuActive) {
@@ -112,6 +119,23 @@ const App = () => {
     const onColorModeChange = (mode) => {
         setLayoutColorMode(mode);
     };
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// KEN 7AJTEK BECH TA3REF EL USER ELI CONNECTE ( ID WALA USERNAME WALA MAIL MTA3OU ) ESTA3MEL LOCALSTORAGE.GETITEM KIMA LEHNA
+    console.log("Current User Id = "+localStorage.getItem('currentUserId'))
+    console.log("Current UserName = "+localStorage.getItem('currentUsername'))
+    console.log("Current MailAddress = "+localStorage.getItem('currentMailAddress'))
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
     const onWrapperClick = (event) => {
         if (!menuClick) {
@@ -301,6 +325,7 @@ const App = () => {
                     <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/ADD" component={addCompaign} />
 
+                    <Route path="/crud" component={Crud} />
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
                     <Route path="/events" exact component={Events} />
