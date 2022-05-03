@@ -52,11 +52,14 @@ import statisticsEvent from "./pages/events/statisticsEvent";
 import eventListing from "./pages/events/eventListing"
 // import showEvents from "./pages/events/showEvents";
 import EventDetail from "./pages/events/eventDetail";
+
+import { userService } from "./pages/User/_services/user.service"
+
 import ForumListing from "./pages/Forums/forumListing";
 import ForumsComment from "./pages/Forums/ForumsComment";
 import updateForum from "./pages/Forums/updateForum";
 import forumCreate from "./pages/Forums/forumCreate";
-import { userService } from "./pages/User/_services/user.service"
+
 
 import Crud from "./pages/Crud"
 const EmptyPage = React.lazy(() => import("./pages/EmptyPage"));
@@ -320,12 +323,16 @@ const App = () => {
                     <Route path="/timeline" component={TimelineDemo} />
                     <Route path="/empty" component={EmptyPage} />
 
+
+                    <Route path="/crud" component={Crud} />
+
+
                     <Route path="/compaigns" component={Compaigns} />
                     <Route path="/compaignsList" component={CompaignsList} />
                     <Route path="/update/:id" component={upadateCompaign} />
                     <Route path="/ADD" component={addCompaign} />
 
-                    <Route path="/crud" component={Crud} />
+
                     <Route path="/UsersList" component={UsersList} />
                     {/* <Route path="/projects" component={Projects} /> */}
                     <Route path="/events" exact component={Events} />
@@ -333,18 +340,12 @@ const App = () => {
                     <Route path="/statistcs"  component={statisticsEvent} />
                     <Route path="/showEvents" component={eventListing} />
                     <Route path="/events/:_id" component={EventDetail}/>
-
                     <Route path="/projects" exact component={ProjectListing} />
                     <Route path="/projects/:_id" component={ProjectDetails} />
                     <Route path="/forums" exact component={ForumListing} />
                     <Route path="/comment" component={ForumsComment}/>
                     <Route path="/edit/:_id" component={updateForum}/>
                     <Route path="/add" component={forumCreate}/>
-  
-
-                    
-                    
-                    
                 </div>
                 <AppFooter layoutColorMode={layoutColorMode} />
             </div>
@@ -358,10 +359,6 @@ const App = () => {
     );
 
 }
-
-
-
-    
     else {
         return (
             <AppContainer>
