@@ -9,6 +9,7 @@
     },
     "license": "MIT",
     "dependencies": {
+        "@alan-ai/alan-sdk-web": "^1.8.31",
         "@ant-design/icons": "^4.3.0",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",

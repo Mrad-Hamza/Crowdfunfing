@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Chatbot from "react-chatbot-kit";
 import MessageParser from "../../chatbot/MessageParser";
@@ -9,8 +9,8 @@ import "../../chatbot/chatbot.scss";
 import Navbar from "./Navbar";
 import { Home } from "./RouteComponents/Home";
 import { WhatWeDo } from "./RouteComponents/WhatWeDo";
-import { Search } from "./RouteComponents/Search";
-import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
+// import { Search } from "./RouteComponents/Search";
+// import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
 import { Campaign } from "./RouteComponents/Campaign";
 import { CampaignUser } from "./RouteComponents/CampaignUser";
 import { ForumList } from "./RouteComponents/forumListing";
@@ -38,11 +38,18 @@ import SignleEvent from "../../Backoffice/pages/events/SingleEvent";
 import EditCommentEvent from "../../Backoffice/pages/events/editCommentEvent";
 import FavoriteList from "../../Backoffice/pages/events/favoriteList";
 import EventDetail from "./RouteComponents/EventDetailFront";
+import alanBtn from "@alan-ai/alan-sdk-web";
 const Routes = () => {
+    const alanBtnInstance = useRef(null);
     const [show, toggleShow] = useState(true);
     console.log("🚀 ~ file: Routes.jsx ~ line 35 ~ Routes ~ show", show);
 
     useEffect(() => {
+        if (!alanBtnInstance.current) {
+            alanBtnInstance.current = alanBtn({
+                key: "f95091214a8df3ca034bf93e02534c132e956eca572e1d8b807a3e2338fdd0dc/stage",
+            });
+        }
         const handleOutsideClick = (e) => {
             // simple implementation, should be made more robust.
             if (!e.currentTarget.classList.includes("react-chatbot-kit")) {
@@ -111,12 +118,11 @@ const Routes = () => {
             <Route path="/popularPage/story" render={(props) => <Story {...props} />} />
             <Route path="/popularPage/faq" render={(props) => <Faq {...props} />} />
             {/* <Switch>
->>>>>>> c0ebbff4610dba2fe01142b7a0b0b3bb66087e03
         <Route path = "/popularPage/story" render = {(props) => <Story {...props} /> } />
         <Route path = "/popularPage/faq" render = {(props) => <Faq {...props} /> } />
       </Switch> */}
             <div style={{ position: "fixed", bottom: "0", zIndex: "1000", width: "100%", height: "40px", backgroundColor: "white" }}></div>
-            <div style={{ position: "fixed", bottom: "0", zIndex: "1000", right: "0" }}>
+            <div style={{ position: "fixed", bottom: "0", zIndex: "1000", right: "40px" }}>
                 <div>{show ? <Chatbot messageParser={MessageParser} actionProvider={ActionProvider} config={getConfig(onClick)} /> : null}</div>
             </div>
             <Footer />
