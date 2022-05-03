@@ -1,0 +1,93 @@
+
+import React from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import Navbar from "./Navbar";
+import { Home } from "./RouteComponents/Home";
+import { WhatWeDo } from "./RouteComponents/WhatWeDo";
+import { Search } from "./RouteComponents/Search";
+import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
+import { Campaign } from "./RouteComponents/Campaign";
+import { CampaignUser } from "./RouteComponents/CampaignUser";
+import { ForumList } from "./RouteComponents/forumListing";
+
+import { AddForum } from "./RouteComponents/forumCreate";
+import { ForumComment } from "./RouteComponents/ForumsComment";
+import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage"
+import { Footer } from "./Footer";
+import CollectionsPage from "./HomeComponents/Collections/CollectionsPage"
+import DeatiledAdvertisementRoutes from "./HomeComponents/popularProductsPageExtended/deatiledAdvertisement/DeatiledAdvertisementRoutes"
+import Story from "./HomeComponents/popularProductsPageExtended/deatiledAdvertisement/deatiledAdvertisementComponents/Story"
+import Faq from "./HomeComponents/popularProductsPageExtended/deatiledAdvertisement/deatiledAdvertisementComponents/Faq"
+import PopularProductsPage from "./HomeComponents/popularProductsPageExtended/PopularProductsPage"
+import { ExploreProducts } from "./ExploreProject/Project";
+const Routes = () => {
+  return (
+    <>
+      <Navbar />
+      {/* <Link to = "/popularPage" style = {{textDecoration: "none"}}>
+                  SEE COLLECTION
+                </Link> */}
+      <hr
+        style={{
+          border: "1px solid lightgrey",
+          marginLeft: "-8px",
+          width: "100%",
+          borderBottom: "none",
+        }}
+      />
+      <Switch>
+        <Route
+          path="/whatwedo"
+          component={(props) => <WhatWeDo {...props} />}
+        />
+        {/* <Route path="/search" component={(props) => <Search {...props} />} />
+        <Route
+        path="/entrepreneurs"
+        component={(props) => <ForEntrepreneurs {...props} />}
+      /> */}
+
+<Route
+          path="/forum"
+          component={(props) => <ForumList {...props} />}
+        />
+       <Route
+          path="/comment"
+          component={(props) => <ForumComment {...props} />}
+        /> 
+        <Route
+          path="/campaign"
+          component={(props) => <Campaign {...props} />}
+        />
+         <Route
+          path="/addforums"
+          component={(props) => <AddForum {...props} />}
+        />
+
+<Route
+          path="/CampaignUser/:_id"
+          component={(props) => <CampaignUser {...props} />}
+        />
+        {/* <Route path = "/popularPage" render = {(props) => <PopularProductsPage {...props} />} /> */}
+        <Route path="/" exact render ={(props) => <Home {...props} />} />
+        <Route path = "/collections" render = {(props) => <CollectionsPage {...props} />} />
+        <Route path="/profile" render = {(props) => <ProfilePage {...props}/>} />
+        <Route
+          exact
+          path="/explore_products"
+          render={(props) => <ExploreProducts {...props} />}
+        />
+        <Route exact path="/" component={(props) => <Home {...props} />} />
+      </Switch>
+      <Route path = "/popularPage" render = {(props) => <PopularProductsPage {...props} />} />
+      <Route path = "/popularPage/story" render = {(props) => <Story {...props} /> } />
+        <Route path = "/popularPage/faq" render = {(props) => <Faq {...props} /> } />
+      {/* <Switch>
+        <Route path = "/popularPage/story" render = {(props) => <Story {...props} /> } />
+        <Route path = "/popularPage/faq" render = {(props) => <Faq {...props} /> } />
+      </Switch> */}
+      <Footer />
+    </>
+  );
+};
+export { Routes };
+

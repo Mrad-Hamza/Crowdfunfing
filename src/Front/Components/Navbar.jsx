@@ -96,8 +96,11 @@ const Navbar = () => {
             title: "Start a Campaign",
         },
         {
+
+
             to: "/forum",
-            title: "forums",
+            title: "Forum",
+
         },
     ];
 

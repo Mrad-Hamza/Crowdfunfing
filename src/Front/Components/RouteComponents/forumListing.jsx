@@ -2,10 +2,21 @@ import React, { Component, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "primereact/button";
 import axios from 'axios';
-
+import './list.css';
+import styled from "styled-components";
 
 
 import "react-datepicker/dist/react-datepicker.css";
+const ForumStyle = styled.div`
+  font-size: 20px;
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+`;
 
 const Forum = props => (
   
@@ -21,7 +32,8 @@ const Forum = props => (
                                 <h6><a href="#" data-toggle="collapse" data-target=".forum-content" class="text-body">User</a></h6>
                                 <p class="text-secondary">
                                </p>
-                                <p class="text-muted"> <i class="pi pi-clock" ></i> <span class="text-secondary font-weight-bold">{props.forum.createdAt}</span></p>
+                               <div style={{ float: "left" }}>
+              <h6  class="text-muted"> <i class="pi pi-clock" ></i> <span class="text-secondary font-weight-bold">{props.forum.createdAt}</span></h6></div>
                             </div>
                            
                             
@@ -29,25 +41,26 @@ const Forum = props => (
                         </div>
 
    
-    <p>{props.forum.description}</p>
+    <h4>{props.forum.description}</h4>
     <p>  
    
-{/*  
-     <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => { props.deleteForum(props.forum._id) }}></Button>
+ 
+     {/* <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => { props.deleteForum(props.forum._id) }}></Button>
    
     <Link to={"/edit/"+props.forum._id}> 
     <Button icon="pi pi-pencil" className="p-button-rounded p-button-warning mt-2" >
         
      </Button>  
-    </Link>
-    <Link to={"/comment/"+props.forum._id}> 
-    <Button icon="pi pi-comments" className="p-button-rounded p-button-success mt-2"  onClick={() => { props.showComment(props.forum._id) }}></Button>
     </Link> */}
-    </p> 
-    
     <div class="text-muted small text-center align-self-center">
                                <span><i class="pi pi-comments" ></i>  {props.forum.__v}</span>
-                            </div>    </div> 
+                            </div> 
+    <Link to={"/comment/"+props.forum._id}> 
+    <Button icon="pi pi-comments" className="p-button-rounded p-button-success mt-2"  onClick={() => { props.showComment(props.forum._id) }}></Button>
+    </Link>
+    </p> 
+    
+       </div> 
                 </div>
    </div>
   </div>
@@ -116,6 +129,7 @@ searchHandel = (event)=>{
   forumList() {
     return this.state.forums.map(currentForum => {
       return  <Forum forum={currentForum} deleteForum={this.deleteForum} key={currentForum._id}/>;
+
     })
   }
   
@@ -124,23 +138,45 @@ searchHandel = (event)=>{
    
     return (
       
-      <div className="col-12">
-      <div className="card">
-  
-      {/* <div class="but">
-        <button class="btnn" ><Link to={"/addforums"}>Add forum +</Link></button>
-        </div> */}
-      <div class="wrapper">
-      <img class="search-icon"  src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2Ljk2NiA1Ni45NjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2Ljk2NiA1Ni45NjY7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4Ij4KPHBhdGggZD0iTTU1LjE0Niw1MS44ODdMNDEuNTg4LDM3Ljc4NmMzLjQ4Ni00LjE0NCw1LjM5Ni05LjM1OCw1LjM5Ni0xNC43ODZjMC0xMi42ODItMTAuMzE4LTIzLTIzLTIzcy0yMywxMC4zMTgtMjMsMjMgIHMxMC4zMTgsMjMsMjMsMjNjNC43NjEsMCw5LjI5OC0xLjQzNiwxMy4xNzctNC4xNjJsMTMuNjYxLDE0LjIwOGMwLjU3MSwwLjU5MywxLjMzOSwwLjkyLDIuMTYyLDAuOTIgIGMwLjc3OSwwLDEuNTE4LTAuMjk3LDIuMDc5LTAuODM3QzU2LjI1NSw1NC45ODIsNTYuMjkzLDUzLjA4LDU1LjE0Niw1MS44ODd6IE0yMy45ODQsNmM5LjM3NCwwLDE3LDcuNjI2LDE3LDE3cy03LjYyNiwxNy0xNywxNyAgcy0xNy03LjYyNi0xNy0xN1MxNC42MSw2LDIzLjk4NCw2eiIgZmlsbD0iIzAwMDAwMCIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" />
-   </div>
+      <div className="col-3">
+     
+    
+      <br />
+      <br />
+    
+      <div class="but">
+      <div style={{ bottom: 0, float: "center" ,width:"100%",paddingTop:"30px",textAlign:"center"}}>
+        <button  className="p-button-text" style={{ 
+              border: "1px solid transparent",
+              backgroundColor: "rgb(150, 115, 66)!important",
+              color:"rgb(239, 214, 146)",
+              borderRadius: "1.9rem",
+              fontSize:"13px" }}><Link to={"/addforums"}>+</Link></button>
+        </div></div>
+      {/* <div class="wrapper">
+      <img class="search-icon"  src="data:image.svg" />
+   </div> */}
    
       <input class="search" onChange={this.searchHandel} placeholder="Search" type="text" />
-     
-        <h3>list forums</h3>
+      <div className="container-fluid m-5 text-left">
+        <div
+          className="container-fluid"
+          style={{
+            display: "inline-block",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            padding: "10px",
+          }}
+        >
+        
+      <ForumStyle>
            
-       
-                 { this.forumList() }
-                 </div></div>
+   
+         { this.forumList() }</ForumStyle>
+                 </div> </div>    
+                 </div>
+    
+               
             
       
    
