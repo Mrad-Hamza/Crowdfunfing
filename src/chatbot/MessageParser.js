@@ -11,8 +11,24 @@ class MessageParser {
             this.actionProvider.greet();
         }
 
-        if (lowercase.includes("javascript") || lowercase.includes("js")) {
-            this.actionProvider.handleJavascriptQuiz();
+        if (lowercase.includes("Campaign")) {
+            this.actionProvider.handleProjectQuiz();
+        }
+
+        if (lowercase.includes("Donation")) {
+            this.actionProvider.handleDonationQuiz();
+        }
+        if (lowercase.includes("Transaction")) {
+            this.actionProvider.handleTransactionQuiz();
+        }
+        if (lowercase.includes("Event")) {
+            this.actionProvider.handleEventQuiz();
+        }
+        if (lowercase.includes("Forum")) {
+            this.actionProvider.handleForumQuiz();
+        }
+        if (lowercase.includes("Project")) {
+            this.actionProvider.handleProjectQuiz();
         }
     }
 }
