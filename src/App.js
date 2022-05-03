@@ -9,6 +9,7 @@ import classNames from "classnames";
 import { Route, useLocation, useHistory } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
+
 import { AppTopbar } from "./Backoffice/components/layout/AppTopbar";
 import { AppFooter } from "./Backoffice/components/layout/AppFooter";
 import { AppMenu } from "./Backoffice/components/layout/AppMenu";
@@ -53,7 +54,7 @@ import eventListing from "./Backoffice/pages/events/eventListing";
 
 import EventDetail from "./Backoffice/pages/events/eventDetail";
 import { userService } from "./Backoffice/pages/User/_services/user.service";
-
+import forumCreate from "./Backoffice/pages/Forums/forumCreate";
 import ForumListing from "./Backoffice/pages/Forums/forumListing";
 import ForumsComment from "./Backoffice/pages/Forums/ForumsComment";
 import updateForum from "./Backoffice/pages/Forums/updateForum";
@@ -147,6 +148,7 @@ const App = () => {
     console.log("Current Role = " + localStorage.getItem('currentRoles'))
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
+
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
     // !!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -307,11 +309,13 @@ const App = () => {
             return <Routes />;
 
         } else if (localStorage.getItem("currentRoles") === "Admin") {
+
             return (
                 <div className={wrapperClass} onClick={onWrapperClick}>
                     <Tooltip ref={copyTooltipRef} target=".block-action-copy" position="bottom" content="Copied to clipboard" event="focus" />
 
                     <AppTopbar onToggleMenuClick={onToggleMenuClick} layoutColorMode={layoutColorMode} mobileTopbarMenuActive={mobileTopbarMenuActive} onMobileTopbarMenuClick={onMobileTopbarMenuClick} onMobileSubTopbarMenuClick={onMobileSubTopbarMenuClick} />
+
 
                     <div className="layout-sidebar" onClick={onSidebarClick}>
                         <AppMenu model={menu} onMenuItemClick={onMenuItemClick} layoutColorMode={layoutColorMode} />
@@ -335,7 +339,11 @@ const App = () => {
                             <Route path="/update/:id" component={upadateCompaign} />
                             <Route path="/ADDCompaign" component={addCompaign} />
                             <Route path="/ListDeadline" component={ListDeadline} />
+
+                            <Route path="/addforums" component={forumCreate}/>
+
                             {/* <Route path="/add" component={forumCreate}/> */}
+
                             <Route path="/UsersList" component={UsersList} />
                             <Route path="/events" exact component={Events} />
                             <Route path="/create-event" component={createEventForm} />
@@ -361,7 +369,7 @@ const App = () => {
                             <Route path="/projects/task/complaint/add/:_id" component={ComplaintTaskAdd} />
                             <Route path="/forums" exact component={ForumListing} />
                             <Route path="/comment" component={ForumsComment} />
-                            <Route path="/edit/:_id" component={updateForum} />
+                          <Route path="/edit/:_id" component={updateForum} />
                         </div>
                         <AppFooter layoutColorMode={layoutColorMode} />
                     </div>
@@ -373,14 +381,19 @@ const App = () => {
                 </div>
             );
         }
-    }
-    else {
+
+
+
+    } else {
+
         return (
             <AppContainer>
                 <AccountBox />
             </AppContainer>
         );
     }
-}
+
+
+};
 
 export default App;

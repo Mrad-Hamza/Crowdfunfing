@@ -14,13 +14,14 @@ var path = require('path');
 require('dotenv/config');
 
 
+
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "../src/assets/layout/images");
+        cb(null, '../src/assets/layout/images')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
+        cb(null, file.originalname)
+    }
 });
 
 var upload = multer({ storage: storage });
@@ -47,7 +48,8 @@ router.route('/addUserImage').put(upload.single('image'), (req, res) => {
             user.save()
                 .then(() => res.json('Image added to user haha'))
                 .catch(err => res.status(400).json('Error: ' + err));
-    })
+
+        })
 });
 
 router.route('/add').post(upload.single('image'), (req, res) => {
@@ -91,18 +93,20 @@ router.post('/facebooklogin', (req, res) => {
 
                             expiresIn: "180000",
                         });
+
                         return res.json({
                             accessToken: accessToken,
                             userId: user.id,
                             userName: user.username,
                             mail: user.mailAddress,
 
-                            role: user.roles,
-                        });
-                    } else {
-                        let password = email + process.env.ACCES_TOKEN_SECRET;
-                        const username = name;
-                        const firstname = name;
+                            role: user.roles
+                        })
+                    }
+                    else {
+                        let password = email + process.env.ACCES_TOKEN_SECRET
+                        const username = name
+                        const firstname = name
                         const img = {
                             contentType: 'image/png',
                             imgName: "NoPic.png"
@@ -113,6 +117,7 @@ router.post('/facebooklogin', (req, res) => {
                         const newUser = new User({ username, firstname, lastname, mailAddress, password, roles, img });
                         const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET, {
                             expiresIn: '540000',
+
                         })
                         newUser.save()
                         return res.json({ accessToken: accessToken, userId: newUser.id, userName: newUser.username, mail: newUser.mailAddress, role: newUser.roles })
@@ -137,6 +142,7 @@ router.post('/googlelogin', (req, res) => {
                         if (user) {
                             const accessToken = jwt.sign(user.toJSON(), process.env.ACCES_TOKEN_SECRET, {
                                 expiresIn: '540000',
+
                             })
                             return res.json({ accessToken: accessToken, role: user.roles, userId: user.id, userName: user.username, mail: user.mailAddress })
                         }
@@ -154,6 +160,7 @@ router.post('/googlelogin', (req, res) => {
                             const newUser = new User({ username, firstname, lastname, mailAddress, password, roles, img });
                             const accessToken = jwt.sign(newUser.toJSON(), process.env.ACCES_TOKEN_SECRET, {
                                 expiresIn: '540000',
+
                             })
                             newUser.save()
                             return res.json({ accessToken: accessToken, role: newUser.roles, userId: newUser.id, userName: newUser.username, mail: newUser.mailAddress })
@@ -165,17 +172,25 @@ router.post('/googlelogin', (req, res) => {
 })
 
 
-router.get("/profile/:search", protect, (req, res) => {
+router.get('/profile/:search', protect, (req, res) => {
     User.findOne({
-        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
-    }).then((user) => res.json(user));
-});
+        $or: [
+            { 'username': req.params.search },
+            { 'mailAddress': req.params.search }
+        ]
+    })
+        .then(user => res.json(user))
+})
 
-router.get("/search/:search", (req, res) => {
+router.get('/search/:search', (req, res) => {
     User.findOne({
-        $or: [{ username: req.params.search }, { mailAddress: req.params.search }],
-    }).then((user) => res.json(user));
-});
+        $or: [
+            { 'username': req.params.search },
+            { 'mailAddress': req.params.search }
+        ]
+    })
+        .then(user => res.json(user))
+})
 
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)
@@ -262,30 +277,32 @@ router.route("/PasswordUpdate/:mail/:password").put((req, res) => {
     User.findOne({ mailAddress: req.params.mail })
         .then((user) => {
             user.password = req.params.password;
+
             user.save()
-                .then(() => res.json("User updated!"))
-                .catch((err) => res.status(400).json("Error: " + err));
+                .then(() => res.json('User updated!'))
+                .catch(err => res.status(400).json('Error: ' + err));
         })
-        .catch((err) => res.status(400).json("Error: " + err));
+        .catch(err => res.status(400).json('Error: ' + err));
     let mailTransporter = nodemailer.createTransport({
-        service: "gmail",
-        host: "smtp.gmail.com",
+        service: 'gmail',
+        host: 'smtp.gmail.com',
         port: 587,
         secure: false,
         requireTLS: true,
         auth: {
             user: "fundise.noreply@gmail.com",
-            pass: "HzJxDKrxS2LNwa9",
-        },
-    });
+            pass: "HzJxDKrxS2LNwa9"
+        }
+    })
     let details = {
         from: "fundise.noreply@gmail.com",
         to: req.params.mail,
         subject: "Password Changed Succesfully.",
-        text: "Your new password is " + req.params.password,
-    };
-    mailTransporter.sendMail(details);
-});
+        text: "Your new password is " + req.params.password
+    }
+    mailTransporter.sendMail(details)
+})
+
 
 router.route('/ForgotPassword/:mail').post((req, res) => {
     let mailTransporter = nodemailer.createTransport({
@@ -328,6 +345,7 @@ router.route('/facialLogin').post((req,res) => {
     })
 })
 
+
 router.route('/login').post((req, res) => {
     User.getAuthenticated(req.body.username, req.body.mailAddress, req.body.password, function (err, user, reason) {
         if (err) throw err;
@@ -338,6 +356,9 @@ router.route('/login').post((req, res) => {
                 expiresIn: '540000',
             })
             res.json({ accessToken: accessToken, userId: user.id, role: user.roles, userName: user.username, mail: user.mailAddress })
+
+           
+
             return;
         }
         // otherwise we can determine why we failed
@@ -380,7 +401,7 @@ router.route('/login').post((req, res) => {
    }
    })*/
 
-});
+})
 
 function authenticateToken(req, res, nex) {
     const authHeader = req.headers['authorization']
@@ -393,5 +414,7 @@ function authenticateToken(req, res, nex) {
             .next()
     })
 }
+
+
 
 module.exports = router;
