@@ -10,10 +10,13 @@ class MessageParser {
         if (lowercase.includes("hello")) {
             this.actionProvider.greet();
         }
-
+if (lowercase.includes("campaign") && lowercase.includes("?")) {
+    this.actionProvider.greetCampaign();
+}
         if (lowercase.includes("Campaign")) {
             this.actionProvider.handleProjectQuiz();
         }
+
 
         if (lowercase.includes("Donation")) {
             this.actionProvider.handleDonationQuiz();

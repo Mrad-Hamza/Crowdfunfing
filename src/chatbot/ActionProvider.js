@@ -8,7 +8,10 @@ class ActionProvider {
         const message = this.createChatBotMessage("Hello friend.");
         this.addMessageToState(message);
     };
-
+    greetCampaign = () => {
+        const message = this.createChatBotMessage("To begin your project you have to create a campaign.");
+        this.addMessageToState(message);
+    };
     handleCampaignQuiz = () => {
         const message = this.createChatBotMessage("Fantastic. What do you want to know about campaigns !", {
             widget: "campaignQuiz",
