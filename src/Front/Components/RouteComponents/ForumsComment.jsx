@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './comment.css';
+
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from "primereact/button";
@@ -28,16 +28,17 @@ const Comment = props => (
 			</p>
    
 		</div>
+    {/* <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" 
+     onClick={() => { props.deleteComment(props.comment._id) }}></Button> */}
   
-   </div>  <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" 
-     onClick={() => { props.deleteComment(props.comment._id) }}></Button>
+   </div>  
     
-     <Button  icon="pi pi-envelope" className="p-button-rounded p-button-warning mt-2"  onClick={() => { props.sendMail(props.comment.email) }}></Button>
+     {/* <Button  icon="pi pi-envelope" className="p-button-rounded p-button-warning mt-2"  onClick={() => { props.sendMail(props.comment.email) }}></Button> */}
    </div>
  </div>
 )
 
-export default class commentList extends Component {
+class ForumComment extends Component {
   constructor(props) {
     super(props);
 
@@ -149,17 +150,17 @@ axios.post('http://localhost:5000/comment/add/', comment)
 
         <div className="form-group"> 
          
-          <textarea   type="text"
+          <input   type="text"
               required
               placeholder="Your comment"
               class="be-comment-text"
               value={this.state.content}
               onChange={this.onChangeContent}
               />
+       
+        <button  type="submit"  className="btn"> send</button>
         </div>
 
-        <button  type="submit"  className="btn btn-primary pull-right"> send</button>
-        
       
         
       </form>
@@ -169,3 +170,4 @@ axios.post('http://localhost:5000/comment/add/', comment)
     )
   }
 }
+export {ForumComment}
