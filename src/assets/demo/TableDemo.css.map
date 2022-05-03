@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACI,WADO,CACP,yBAAyB,CAAC;EACtB,WAAW,EAAE,IAAI;CACpB;;AAHL,AAMQ,WANG,CAKP,uBAAuB,CACnB,gBAAgB,CAAC;EACb,WAAW,EAAE,IAAI;CACpB;;AART,AAWI,WAXO,CAWP,WAAW,CAAC;EACR,cAAc,EAAE,MAAM;EACtB,WAAW,EAAE,KAAK;CACrB",
+    "sources": [
+        "TableDemo.scss"
+    ],
+    "names": [],
+    "file": "TableDemo.css"
+}

@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+  font-family: "Source Code Pro", monospace;
+  font-family: "Yanone Kaffeesatz", sans-serif;
+}
+.hh{
+    color: white;
+    background-color:#e51075;
+    border: none;
+    padding: 12px;
+    width: 200px;
+}
