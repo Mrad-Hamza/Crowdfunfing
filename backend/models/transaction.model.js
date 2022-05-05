@@ -25,7 +25,8 @@ const userSchema = new Schema(
             description:String,
             deadline:Date,
             verified:String,
-            status:String
+            status:String,
+            cumulateAmount: Number
         },
         anonym: {
             type: Boolean

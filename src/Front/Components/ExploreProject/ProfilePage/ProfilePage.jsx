@@ -11,6 +11,13 @@ import classNames from "classnames";
 import { userService } from "../../../../Backoffice/pages/User/_services/user.service";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 const ProfilePage = () => {
     let emptyUser = {
@@ -26,18 +33,20 @@ const ProfilePage = () => {
         loginAttempts: 0,
         roles: "",
     };
+    const emptyCampaign = {
+        _id: "",
+        nameCompaign: "a",
+        typeCompaign: "",
+        objective: "",
+        description: "",
+        deadline: new Date(),
+        Status: "",
+        cumulateAmount:0,
+    };
     const emptyTransaction = {
         amount: 0,
         user: "",
-        campaign: {
-            _id: "",
-            nameCompaign: "Campaign Name",
-            typeCompaign: "",
-            objective: "",
-            description: "",
-            deadline: new Date(),
-            Status: "",
-        },
+        campaign: emptyCampaign,
         anonym: false,
     };
     const emptyTransactions = [];
@@ -53,6 +62,7 @@ const ProfilePage = () => {
     const [PwdSubmitted, setPwdSubmitted] = useState(false);
     const [transactions, setTransactions] = useState(emptyTransactions);
     const [loading1, setLoading1] = useState(true);
+    const [campaign, setCampaign] = useState(emptyCampaign)
 
     const toast = useRef(null);
 
@@ -96,7 +106,7 @@ const ProfilePage = () => {
     }, []);
 
     useEffect(() => {
-        console.log(transactions[0]);
+        console.log(transactions);
     }, [loading1]);
 
     const saveUser = () => {
@@ -221,12 +231,62 @@ const ProfilePage = () => {
                     </div>
                     <div className="col-5">
                         <h5>Donations</h5>
-                        <DataTable value={transactions} paginator className="p-datatable-gridlines" showGridlines rows={5} dataKey="id" filterDisplay="menu" loading={loading1} responsiveLayout="scroll" emptyMessage="No dontions found.">
-                            {/* <Column field="campaign" header="Campaign" filterMenuStyle={{ width: "6rem" }} style={{ minWidth: "12rem" }} body={JSON.stringify(transaction.createdAt)} /> */}
-                            <Column field="campaign" header="Campaign" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.campaign.nameCompaign} />
-                            <Column field="amount" header="Amount" style={{ minWidth: "4rem" }} body={transaction.amount} />
-                            <Column field="anonymity" header="Anonymity" dataType="boolean" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.anonym ? "Yes" : "No"} />
-                        </DataTable>
+                        {/* <DataTable value={transactions} paginator className="p-datatable-gridlines" showGridlines rows={5} dataKey="id" filterDisplay="menu" loading={loading1} responsiveLayout="scroll" emptyMessage="No dontions found."> */}
+                        {/* {transactions.map((transaction) => {
+                                return (
+                                        [<Column field="campaign" header="Campaign" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.campaign.nameCompaign} />,
+                                        <Column field="amount" header="Amount" style={{ minWidth: "4rem" }} body={transaction.amount} />,
+                                        <Column field="anonymity" header="Anonymity" dataType="boolean" bodyClassName="text-center" style={{ minWidth: "4rem" }} body={transaction.anonym ? "Yes" : "No"} />]
+                                );
+                            })} */}
+                        {/* </DataTable> */}
+                        {/* <div class="table-responsive">
+                            <table class="table">
+                                <th>
+                                    <tb>Campaign</tb>
+                                    <tb>Amount</tb>
+                                    <tb>Anonym</tb>
+                                </th>
+
+                                {transactions.map((transaction) => {
+                                    return (
+                                        <tr>
+                                            <tb>{transaction.campaign.nameCompaign}</tb>
+                                            <tb>{transaction.amount}</tb>
+                                            <tb>{transaction.anonym ? "yes" : "No"}</tb>
+                                        </tr>
+                                    );
+                                })}
+                            </table>
+                        </div> */}
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 450, length: 300 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Campaign</TableCell>
+                                        <TableCell align="right">Amount</TableCell>
+                                        <TableCell align="right">Anonym</TableCell>
+                                        <TableCell align="right">State</TableCell>
+                                        <TableCell align="right">Details</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {transactions.map((transaction) => (
+                                        <TableRow key={transaction._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                            <TableCell component="th" scope="row">
+                                                {transaction.campaign.nameCompaign}
+                                            </TableCell>
+                                            <TableCell align="right">{transaction.amount}</TableCell>
+                                            <TableCell align="right">{transaction.anonym ? "yes" : "No"}</TableCell>
+                                            <TableCell align="right">{transaction.cumulateAmount >= transaction.objective ? <i class="pi pi-check">Finished</i> : <i class="pi pi-times">Not Finished</i>}</TableCell>
+                                            <TableCell align="right">
+                                                <i class="pi pi-eye"></i>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
                 </div>
             </div>

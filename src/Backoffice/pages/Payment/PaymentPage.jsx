@@ -23,6 +23,7 @@ const PaymentPage = () => {
         deadline: new Date(),
         Verified: "",
         Status: "",
+        cumulateAmount: 0,
     };
     const emptyUser = {
         username: localStorage.getItem("currentUsername"),
