@@ -35,12 +35,6 @@ const CommentSection = () => {
     const { userName } = userById;
     // const id = `626709ffe25ee1ec8823c56a`;
     console.log(userById);
-    const fetchUser = async (id) => {
-        const result = await axios.get("http://localhost:5000/users/" + id).catch((err) => {
-            console.log("Err", err);
-        });
-        dispatch(selectedProject(result.data));
-    };
     let emptyUser = {
         _id: null,
         username: "",
@@ -55,6 +49,14 @@ const CommentSection = () => {
         roles: "",
     };
     const [user, setUser] = useState(emptyUser);
+    const fetchUser = async (id) => {
+        const result = await axios.get("http://localhost:5000/users/" + id).catch((err) => {
+            console.log("Err", err);
+        });
+        console.log("result :", result.data);
+        return result.data;
+        // setUser(result.data);
+    };
     console.log(user);
     const { _id } = useParams();
     let history = useHistory();
@@ -109,7 +111,16 @@ const CommentSection = () => {
                         Comments
                     </Typography>
                     {commentsEventList?.map((c) => {
-                        // fetchUser(c.user);
+                        let usr = {};
+                        console.log("les utilisateurs", fetchUser(c.user));
+                        fetchUser(c.user).then((value) => {
+                            console.log("fffff", value);
+                        });
+                        // Promise.resolve(fetchUser(c.user)).then((value) => {
+                        //     // this.userr = value;
+                        // });
+
+                        console.log("user:", usr);
                         const idComment = c._id;
                         const deleteComment = (id) => {
                             if (window.confirm("Are you sure?")) {
@@ -117,11 +128,11 @@ const CommentSection = () => {
                                 window.location.reload(false);
                             }
                         };
-                        console.log(userById);
+                        // console.log("hhhhhh", userr);
                         return (
                             <div key={c._id}>
                                 <div className="flex align-items-center flex-column sm:flex-row">
-                                    <Chip label={userById.username} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
+                                    <Chip label={usr.username} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
                                 </div>
                                 <div className="flex align-items-center flex-column sm:flex-row">
                                     <Chip label={c.comment} className="mr-2 mb-2" />
@@ -149,20 +160,8 @@ const CommentSection = () => {
                                         </Grid>
                                     </Box>
                                 </div>
-
-                                {/* <h6>{c.user}</h6> */}
-
-                                {/* <Typography key={c._id} gutterBottom variant="subtitle1">
-                                  {c.comment}
-                              </Typography> */}
                             </div>
                         );
-
-                        //   <ListItem key={c._id} disablePadding>
-                        //       <ListItemButton role={undefined} dense>
-                        //           <ListItemText primary={c.comment} />
-                        //       </ListItemButton>
-                        //   </ListItem>
                     })}
                 </div>
                 <div style={{ width: "70%" }}>

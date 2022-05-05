@@ -6,6 +6,7 @@ export const projectService = {
     UpdateProject,
     getproject,
     UpdateComment,
+    updateAmount,
 };
 
 async function getproject(id) {
@@ -56,6 +57,13 @@ async function UpdateProject(project) {
         .catch((err) => {
             console.log(err);
         });
+}
+
+async function updateAmount(idTask, id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return await fetch(`http://localhost:5000/projects/updateAmount/${idTask}/${id}`, requestOptions);
 }
 
 async function UpdateComment(id, commentt) {
