@@ -272,7 +272,7 @@ const ProfilePage = () => {
                                         <TableCell align="right">Amount</TableCell>
                                         <TableCell align="right">Anonym</TableCell>
                                         <TableCell align="right">State</TableCell>
-                                        <TableCell align="right">Details</TableCell>
+                                        <TableCell align="right">Donate Again</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -283,9 +283,13 @@ const ProfilePage = () => {
                                             </TableCell>
                                             <TableCell align="right">{transaction.amount}</TableCell>
                                             <TableCell align="right">{transaction.anonym ? "yes" : "No"}</TableCell>
-                                            <TableCell align="right">{transaction.cumulateAmount >= transaction.objective ? <i class="pi pi-check">Finished</i> : <i class="pi pi-times">Not Finished</i>}</TableCell>
+                                            {console.log(transaction.campaign.cumulateAmount)}
+                                            {console.log(transaction.campaign.objective)}
+                                            <TableCell align="right">{transaction.campaign.cumulateAmount >= transaction.campaign.objective ? <i class="pi pi-check">Finished</i> : <i class="pi pi-times">Not Finished</i>}</TableCell>
                                             <TableCell align="right">
-                                                <i class="pi pi-eye"></i>
+                                                <Link to={"/payment/" + transaction.campaign._id}>
+                                                    <i class="pi pi-money-bill"></i>
+                                                </Link>
                                             </TableCell>
                                         </TableRow>
                                     ))}

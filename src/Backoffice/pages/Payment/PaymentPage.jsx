@@ -107,15 +107,17 @@ const PaymentPage = () => {
 
 
   return (
-      <div>
-          <h3>How much would you like to donate ?</h3> <br />
-          <InputNumber onChange={(e) => onInputChange(e, "donation")} required showButtons mode="decimal" />
-          <br />
-          <br />
-          Anonym ?
-          <InputSwitch checked={data.anonym} onChange={(e) => onInputAnonymChange(e, "donation")} />
-          <br />
-          <StripeCheckout description="Secure Payment" stripeKey="pk_test_51Ks1exLyE3hWd2jo361ebaWXgcu8HR6zgQ7ZqpAmq8cxMR6gF9cclTN6LFNg702oPEonjLGRvIAlEKudpt2j4bJq00CoX5HQO2" token={makePayment}></StripeCheckout>
+      <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+          <div style={{ alignSelf: "center" }}>
+              <h3>How much would you like to donate ?</h3> <br />
+              <InputNumber onChange={(e) => onInputChange(e, "donation")} required showButtons mode="decimal" />
+              <br />
+              <br />
+              Anonym ?
+              <InputSwitch checked={data.anonym} onChange={(e) => onInputAnonymChange(e, "donation")} />
+              <br />
+              <StripeCheckout description="Secure Payment" stripeKey="pk_test_51Ks1exLyE3hWd2jo361ebaWXgcu8HR6zgQ7ZqpAmq8cxMR6gF9cclTN6LFNg702oPEonjLGRvIAlEKudpt2j4bJq00CoX5HQO2" token={makePayment}></StripeCheckout>
+          </div>
       </div>
   );
 }

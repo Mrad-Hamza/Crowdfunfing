@@ -8,16 +8,6 @@ const userSchema = new Schema(
             type : String
         },
         campaign: {
-            // const emptyCampaign = {
-            //     _id: "6256c26547d815717428d8de",
-            //     nameCompaign: "Test",
-            //     typeCompaign: "",
-            //     objective: "",
-            //     description: "",
-            //     deadline: new Date(),
-            //     Verified: "",
-            //     Status: "",
-            // };
             _id:String,
             nameCompaign:String,
             typeCompaign :String,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import Chatbot from "react-chatbot-kit";
 import MessageParser from "../../chatbot/MessageParser";
@@ -12,7 +12,7 @@ import { WhatWeDo } from "./RouteComponents/WhatWeDo";
 import { Search } from "./RouteComponents/Search";
 import { ForEntrepreneurs } from "./RouteComponents/ForEntrepreneurs";
 import { Campaign } from "./RouteComponents/Campaign";
-import { CampaignUser } from "./RouteComponents/CampaignUser";
+import { CampaignUser } from "./RouteComponents/campaignUser";
 import { ForumComment } from "./RouteComponents/ForumsComment";
 import { ForumList } from "./RouteComponents/forumListing";
 import ProfilePage from "../Components/ExploreProject/ProfilePage/ProfilePage";
@@ -39,11 +39,20 @@ import EditCommentEvent from "../../Backoffice/pages/events/editCommentEvent";
 import EventDetail from "../../Backoffice/pages/events/eventDetail";
 import FavoriteList from "../../Backoffice/pages/events/favoriteList";
 import EventDetailFront from "./RouteComponents/EventDetailFront";
+import alanBtn from "@alan-ai/alan-sdk-web";
+import PaymentPage from "../../Backoffice/pages/Payment/PaymentPage";
 const Routes = () => {
+    const alanBtnInstance = useRef(null);
+
     const [show, toggleShow] = useState(true);
     console.log("🚀 ~ file: Routes.jsx ~ line 35 ~ Routes ~ show", show);
 
     useEffect(() => {
+        if (!alanBtnInstance.current) {
+            alanBtnInstance.current = alanBtn({
+                key: "f95091214a8df3ca034bf93e02534c132e956eca572e1d8b807a3e2338fdd0dc/stage",
+            });
+        }
         const handleOutsideClick = (e) => {
             // simple implementation, should be made more robust.
             if (!e.currentTarget.classList.includes("react-chatbot-kit")) {
@@ -80,16 +89,17 @@ const Routes = () => {
         path="/entrepreneurs"
         component={(props) => <ForEntrepreneurs {...props} />}
       /> */}
+                <Route path="/payment/:_id" component={(props) => <PaymentPage {...props} />} />
                 <Route path="/forum" component={(props) => <ForumList {...props} />} />
                 <Route path="/comment" component={(props) => <ForumComment {...props} />} />
                 <Route path="/campaign" component={(props) => <Campaign {...props} />} />
                 <Route path="/showEvents" component={(props) => <EventListing {...props} />} />
                 <Route path="/create-event" component={(props) => <CreateEventForm {...props} />} />
-                <Route path="/statistcs" component={(props) => <StatisticsEvent{...props} />} />
+                <Route path="/statistcs" component={(props) => <StatisticsEvent {...props} />} />
                 <Route path="/updateEvent/:idEvent" component={(props) => <SignleEvent {...props} />} />
                 <Route path="/updateCommentEvent/:idComment" component={(props) => <EditCommentEvent {...props} />} />
                 <Route path="/events/:_id" component={(props) => <EventDetailFront {...props} />} />
-                <Route path="/favoriteList" component={(props) => <FavoriteList{...props} />} />
+                <Route path="/favoriteList" component={(props) => <FavoriteList {...props} />} />
                 <Route path="/projects/:_id" exact component={(props) => <ProjectDetailsFront {...props} />} />
                 {/* <Route path="/projects/task/:_id" exact component={TaskDetails} /> */}
                 <Route path="/projects/taskById/:_id" component={(props) => <TaskDetailsFront {...props} />} />

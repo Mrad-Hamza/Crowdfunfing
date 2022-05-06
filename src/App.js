@@ -271,12 +271,7 @@ const App = () => {
                         { label: "ListComments", icon: "pi pi-fw pi-list", to: "/comment" },
                         { label: "AddForum", icon: "pi pi-fw pi-list", to: "/add" },
                     ],
-                },
-                {
-                    label: "Transactions",
-                    icon: "pi pi-fw pi-dollar",
-                    items: [{ label: "List", icon: "pi pi-fw pi-list" }],
-                },
+                }
             ],
         },
     ];
