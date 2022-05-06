@@ -62,6 +62,19 @@ router.route("/add").post(upload.single(""), (req, res) => {
 });
 
 //Archive method
+router.route("/validate/:id").put((req, res) => {
+    Complaint.findById(req.params.id)
+        .then((complaint) => {
+            complaint.complaintType = "done";
+            complaint
+                .save()
+                .then(() => res.json("complaint validated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
+//Archive method
 router.route("/archive/:id").put((req, res) => {
     Complaint.findById(req.params.id)
         .then((complaint) => {

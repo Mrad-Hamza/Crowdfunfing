@@ -1,37 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
+
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { Rating } from "primereact/rating";
 import { PickList } from "primereact/picklist";
 import { OrderList } from "primereact/orderlist";
 import { ProductService } from "../../features/services/ProductService";
+import { InputText } from "primereact/inputtext";
+
 
 const ShowEvents = () => {
-    // const listValue = [
-    //     { name: "San Francisco", code: "SF" },
-    //     { name: "London", code: "LDN" },
-    //     { name: "Paris", code: "PRS" },
-    //     { name: "Istanbul", code: "IST" },
-    //     { name: "Berlin", code: "BRL" },
-    //     { name: "Barcelona", code: "BRC" },
-    //     { name: "Rome", code: "RM" },
-    // ];
-
-    // const [picklistSourceValue, setPicklistSourceValue] = useState(listValue);
+    
     const [picklistTargetValue, setPicklistTargetValue] = useState([]);
     // const [orderlistValue, setOrderlistValue] = useState(listValue);
+
     const [dataviewValue, setDataviewValue] = useState(null);
     const [layout, setLayout] = useState("grid");
     const [sortKey, setSortKey] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [sortField, setSortField] = useState(null);
 
-    // const sortOptions = [
-    //     { label: "Price High to Low", value: "!price" },
-    //     { label: "Price Low to High", value: "price" },
-    // ];
-
+    
+	
     useEffect(() => {
         const productService = new ProductService();
         productService.getProducts().then((data) => setDataviewValue(data));
@@ -89,13 +80,15 @@ const ShowEvents = () => {
     };
 
     return (
-        <div className="grid list-demo">
-            <div className="col-12">
-                <div className="card">
-                    <h5>Evenements</h5>
-                    <DataView value={dataviewValue} layout={layout} paginator rows={9} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate}></DataView>
+        <div>
+            <div className="grid list-demo">
+                <div className="col-12">
+                    <div className="card">
+                        <h5>Evenements</h5>
+                        <DataView value={dataviewValue} layout={layout} paginator rows={9} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate}></DataView>
+                    </div>
                 </div>
-            </div> 
+            </div>
         </div>
     );
 };

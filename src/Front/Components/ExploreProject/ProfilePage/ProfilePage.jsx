@@ -7,6 +7,8 @@ import { FileUpload } from "primereact/fileupload";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
+import { Link } from "react-router-dom";
+
 import classNames from "classnames";
 import { userService } from "../../../../Backoffice/pages/User/_services/user.service";
 import { DataTable } from "primereact/datatable";
@@ -221,6 +223,9 @@ const ProfilePage = () => {
                             <TextHeader>Campaings : 0 </TextHeader>
                             <TextHeader>Donations : {transactions.length}</TextHeader>
                             <TextHeader>Comments : 0</TextHeader>
+                            <Link to={`/favoriteList`}>
+                                <TextHeader>List of favorites</TextHeader>
+                            </Link>
                         </div>
                         <br></br>
                         <div className="row">

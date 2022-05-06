@@ -4,6 +4,7 @@ export const ComplaintTaskService = {
     addComplaint,
     delete: _delete,
     activate: _activate,
+    validate: _validate,
 };
 
 async function addComplaint(complaint) {
@@ -35,4 +36,11 @@ function _delete(id) {
         method: "PUT",
     };
     return fetch(`http://localhost:5000/complaintTask/archive/${id}`, requestOptions);
+}
+
+function _validate(id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return fetch(`http://localhost:5000/complaintTask/validate/${id}`, requestOptions);
 }

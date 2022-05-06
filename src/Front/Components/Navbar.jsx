@@ -14,6 +14,7 @@ import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import Explore from "./Explore/Explore";
 import Avatar from "@mui/material/Avatar";
 import { userService } from "../../Backoffice/pages/User/_services/user.service";
+import{forums} from "../../Backoffice/pages/Forums/forumListing";
 
 const Navbar = () => {
     let emptyUser = {
@@ -85,19 +86,24 @@ const Navbar = () => {
 
     const rightLinks = [
         {
-
-            to: "/campaignUser/"+localStorage.getItem('currentUserId'),
+            to: "/campaignUser/" + localStorage.getItem("currentUserId"),
             title: "Campaign",
         },
         {
-
             to: "/campaign",
             title: "Start a Campaign",
         },
         {
+            to: "/showEvents",
+            title: "Events",
+        },
+        {
+
+
 
             to: "/forum",
             title: "Forum",
+
         },
     ];
 

@@ -43,19 +43,19 @@ function InvoiceProjectAdd(props) {
     return (
         <div>
             <div>
-                <div className="form-style-5 col-6">
-                    <h3>Creat New Invoice</h3>
-                    <form>
-                        <div className="form-group">
+                <div className="form-style-5 col-7">
+                    <h3 className="mb-5">Create New Invoice</h3>
+                    <form className="mt-5">
+                        <div className="form-group" style={{ height: "150px" }}>
                             <label>Name: </label>
                             <Input id="invoiceName" name="invoiceName" type="text" placeholder="Name" onChange={handleChange} className="mb-2" />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group" style={{ height: "200px" }}>
                             <label>Invoice file: </label>
                             <FileUpload name="demo[]" customUpload={true} uploadHandler={onUpload} multiple accept="image/png" maxFileSize={1000000} />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group" style={{ height: "100px" }}>
                             <Marginer direction="vertical" margin={10} />
                             <SubmitButton type="submit" onClick={handleSubmit}>
                                 Add new invoice

@@ -44,7 +44,7 @@ function ProjectAdd(props) {
         console.log(state);
         if (state.projectName && state.projectDescription && state.projectCollectedAmount && state.compaign) {
             projectService.addProject(state);
-            // history.push("/projects");
+            history.push("/projects");
         }
     };
 
@@ -63,18 +63,18 @@ function ProjectAdd(props) {
                     <form>
                         <div className="form-group">
                             <label>Name: </label>
-                            <Input id="projectName" name="projectName" type="text" placeholder="Name" onChange={handleChange} className="mb-2" />
+                            <Input id="projectName" name="projectName" type="text" placeholder="Name" onChange={handleChange} className="ml-1" />
                         </div>
                         <div className="form-group">
                             <label>Description: </label>
-                            <Textarea id="projectDescription" name="projectDescription" placeholder="Description" onChange={handleChange} className="mb-2" />
+                            <Textarea id="projectDescription" name="projectDescription" placeholder="Description" onChange={handleChange} className="ml-1" />
                         </div>
                         <div className="form-group">
                             <label>Collected amount: </label>
-                            <Input id="projectCollectedAmount" name="projectCollectedAmount" type="number" placeholder="Collected amount" onChange={handleChange} />
+                            <Input id="projectCollectedAmount" name="projectCollectedAmount" type="number" placeholder="Collected amount" onChange={handleChange} className="ml-1" />
                         </div>
                         <div className="form-group">
-                            <label>Collected amount: </label>
+                            <label>Project logo: </label>
                             <FileUpload name="demo[]" customUpload={true} uploadHandler={onUpload} multiple accept="image/png" maxFileSize={1000000} />
                         </div>
                         <div className="form-group">
