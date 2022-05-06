@@ -50,8 +50,8 @@ export default class commentList extends Component {
     
     this.state = {comments: [],
     
-    email: '',
-    content: ''};
+    email: localStorage.getItem("currentMailAddress"),
+    content: '',};
   }
  
 
@@ -94,6 +94,7 @@ export default class commentList extends Component {
       email: this.state.email,
       
       content: this.state.content,
+      
     
 }
 
@@ -120,9 +121,9 @@ axios.post('http://localhost:5000/comment/add/', comment)
 
       return (
 
-     <Comment comment={currentComment} deleteComment={this.deleteComment} key={currentComment._id}/>
-     , 
-     <Comment comment={currentComment} sendMail={this.sendMail} key={currentComment.email}/>
+    
+      
+     <Comment comment={currentComment} sendMail={this.sendMail} deleteComment={this.deleteComment}  key={currentComment.email}/>
      
     )
     })
@@ -136,6 +137,7 @@ axios.post('http://localhost:5000/comment/add/', comment)
           <div className="card">
 
             { this.commentList() }
+            </div></div>
         
             <div class="form-block">
      
@@ -143,14 +145,7 @@ axios.post('http://localhost:5000/comment/add/', comment)
 
      
 				
-          <input  type="text"
-          placeholder="Your email"
-              required
-              class="be-comment-text"
-              value={this.state.email}
-              onChange={this.onChangeEmail}
-              />
-       
+        
 
         <div className="form-group"> 
          
@@ -169,7 +164,7 @@ axios.post('http://localhost:5000/comment/add/', comment)
         
       </form>
     </div>
-      </div></div></div>
+    </div>
       
     )
   }

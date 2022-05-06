@@ -8,7 +8,6 @@ import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 const ForumStyle = styled.div`
     font-size: 20px;
-
     & > div {
         display: flex;
         flex-direction: row;
@@ -46,17 +45,15 @@ const Forum = (props) => (
                     <h4>{props.forum.description}</h4>
                     <p>
                         {/* <Button  icon="pi pi-trash" className="p-button-rounded p-button-danger mt-2" onClick={() => { props.deleteForum(props.forum._id) }}></Button>
-   
-    <Link to={"/edit/"+props.forum._id}> 
+
+    <Link to={"/edit/"+props.forum._id}>
     <Button icon="pi pi-pencil" className="p-button-rounded p-button-warning mt-2" >
-        
-     </Button>  
+
+     </Button>
     </Link> */}
-                        <div class="text-muted small text-center align-self-center">
-                            <span>
-                                <i class="pi pi-comments"></i> {props.forum.__v}
-                            </span>
-                        </div>
+                        {/* <div class="text-muted small text-center align-self-center">
+                               <span><i class="pi pi-comments" ></i>  {props.forum.__v}</span>
+                            </div>  */}
                         <Link to={"/comment/" + props.forum._id}>
                             <Button
                                 icon="pi pi-comments"
@@ -86,7 +83,6 @@ class ForumList extends Component {
         axios
             .get("http://localhost:5000/forums/")
             .then((response) => {
-                console.log("res", response);
                 this.setState({ forums: response.data });
             })
             .catch((error) => {

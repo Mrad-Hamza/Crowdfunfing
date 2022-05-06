@@ -117,7 +117,9 @@ searchHandel = (event)=>{
 
   forumList() {
     return this.state.forums.map(currentForum => {
-      return  <Forum forum={currentForum} deleteForum={this.deleteForum} key={currentForum._id}/>;
+      return  <Forum forum={currentForum} showComment={this.showComment} deleteForum={this.deleteForum} key={currentForum._id} />;
+      // return  <Forum forum={currentForum} deleteForum={this.deleteForum} key={currentForum._id} />;
+    
     })
   }
   
