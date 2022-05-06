@@ -30,48 +30,88 @@ import { setCommentsEvent, deleteCommentAction } from "../../features/actions/ev
 import { commentEventService } from "../../features/services/commentEventService";
 import { userService } from "../User/_services";
 
+/*******************************Comment component***************************************/
+const CommentComponent = ({ c }) => {
+    const dispatch = useDispatch();
+    const deleteComment = (id) => {
+        if (window.confirm("Are you sure?")) {
+            dispatch(deleteCommentAction(id));
+            window.location.reload(false);
+        }
+    };
+
+    return (
+        <div key={`${Math.random()}${c.user}`}>
+            <div className="flex align-items-center flex-column sm:flex-row">
+                <Chip label={c.userData.username} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
+            </div>
+            <div className="flex align-items-center flex-column sm:flex-row">
+                <Chip label={c.comment} className="mr-2 mb-2" />
+                <Box sx={{ width: 500 }}>
+                    <Grid container justifyContent="center">
+                        <Grid item>
+                            <Tooltip title="Like" placement="top-start">
+                                <IconButton>
+                                    <ThumbUpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit" placement="top">
+                                <Link to={`/updateCommentEvent/${c._id}`}>
+                                    <IconButton>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="Delete" placement="top-end">
+                                <IconButton
+                                    onClick={() => {
+                                        deleteComment(c._id);
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </div>
+        </div>
+    );
+};
+
+/*******************************Comments section***************************************/
 const CommentSection = () => {
-    const userById = useSelector((state) => state.project);
-    const { userName } = userById;
-    // const id = `626709ffe25ee1ec8823c56a`;
-    console.log(userById);
-    let emptyUser = {
-        _id: null,
-        username: "",
-        firstname: "",
-        lastname: "",
-        mailAddress: "",
-        lockUntil: 0,
-        img: {
-            imgName: "NoPic.png",
-        },
-        loginAttempts: 0,
-        roles: "",
-    };
-    const [user, setUser] = useState(emptyUser);
-    const fetchUser = async (id) => {
-        const result = await axios.get("http://localhost:5000/users/" + id).catch((err) => {
-            console.log("Err", err);
-        });
-        console.log("result :", result.data);
-        return result.data;
-        // setUser(result.data);
-    };
-    console.log(user);
     const { _id } = useParams();
     let history = useHistory();
     const dispatch = useDispatch();
     const commentsEventList = useSelector((state) => state.allEvents.commentsEventList);
-
     const [state, setState] = useState({ comment: "", event: _id, user: localStorage.getItem("currentUserId") });
-
+    const [commentsData, setCommentsData] = useState([]);
     const fetchCommentsEvent = async () => {
         const result = await axios.get(`http://localhost:5000/commentEvent/all/${_id}`).catch((err) => {
             console.log("Err", err);
         });
         dispatch(setCommentsEvent(result.data));
     };
-    console.log(commentsEventList);
+    const fetchUserFromCommentById = async (id) => {
+        try {
+            const res = await axios.get("http://localhost:5000/users/" + id);
+            return res;
+        } catch (err) {
+            console.log("Err", err);
+        }
+    };
+
+    const getUserDataFromCommentsList = () => {
+        commentsEventList.forEach((comment) => {
+            fetchUserFromCommentById(comment.user).then((res) => {
+                setCommentsData((prevState) => {
+                    return [...prevState, { ...comment, userData: res.data }];
+                });
+            });
+        });
+    };
+    // console.log(commentsEventList);
     const classes = useStyles();
     //const user = JSON.parse(localStorage.getItem('user'));
 
@@ -81,6 +121,13 @@ const CommentSection = () => {
             // fetchUser();
         }
     }, [_id]);
+
+    //Create new structure after getting the comments list : add user data to comments list
+    useEffect(() => {
+        if (commentsEventList.length !== 0) {
+            getUserDataFromCommentsList();
+        }
+    }, [commentsEventList]);
 
     const handleComment = (e) => {
         e.preventDefault();
@@ -110,17 +157,32 @@ const CommentSection = () => {
                     <Typography gutterBottom variant="h6">
                         Comments
                     </Typography>
-                    {commentsEventList?.map((c) => {
-                        let usr = {};
-                        console.log("les utilisateurs", fetchUser(c.user));
-                        fetchUser(c.user).then((value) => {
-                            console.log("fffff", value);
+                    {/* {commentsData.map((c) => {
+                        var usr = null;
+                        const test = axios.get("http://localhost:5000/users/" + c.user).then((value) => {
+                            usr = value.data;
+                            return usr;
                         });
+                        console.log(test);
+                        console.log(usr);
+
+                        //console.log(test);
+                        // const getUser = async () => {
+                        //     const a = await test
+                        //     return a
+                        // }
+                        Promise.resolve(test)
+                            .then((value) => {
+                                usr = value;
+                                //console.log("aaaaaaaaaaaaaaaaaaaaa", usr);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                        console.log("aaaaaaaaaaaaaaaaaaaaa", usr);
                         // Promise.resolve(fetchUser(c.user)).then((value) => {
                         //     // this.userr = value;
                         // });
-
-                        console.log("user:", usr);
                         const idComment = c._id;
                         const deleteComment = (id) => {
                             if (window.confirm("Are you sure?")) {
@@ -128,41 +190,13 @@ const CommentSection = () => {
                                 window.location.reload(false);
                             }
                         };
-                        // console.log("hhhhhh", userr);
-                        return (
-                            <div key={c._id}>
-                                <div className="flex align-items-center flex-column sm:flex-row">
-                                    <Chip label={usr.username} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
-                                </div>
-                                <div className="flex align-items-center flex-column sm:flex-row">
-                                    <Chip label={c.comment} className="mr-2 mb-2" />
-                                    <Box sx={{ width: 500 }}>
-                                        <Grid container justifyContent="center">
-                                            <Grid item>
-                                                <Tooltip title="Like" placement="top-start">
-                                                    <IconButton>
-                                                        <ThumbUpIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip title="Edit" placement="top">
-                                                    <Link to={`/updateCommentEvent/${idComment}`}>
-                                                        <IconButton>
-                                                            <EditIcon />
-                                                        </IconButton>
-                                                    </Link>
-                                                </Tooltip>
-                                                <Tooltip title="Delete" placement="top-end">
-                                                    <IconButton onClick={() => deleteComment(c._id)}>
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </Grid>
-                                        </Grid>
-                                    </Box>
-                                </div>
-                            </div>
-                        );
-                    })}
+                        // console.log("hhhhhh", userr); */}
+
+                    <div>
+                        {commentsData.map((c) => {
+                            return <CommentComponent key={`${Math.random()}${c.user}`} c={c} />;
+                        })}
+                    </div>
                 </div>
                 <div style={{ width: "70%" }}>
                     <Typography gutterBottom variant="h6">

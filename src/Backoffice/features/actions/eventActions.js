@@ -165,6 +165,13 @@ export const setCommentsEvent = (commentEvent) => {
     };
 };
 
+export const setUser = (user) => {
+    return {
+        type: eventActionsTypes.SET_USER,
+        payload: user,
+    };
+};
+
 export const deleteCommentAction = (_id) => async (dispatch, getState) => {
     try {
         dispatch({

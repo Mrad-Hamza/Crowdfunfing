@@ -3,6 +3,7 @@ import { eventActionsTypes } from "../../constants/eventActionsTypes"
 const initialState = {
     events: [],
     commentsEventList: [],
+    users:[]
 };
 
 export const eventReducer = (state = initialState, { type, payload}) => {
@@ -11,6 +12,8 @@ switch (type) {
         return { ...state, events: payload };
     case eventActionsTypes.SET_COMMENTSEVENT:
         return { ...state, commentsEventList: payload };
+    case eventActionsTypes.SET_USER:
+        return { ...state, users: payload };
     case eventActionsTypes.LIKE:
         return { ...state, events: state.events.map((event) => (event._id === payload._id ? payload : event)) };
 

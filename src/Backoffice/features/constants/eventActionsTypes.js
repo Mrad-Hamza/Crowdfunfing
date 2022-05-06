@@ -29,6 +29,7 @@ export const eventActionsTypes = {
     COMMENT_DELETE_FAIL: "COMMENT_DELETE_FAIL",
 
     SELECTED_COMMENT: "SELECTED_COMMENT",
+    SET_USER:"SET_USER"
 };
 
 
