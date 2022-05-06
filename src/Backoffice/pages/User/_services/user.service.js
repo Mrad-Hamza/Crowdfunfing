@@ -22,16 +22,17 @@ export const userService = {
     changePassword,
     forgotpassword,
     addUserImage,
-
+    getCampaignById,
     delete: _delete,
+    getById,
 };
 
 async function getUserDonations() {
-    return await axios.get("http://localhost:5000/payment/getUserDonations/" + localStorage.getItem('currentUserId'))
+    return await axios.get("http://localhost:5000/payment/getUserDonations/" + localStorage.getItem("currentUserId"));
 }
 
 async function getCampaignById(id) {
-    return await axios.get("http://localhost:5000/compaigns/"+id)
+    return await axios.get("http://localhost:5000/compaigns/" + id);
 }
 
 async function addUserImage(image) {
@@ -64,20 +65,20 @@ async function getUserByMailOrUsername(search) {
 }
 function facialLogin(email) {
     axios({
-        method :"POST",
-        url : "http://localhost:5000/users/facialLogin",
+        method: "POST",
+        url: "http://localhost:5000/users/facialLogin",
         data: {
-            email: email
-        }
-    }).then(res => {
-        console.log(res.data)
-        localStorage.setItem('token', res.data.accessToken)
-        localStorage.setItem('currentUserId', res.data.userId)
-        localStorage.setItem('currentUsername', res.data.userName)
-        localStorage.setItem('currentMailAddress', res.data.mail)
-        localStorage.setItem('currentRoles', res.data.role)
+            email: email,
+        },
+    }).then((res) => {
+        console.log(res.data);
+        localStorage.setItem("token", res.data.accessToken);
+        localStorage.setItem("currentUserId", res.data.userId);
+        localStorage.setItem("currentUsername", res.data.userName);
+        localStorage.setItem("currentMailAddress", res.data.mail);
+        localStorage.setItem("currentRoles", res.data.role);
         authHeader();
-    })
+    });
 }
 
 function googlelogin(tokenId) {
@@ -148,9 +149,11 @@ async function login(username, password) {
 
 function logout() {
     // remove user from local storage to log user out
-
+    localStorage.removeItem("currentUserId");
+    localStorage.removeItem("currentUsername");
+    localStorage.removeItem("currentMailAddress");
+    localStorage.removeItem("currentRoles");
     localStorage.removeItem("token");
-
 }
 function refreshPage() {
     window.location.reload(false);
@@ -166,10 +169,10 @@ async function getUserImage(id) {
 
 async function getCampaign(id) {
     const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
+        method: "GET",
+        headers: authHeader(),
     };
-    return await axios.get('http://localhost:5000/compaigns/' + id, requestOptions)
+    return await axios.get("http://localhost:5000/compaigns/" + id, requestOptions);
 }
 
 async function getAll() {
@@ -178,6 +181,14 @@ async function getAll() {
         headers: authHeader(),
     };
     return await axios.get(`http://localhost:5000/users`, requestOptions);
+}
+
+async function getById(id) {
+    const requestOptions = {
+        method: "GET",
+        headers: authHeader(),
+    };
+    return await axios.get("http://localhost:5000/users/" + id, requestOptions);
 }
 
 async function getProfile() {
@@ -213,7 +224,7 @@ async function changePassword(mailAddress, password) {
     };
     return await axios.put("http://localhost:5000/users/PasswordUpdate/" + mailAddress + "/" + password, requestOptions);
 }
-async function updateCampaingAmount(id,number) {
+async function updateCampaingAmount(id, number) {
     // const requestOptions = {
     //     method: 'POST',
     //     headers: { 'Content-Type': 'application/json' },
@@ -222,8 +233,8 @@ async function updateCampaingAmount(id,number) {
     //     }
     // };
     // return await axios.put('http://localhost:5000//compaigns/updateAmount/6268598f99cbd70117c071ee', requestOptions).then((res) => console.log(res.data))
-        return await axios
-            .put("http://localhost:5000/compaigns/updateAmount/"+id+"/"+number)
+    return await axios
+        .put("http://localhost:5000/compaigns/updateAmount/" + id + "/" + number)
         .then((res) => {
             console.log("campaign  updated!");
         })

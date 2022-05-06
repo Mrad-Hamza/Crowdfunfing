@@ -43,7 +43,6 @@ import alanBtn from "@alan-ai/alan-sdk-web";
 import PaymentPage from "../../Backoffice/pages/Payment/PaymentPage";
 const Routes = () => {
     const alanBtnInstance = useRef(null);
-
     const [show, toggleShow] = useState(true);
     console.log("🚀 ~ file: Routes.jsx ~ line 35 ~ Routes ~ show", show);
 

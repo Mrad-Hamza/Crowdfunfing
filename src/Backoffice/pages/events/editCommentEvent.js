@@ -8,59 +8,69 @@ import axios from "axios";
 import { Form } from "react-bootstrap";
 
 import useStyles from "./styles";
-import { setCommentsEvent, deleteCommentAction , updateCommentAction, selectedComment } from "../../features/actions/eventActions";
+import { Input, Textarea, SubmitButton } from "../User/Login/UserLogin/accountBox/common";
+import { setCommentsEvent, deleteCommentAction, updateCommentAction, selectedComment } from "../../features/actions/eventActions";
 import { commentEventService } from "../../features/services/commentEventService";
+import { selectedProject, setTasks, setInvoiceProjects, setComplaintProjects } from "../../features/actions/projects.actions";
+import { projectService } from "../User/_services/project.service";
 
 const EditCommentEvent = () => {
-    const { idComment } = useParams();
-        const event = useSelector((state) => state.commentsEventList);
-        console.log(event);
-
-    let history = useHistory();
-    const dispatch = useDispatch();
-    const [comment, setComment] = useState();
-
     const classes = useStyles();
-
- 
-      const fetching = async () => {
-          const { result } = await axios.get(`http://localhost:5000/commentEvent/${idComment}`);
-          setComment(result.comment);
-          //setDate(data.updatedAt);
-
-          console.log(result);
-          dispatch(selectedComment(result.data));
-      };
-     
-
-
-  useEffect(() => {
-      if (idComment && idComment !== "") {
-          console.log("id", idComment);
-          fetching();
-          console.log("🚀 ~ file: projectUpdate.js ~ line 74 ~ useEffect ~   fetchProjectDetails();", fetching());
-      }
-  }, [idComment]);
-
-  
-    const changeOnclick = (e) => {
+    const { idComment } = useParams();
+    const dispatch = useDispatch();
+    let history = useHistory();
+    const url = "http://localhost:5000/commentEvent/";
+    const comment = useSelector((state) => state.project);
+    console.log("🚀 ~ file: projectUpdate.js ~ line 21 ~ ProjectUpdate ~ project", comment);
+    const fetchCommentDetails = async () => {
+        const result = await axios.get(url + `/${idComment}`).catch((err) => {
+            console.log("Err", err);
+        });
+        console.log("project details", result);
+        dispatch(selectedProject(result.data));
+    };
+    console.log("OldComment :", comment);
+    const [commentById, setCommentById] = useState({});
+    // state.compaign = _id;
+    console.log("newComment :", commentById);
+    // const showResponse = (response) => {
+    //     console.log(response);
+    //     //call to a backend to verify against recaptcha with private key
+    // };
+    const handleChange = (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append("comment", comment);
-       
-
-
-        axios.put(`http://localhost:5000/commentEvent/update/${idComment}`, formData);
-        //history.push("/showEvents");
+        const { name, value } = e.target;
+        if (name === "comment") {
+            setCommentById((prevState) => {
+                return { ...prevState, comment: value };
+            });
+        }
     };
 
-const updateHandler = (e) => {
-    e.preventDefault();
-    dispatch(updateCommentAction(idComment, comment));
-    if (!comment ) return;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(idComment);
+        console.log("newComment :", commentById);
+        projectService.UpdateComment(commentById.id, commentById.comment);
+        history.push("/events/" + comment.event);
+        window.location.reload(false);
+    };
 
-    history.push("/showEvents");
-};
+    useEffect(() => {
+        if (idComment && idComment !== "") {
+            console.log("id", idComment);
+            fetchCommentDetails();
+            console.log("🚀 ~ file: projectUpdate.js ~ line 74 ~ useEffect ~   fetchProjectDetails();", fetchCommentDetails());
+        }
+    }, [idComment]);
+
+    useEffect(() => {
+        console.log("hello");
+        if (comment && Object.keys(comment).length > 0) {
+            setCommentById({ id: idComment, comment: comment.comment });
+        }
+    }, [comment, idComment]);
+
     return (
         <div>
             <div className={classes.commentsOuterContainer}>
@@ -68,11 +78,12 @@ const updateHandler = (e) => {
                     <Typography gutterBottom variant="h6">
                         Write a comment
                     </Typography>
-                    <form onSubmit={changeOnclick}>
-                        <TextField fullWidth rows={4} variant="outlined" label="Comment" value={comment} multiline onChange={(e) => setComment(e.target.value)} />
+                    <form>
+                        <Textarea id="comment" name="comment" value={commentById.comment} placeholder="Description" onChange={handleChange} className="mb-2" />
+                        {/* <TextField fullWidth rows={4} name="comment" variant="outlined" value={comment.comment} multiline onChange={handleChange} /> */}
                         <br />
-                        <Button type="submit" style={{ marginTop: "10px" }} fullWidth color="primary" variant="contained">
-                            Comment
+                        <Button type="submit" style={{ marginTop: "10px" }} fullWidth color="primary" variant="contained" onClick={handleSubmit}>
+                            update comment
                         </Button>
                     </form>
                 </div>

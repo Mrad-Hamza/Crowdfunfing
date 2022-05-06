@@ -2,6 +2,7 @@ const router = require("express").Router();
 let Project = require("../models/project.model");
 let Compaign = require("../models/compaign.model");
 let User = require("../models/user.model");
+let Task = require("../models/task.model");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 
@@ -122,6 +123,25 @@ router.route("/update").put(upload.single("image"), (req, res) => {
             project
                 .save()
                 .then(() => res.json("project updated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+router.route("/updateAmount/:idTask/:id").put(upload.single(""), (req, res) => {
+    let task = null;
+    Task.findById(req.params.idTask).then((res) => {
+        console.log(res);
+        task = res;
+    });
+    Project.findById(req.params.id)
+        .then((project) => {
+            console.log("hhh", project);
+            console.log(task.taskAmount);
+            project.resteAmount = Number(project.resteAmount) - Number(task.taskAmount);
+            console.log(project.resteAmount);
+            project
+                .save()
+                .then(() => res.json("project updated amount!"))
                 .catch((err) => res.status(400).json("Error: " + err));
         })
         .catch((err) => res.status(400).json("Error: " + err));

@@ -122,16 +122,6 @@ router.route("/activate/:id").put((req, res) => {
 
 //Validate method
 router.route("/validate/:id").put((req, res) => {
-    const task = Task.findById(req.params.id);
-    Project.findById(task.project)
-        .then((project) => {
-            project.resteAmount = project.resteAmount - task.taskAmount;
-            project
-                .save()
-                .then(() => res.json("project updated amount!"))
-                .catch((err) => res.status(400).json("Error: " + err));
-        })
-        .catch((err) => res.status(400).json("Error: " + err));
     Task.findById(req.params.id)
         .then((taskById) => {
             taskById.taskType = "validated";

@@ -32,6 +32,7 @@ import { setTasks, setInvoiceProjects, setComplaintProjects } from "../../featur
 import URL from "../../features/constants/services.constants";
 import axios from "axios";
 import "./projects.css";
+import { projectService } from "../User/_services/project.service";
 
 const ProjectDetails = () => {
     const dispatch = useDispatch();
@@ -150,6 +151,7 @@ const ProjectDetails = () => {
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         const validateTask = () => {
+                                            projectService.updateAmount(task._id, _id);
                                             TaskProjectService.validate(task._id);
                                             window.location.reload(false);
                                         };

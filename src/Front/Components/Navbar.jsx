@@ -14,7 +14,8 @@ import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import Explore from "./Explore/Explore";
 import Avatar from "@mui/material/Avatar";
 import { userService } from "../../Backoffice/pages/User/_services/user.service";
-import{forums} from "../../Backoffice/pages/Forums/forumListing";
+import { forums } from "../../Backoffice/pages/Forums/forumListing";
+import "./RouteComponent.scss";
 
 const Navbar = () => {
     let emptyUser = {
@@ -98,12 +99,8 @@ const Navbar = () => {
             title: "Events",
         },
         {
-
-
-
             to: "/forum",
             title: "Forum",
-
         },
     ];
 

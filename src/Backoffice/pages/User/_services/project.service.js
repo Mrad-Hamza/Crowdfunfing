@@ -5,6 +5,8 @@ export const projectService = {
     addProject,
     UpdateProject,
     getproject,
+    UpdateComment,
+    updateAmount,
 };
 
 async function getproject(id) {
@@ -51,6 +53,24 @@ async function UpdateProject(project) {
         .put("http://localhost:5000/projects/update", formData)
         .then((res) => {
             console.log("project updated!");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+async function updateAmount(idTask, id) {
+    const requestOptions = {
+        method: "PUT",
+    };
+    return await fetch(`http://localhost:5000/projects/updateAmount/${idTask}/${id}`, requestOptions);
+}
+
+async function UpdateComment(id, commentt) {
+    return await axios
+        .put("http://localhost:5000/commentEvent/update/" + id + "/" + commentt)
+        .then((res) => {
+            console.log("comment updated!");
         })
         .catch((err) => {
             console.log(err);

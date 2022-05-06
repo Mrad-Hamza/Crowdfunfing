@@ -25,23 +25,23 @@ async function addTask(task) {
         });
 }
 
-function _validate(id) {
+async function _validate(id) {
     const requestOptions = {
         method: "PUT",
     };
-    return fetch(`http://localhost:5000/tasks/validate/${id}`, requestOptions);
+    return await fetch(`http://localhost:5000/tasks/validate/${id}`, requestOptions);
 }
 
-function _refuse(id) {
+async function _refuse(id) {
     const requestOptions = {
         method: "PUT",
     };
-    return fetch(`http://localhost:5000/tasks/refuse/${id}`, requestOptions);
+    return await fetch(`http://localhost:5000/tasks/refuse/${id}`, requestOptions);
 }
 
-function _delete(id) {
+async function _delete(id) {
     const requestOptions = {
         method: "PUT",
     };
-    return fetch(`http://localhost:5000/tasks/archive/${id}`, requestOptions);
+    return await fetch(`http://localhost:5000/tasks/archive/${id}`, requestOptions);
 }

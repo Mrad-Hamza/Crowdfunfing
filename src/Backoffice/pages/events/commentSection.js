@@ -1,166 +1,218 @@
 import React, { useState, useRef, useEffect } from "react";
- import { Typography, TextField, Button } from "@material-ui/core/";
- import { useParams ,useHistory} from "react-router-dom";
- import { useDispatch, useSelector } from "react-redux";
- import {  Comment, Header ,Icon} from "semantic-ui-react";
- import ThumbUpIcon from "@mui/icons-material/ThumbUp";
- import DeleteIcon from "@mui/icons-material/Delete";
-  import EditIcon from "@mui/icons-material/Edit";
+import { Typography, TextField, Button } from "@material-ui/core/";
+import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+// import { Comment, Header, Icon } from "semantic-ui-react";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
+import Box from "@mui/material/Box";
 
- import Box from '@mui/material/Box';
+import { Link } from "react-router-dom";
 
- import { Link } from "react-router-dom";
-
- import { Chip} from "primereact/chip";
- import Grid from "@mui/material/Grid";
- import Tooltip from "@mui/material/Tooltip";
-
-
-
-
- import List from "@mui/material/List";
- import ListItem from "@mui/material/ListItem";
- import IconButton from "@mui/material/IconButton";
- import ListItemButton from "@mui/material/ListItemButton";
- import ListItemIcon from "@mui/material/ListItemIcon";
- import ListItemText from "@mui/material/ListItemText";
+import { Chip } from "primereact/chip";
+import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
+import { selectedProject } from "../../features/actions/projects.actions";
+// import List from "@mui/material/List";
+// import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
 
 import axios from "axios";
-import { Form } from "react-bootstrap";
-
+// import { Form } from "react-bootstrap";
 
 import useStyles from "./styles";
 import { setCommentsEvent, deleteCommentAction } from "../../features/actions/eventActions";
 import { commentEventService } from "../../features/services/commentEventService";
+import { userService } from "../User/_services";
 
+/*******************************Comment component***************************************/
+const CommentComponent = ({ c }) => {
+    const dispatch = useDispatch();
+    const deleteComment = (id) => {
+        if (window.confirm("Are you sure?")) {
+            dispatch(deleteCommentAction(id));
+            window.location.reload(false);
+        }
+    };
+
+    return (
+        <div key={`${Math.random()}${c.user}`}>
+            <div className="flex align-items-center flex-column sm:flex-row">
+                <Chip label={c.userData.username} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
+            </div>
+            <div className="flex align-items-center flex-column sm:flex-row">
+                <Chip label={c.comment} className="mr-2 mb-2" />
+                <Box sx={{ width: 500 }}>
+                    <Grid container justifyContent="center">
+                        <Grid item>
+                            <Tooltip title="Like" placement="top-start">
+                                <IconButton>
+                                    <ThumbUpIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit" placement="top">
+                                <Link to={`/updateCommentEvent/${c._id}`}>
+                                    <IconButton>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Link>
+                            </Tooltip>
+                            <Tooltip title="Delete" placement="top-end">
+                                <IconButton
+                                    onClick={() => {
+                                        deleteComment(c._id);
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </div>
+        </div>
+    );
+};
+
+/*******************************Comments section***************************************/
 const CommentSection = () => {
-        const { _id } = useParams();
-        let history = useHistory();
-        const dispatch = useDispatch();
-        const commentsEventList = useSelector((state) => state.allEvents.commentsEventList);
+    const { _id } = useParams();
+    let history = useHistory();
+    const dispatch = useDispatch();
+    const commentsEventList = useSelector((state) => state.allEvents.commentsEventList);
+    const [state, setState] = useState({ comment: "", event: _id, user: localStorage.getItem("currentUserId") });
+    const [commentsData, setCommentsData] = useState([]);
+    const fetchCommentsEvent = async () => {
+        const result = await axios.get(`http://localhost:5000/commentEvent/all/${_id}`).catch((err) => {
+            console.log("Err", err);
+        });
+        dispatch(setCommentsEvent(result.data));
+    };
+    const fetchUserFromCommentById = async (id) => {
+        try {
+            const res = await axios.get("http://localhost:5000/users/" + id);
+            return res;
+        } catch (err) {
+            console.log("Err", err);
+        }
+    };
 
-
-        const [state, setState] = useState({ comment: "", event: _id, user: localStorage.getItem("currentUserId") });
-
-        const fetchCommentsEvent = async () => {
-            const result = await axios.get(`http://localhost:5000/commentEvent/all/${_id}`).catch((err) => {
-                console.log("Err", err);
+    const getUserDataFromCommentsList = () => {
+        commentsEventList.forEach((comment) => {
+            fetchUserFromCommentById(comment.user).then((res) => {
+                setCommentsData((prevState) => {
+                    return [...prevState, { ...comment, userData: res.data }];
+                });
             });
-            dispatch(setCommentsEvent(result.data));
-        };
-        console.log(commentsEventList);
-        const classes = useStyles();
-        const user = JSON.parse(localStorage.getItem('user'));
-       
+        });
+    };
+    // console.log(commentsEventList);
+    const classes = useStyles();
+    //const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         if (_id && _id !== "") {
-           fetchCommentsEvent();
+            fetchCommentsEvent();
+            // fetchUser();
         }
     }, [_id]);
 
-    const handleComment =  (e) => {
+    //Create new structure after getting the comments list : add user data to comments list
+    useEffect(() => {
+        if (commentsEventList.length !== 0) {
+            getUserDataFromCommentsList();
+        }
+    }, [commentsEventList]);
+
+    const handleComment = (e) => {
         e.preventDefault();
-        const {name,value}= e.target;
+        const { name, value } = e.target;
         if (name === "comment") {
             setState((prevState) => {
                 return { ...prevState, comment: value };
             });
         }
     };
-   
-     const handleSubmit = (e) => {
-         e.preventDefault();
-         console.log(_id);
-         console.log(state);
-         if (state.comment && state.event && state.user ) {
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(_id);
+        console.log(state);
+        if (state.comment && state.event && state.user) {
             commentEventService.addComment(state);
-           window.location.reload(false);
-
-            
-
-         }
+            window.location.reload(false);
+        }
         //history.push(`/events/${_id}`);
+    };
 
-     };
+    return (
+        <div>
+            <div className={classes.commentsOuterContainer}>
+                <div className={classes.commentsInnerContainer}>
+                    <Typography gutterBottom variant="h6">
+                        Comments
+                    </Typography>
+                    {/* {commentsData.map((c) => {
+                        var usr = null;
+                        const test = axios.get("http://localhost:5000/users/" + c.user).then((value) => {
+                            usr = value.data;
+                            return usr;
+                        });
+                        console.log(test);
+                        console.log(usr);
 
-  return (
-      <div>
-          <div className={classes.commentsOuterContainer}>
-              <div className={classes.commentsInnerContainer}>
-                  <Typography gutterBottom variant="h6">
-                      Comments
-                  </Typography>
-                  {commentsEventList?.map((c, i) => {
-                       const deleteComment = (id) => {
-                           if (window.confirm("Are you sure?")) {
-                               dispatch(deleteCommentAction(id));
+                        //console.log(test);
+                        // const getUser = async () => {
+                        //     const a = await test
+                        //     return a
+                        // }
+                        Promise.resolve(test)
+                            .then((value) => {
+                                usr = value;
+                                //console.log("aaaaaaaaaaaaaaaaaaaaa", usr);
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                        console.log("aaaaaaaaaaaaaaaaaaaaa", usr);
+                        // Promise.resolve(fetchUser(c.user)).then((value) => {
+                        //     // this.userr = value;
+                        // });
+                        const idComment = c._id;
+                        const deleteComment = (id) => {
+                            if (window.confirm("Are you sure?")) {
+                                dispatch(deleteCommentAction(id));
                                 window.location.reload(false);
-                           }
-                    }
-                      return (
-                          <div>
-                              <div className="flex align-items-center flex-column sm:flex-row">
-                                  <Chip label={localStorage.getItem("currentUsername")} image="assets/demo/images/avatar/amyelsner.png" className="mr-2 mb-2" />
-                              </div>
-                              <div className="flex align-items-center flex-column sm:flex-row">
-                                  <Chip key={c._id} label={c.comment} className="mr-2 mb-2" />
-                                  <Box sx={{ width: 500 }}>
-                                      <Grid container justifyContent="center">
-                                          <Grid item>
-                                              <Tooltip title="Like" placement="top-start">
-                                                  <IconButton>
-                                                      <ThumbUpIcon />
-                                                  </IconButton>
-                                              </Tooltip>
-                                              <Tooltip title="Edit" placement="top">
-                                                  <Link to={`/updateCommentEvent/${_id}`}>
-                                                      <IconButton>
-                                                          <EditIcon />
-                                                      </IconButton>
-                                                  </Link>
-                                              </Tooltip>
-                                              <Tooltip title="Delete" placement="top-end">
-                                                  <IconButton onClick={() => deleteComment(c._id)}>
-                                                      <DeleteIcon />
-                                                  </IconButton>
-                                              </Tooltip>
-                                          </Grid>
-                                      </Grid>
-                                  </Box>
-                              </div>
+                            }
+                        };
+                        // console.log("hhhhhh", userr); */}
 
-                              {/* <h6>{c.user}</h6> */}
+                    <div>
+                        {commentsData.map((c) => {
+                            return <CommentComponent key={`${Math.random()}${c.user}`} c={c} />;
+                        })}
+                    </div>
+                </div>
+                <div style={{ width: "70%" }}>
+                    <Typography gutterBottom variant="h6">
+                        Write a comment
+                    </Typography>
+                    <form>
+                        <TextField fullWidth rows={4} variant="outlined" label="Comment" name="comment" multiline onChange={handleComment} />
+                        <br />
+                        <Button type="submit" style={{ marginTop: "10px" }} fullWidth color="primary" variant="contained" onClick={handleSubmit}>
+                            Comment
+                        </Button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-                              {/* <Typography key={c._id} gutterBottom variant="subtitle1">
-                                  {c.comment}
-                              </Typography> */}
-                          </div>
-                      );
-
-                      //   <ListItem key={c._id} disablePadding>
-                      //       <ListItemButton role={undefined} dense>
-                      //           <ListItemText primary={c.comment} />
-                      //       </ListItemButton>
-                      //   </ListItem>
-                  })}
-              </div>
-              <div style={{ width: "70%" }}>
-                  <Typography gutterBottom variant="h6">
-                      Write a comment
-                  </Typography>
-                  <form>
-                      <TextField fullWidth rows={4} variant="outlined" label="Comment" name="comment" multiline onChange={handleComment} />
-                      <br />
-                      <Button type="submit" style={{ marginTop: "10px" }} fullWidth color="primary" variant="contained" onClick={handleSubmit}>
-                          Comment
-                      </Button>
-                  </form>
-              </div>
-          </div>
-      </div>
-  );
-}
-
-export default CommentSection
+export default CommentSection;
