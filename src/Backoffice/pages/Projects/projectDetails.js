@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "primereact/button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -19,6 +19,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import { Toast } from 'primereact/toast';
 import Typography from "@mui/material/Typography";
 import CustomizedDialogs from "./CustomizedDialogs";
 import { TaskProjectService } from "../User/_services/taskProject.service";
@@ -36,6 +37,8 @@ import { projectService } from "../User/_services/project.service";
 
 const ProjectDetails = () => {
     const dispatch = useDispatch();
+    const toast = useRef(null);
+
     const project = useSelector((state) => state.project);
     const tasksList = useSelector((state) => state.projects.tasksList);
     const invoiceProjectList = useSelector((state) => state.projects.invoiceProjectList);
@@ -121,6 +124,8 @@ const ProjectDetails = () => {
 
     return (
         <div>
+            <Toast ref={toast} />
+
             {Object.keys(project).length === 0 ? (
                 <div>...Loading</div>
             ) : (
@@ -151,13 +156,23 @@ const ProjectDetails = () => {
                                 <div style={{ maxHeight: "280px", overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable" }} className="global-scroll">
                                     {tasksList.map((task) => {
                                         const validateTask = () => {
-                                            projectService.updateAmount(task._id, _id);
-                                            TaskProjectService.validate(task._id);
-                                            window.location.reload(false);
+                                            if (window.confirm("Do you really want to validate this task ?")) {
+                                                projectService.updateAmount(task._id, _id);
+                                                TaskProjectService.validate(task._id);
+                                                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Project Validated Succesfully', life: 5000 });
+                                                setTimeout(() => {
+                                                    window.location.reload(false);
+                                                }, 3000);
+                                            }
                                         };
                                         const RefuseTask = () => {
-                                            TaskProjectService.refuse(task._id);
-                                            window.location.reload(false);
+                                            if (window.confirm("Do you really want to refuse this task ?")) {
+                                                TaskProjectService.refuse(task._id);
+                                                toast.current.show({ severity: 'error', summary: 'Not validated', detail: 'Project Not Validated', life: 5000 });
+                                                setTimeout(() => {
+                                                    window.location.reload(false);
+                                                }, 3000);
+                                            }
                                         };
                                         if (task && task.taskType === "in progress") {
                                             return (
@@ -261,7 +276,10 @@ const ProjectDetails = () => {
                                         {complaintProjectList.map((complaintProject) => {
                                             const validateComplaint = () => {
                                                 ComplaintProjectService.validate(complaintProject._id);
-                                                window.location.reload(false);
+                                                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Complaint Validated Succesfully', life: 5000 });
+                                                setTimeout(() => {
+                                                    window.location.reload(false);
+                                                }, 3000);
                                             };
                                             const labelId = `checkbox-list-label-${complaintProject._id}`;
                                             if (complaintProject && complaintProject.complaintType == "in progress") {

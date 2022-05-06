@@ -133,6 +133,19 @@ router.route("/validate/:id").put((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
+// task refused
+router.route("/refuse/:id").put((req, res) => {
+    Task.findById(req.params.id)
+        .then((taskById) => {
+            taskById.taskType = "refused";
+            taskById
+                .save()
+                .then(() => res.json("task validated!"))
+                .catch((err) => res.status(400).json("Error: " + err));
+        })
+        .catch((err) => res.status(400).json("Error: " + err));
+});
+
 //delete method
 router.route("/:id").delete((req, res) => {
     Task.findByIdAndDelete(req.params.id)

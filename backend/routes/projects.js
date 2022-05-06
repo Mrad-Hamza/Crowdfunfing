@@ -68,8 +68,6 @@ router.route("/add").post(upload.single("image"), (req, res) => {
             compaign.Verified = 1;
             compaign
                 .save()
-                .then(() => res.json("compaign updated!"))
-                .catch((err) => res.status(400).json("Error: " + err));
         })
         .catch((err) => res.status(400).json("Error: " + err));
     const newProject = new Project({
