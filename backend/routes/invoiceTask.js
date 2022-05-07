@@ -20,12 +20,6 @@ router.route("/").get((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
 });
 
-//getAll method
-router.route("/").get((req, res) => {
-    InvoiceTask.find()
-        .then((invoices) => res.json(invoices))
-        .catch((err) => res.status(400).json("Error: " + err));
-});
 //getByIdProject method
 router.route("/all/:id").get((req, res) => {
     InvoiceTask.find({ task: req.params.id, status: "ON" })

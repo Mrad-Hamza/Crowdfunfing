@@ -21,11 +21,7 @@ router.route("/").get((req, res) => {
 });
 
 //getAll method
-router.route("/").get((req, res) => {
-    InvoiceProject.find()
-        .then((invoices) => res.json(invoices))
-        .catch((err) => res.status(400).json("Error: " + err));
-});
+
 
 //find by id method
 router.route("/:id").get((req, res) => {

@@ -112,7 +112,6 @@ const Routes = () => {
                 <Route path="/collections" render={(props) => <CollectionsPage {...props} />} />
                 <Route path="/profile" render={(props) => <ProfilePage {...props} />} />
                 <Route exact path="/explore_products" render={(props) => <ExploreProducts {...props} />} />
-                <Route exact path="/" component={(props) => <Home {...props} />} />
             </Switch>
             <Route path="/popularPage" render={(props) => <PopularProductsPage {...props} />} />
             <Route path="/popularPage/story" render={(props) => <Story {...props} />} />

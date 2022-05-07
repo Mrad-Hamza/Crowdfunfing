@@ -13,12 +13,7 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage });
-//getAll method
-router.route("/").get((req, res) => {
-    Task.find()
-        .then((complaints) => res.json(complaints))
-        .catch((err) => res.status(400).json("Error: " + err));
-});
+
 //getAll method
 router.route("/").get((req, res) => {
     Task.find()
